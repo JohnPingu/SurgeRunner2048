@@ -30,7 +30,8 @@ namespace MaelKiller
                 return nom; 
             }
             set 
-            { 
+            {
+                if (String.IsNullOrEmpty(value)) throw new ArgumentException("Le nom doit être renseigné");
                 this.nom = value; 
             }
         }
