@@ -8,36 +8,18 @@ namespace MaelKiller
 {
     internal class Joueur
     {
-        private double degats;
         private double pv;
         private double pvMax;
         private double vitesse;
         private double porteeRuee;
         private int niveau;
 
-        public Joueur(double degats, double pvMax, double vitesse, double porteeRuee, int niveau)
+        public Joueur(double pvMax, double vitesse, double porteeRuee, int niveau)
         {
-            Degats = degats;
             PvMax = pvMax;
             Vitesse = vitesse;
             PorteeRuee = porteeRuee;
             Niveau = niveau;
-        }
-
-        public double Degats 
-        {
-            get
-            {
-                return degats;
-            }
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentOutOfRangeException("Les dégats doivent être supérieurs à 0");
-                }
-                degats = value;
-            }
         }
         public double Pv
         {
@@ -114,7 +96,6 @@ namespace MaelKiller
         public override bool Equals(object? obj)
         {
             return obj is Joueur joueur &&
-                   Degats == joueur.Degats &&
                    Pv == joueur.Pv &&
                    PvMax == joueur.PvMax &&
                    Vitesse == joueur.Vitesse &&
@@ -124,12 +105,12 @@ namespace MaelKiller
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Degats, Pv, PvMax, Vitesse, Niveau);
+            return HashCode.Combine(Pv, PvMax, Vitesse, Niveau);
         }
 
         public override string? ToString()
         {
-            return "Dégats : " + degats + "\nVie maximum : " + PvMax + "\nVitesse : " + vitesse + "\nNiveau : " + niveau;
+            return "Vie maximum : " + PvMax + "\nVitesse : " + vitesse + "\nNiveau : " + niveau;
         }
     }
 }
