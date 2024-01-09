@@ -8,11 +8,18 @@
         Title="MainWindow" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen">
     <Canvas>
-        <StackPanel x:Name="sPanelMenuPrincipal" Height="800" Canvas.Left="0" Canvas.Top="0" Width="1200" Background="Lime">
-           
+        <StackPanel x:Name="sPanelMenuPrincipal" Height="800" Canvas.Left="0" Canvas.Top="0" Width="1200">
+            <StackPanel.Background>
+                <ImageBrush ImageSource="/MENU_1.png"/>
+            </StackPanel.Background>
+            <ComboBox x:Name="cbChoixDifficulte" Height="30" Width="150" VerticalAlignment="Center">
+                <ComboBoxItem x:Name="cbiDiffNormale" IsSelected="True" Content="Normale"/>
+                <ComboBoxItem x:Name="cbiDiffExtreme" Content="Extrême"/>
+            </ComboBox>
 
         </StackPanel>
         <Rectangle x:Name="rect_Joueur" Height="106" Canvas.Left="538" Stroke="Black" Canvas.Top="412" Width="62" Fill="Red"/>
+
 
 
     </Canvas>
