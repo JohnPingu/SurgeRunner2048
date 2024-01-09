@@ -1,24 +1,46 @@
-﻿<Window x:Class="MaelKiller.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MaelKiller"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200"
-        WindowStartupLocation="CenterScreen">
+﻿<Window
+    x:Class="MaelKiller.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MaelKiller"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="1200"
+    Height="800"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
     <Canvas>
-        <StackPanel x:Name="sPanelMenuPrincipal" Height="800" Canvas.Left="0" Canvas.Top="0" Width="1200">
+        <StackPanel
+            x:Name="sPanelMenuPrincipal"
+            Canvas.Left="0"
+            Canvas.Top="0"
+            Width="1200"
+            Height="800">
             <StackPanel.Background>
-                <ImageBrush ImageSource="/MENU_1.png"/>
+                <ImageBrush ImageSource="/MENU_1.png" />
             </StackPanel.Background>
-            <ComboBox x:Name="cbChoixDifficulte" Height="30" Width="150" VerticalAlignment="Center">
-                <ComboBoxItem x:Name="cbiDiffNormale" IsSelected="True" Content="Normale"/>
-                <ComboBoxItem x:Name="cbiDiffExtreme" Content="Extrême"/>
+            <ComboBox
+                x:Name="cbChoixDifficulte"
+                Width="150"
+                Height="30"
+                VerticalAlignment="Center">
+                <ComboBoxItem
+                    x:Name="cbiDiffNormale"
+                    Content="Normale"
+                    IsSelected="True" />
+                <ComboBoxItem x:Name="cbiDiffExtreme" Content="Extrême" />
             </ComboBox>
 
         </StackPanel>
-        <Rectangle x:Name="rect_Joueur" Height="106" Canvas.Left="538" Stroke="Black" Canvas.Top="412" Width="62" Fill="Red"/>
+        <Rectangle
+            x:Name="rect_Joueur"
+            Canvas.Left="538"
+            Canvas.Top="412"
+            Width="62"
+            Height="106"
+            Fill="Red"
+            Stroke="Black" />
 
 
 

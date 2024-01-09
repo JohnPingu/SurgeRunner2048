@@ -12,13 +12,15 @@ namespace MaelKiller
         private double pv;
         private double pvMax;
         private double vitesse;
+        private double porteeRuee;
         private int niveau;
 
-        public Joueur(double degats, double pvMax, double vitesse, int niveau)
+        public Joueur(double degats, double pvMax, double vitesse, double porteeRuee, int niveau)
         {
             Degats = degats;
             PvMax = pvMax;
             Vitesse = vitesse;
+            PorteeRuee = porteeRuee;
             Niveau = niveau;
         }
 
@@ -78,6 +80,21 @@ namespace MaelKiller
                 vitesse = value;
             }
         }
+        public double PorteeRuee
+        {
+            get
+            {
+                return porteeRuee;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("La portée de la ruée doit être supérieure à 0");
+                }
+                porteeRuee = value;
+            }
+        }
         public int Niveau
         {
             get
@@ -101,6 +118,7 @@ namespace MaelKiller
                    Pv == joueur.Pv &&
                    PvMax == joueur.PvMax &&
                    Vitesse == joueur.Vitesse &&
+                   PorteeRuee == joueur.PorteeRuee &&
                    Niveau == joueur.Niveau;
         }
 
