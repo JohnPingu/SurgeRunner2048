@@ -11,12 +11,16 @@ namespace MaelKiller
 		private string nom;
         private string multiplieur;
         private string description;
+        private int niveau;
+        private bool possession;
 
-        public Supports(string nom, string multiplieur, string description)
+        public Supports(string nom, int niveau, string multiplieur, string description, bool possession)
         {
             Nom = nom;
+            Niveau = niveau;
             Multiplieur = multiplieur;
-            description = description;
+            Description = description;
+            Possession = possession;
         }
 
         public string Nom
@@ -28,6 +32,15 @@ namespace MaelKiller
                 nom = value; 
             }
 		}
+        public int Niveau
+        {
+            get { return niveau; }
+            set
+            {
+                if (value <= 0) throw new ArgumentOutOfRangeException("Le niveau doit être supérieur à 0");
+                niveau = value;
+            }
+        }
 
         public string Multiplieur
         {
@@ -46,10 +59,18 @@ namespace MaelKiller
                 description = value;
             }
         }
+        public bool Possession
+        {
+            get { return possession; }
+            set
+            {
+                possession = value;
+            }
+        }
 
         public void ApplicationDesStats(Supports support, Joueur joueur)
         {
-        
+            
         }
 
         public override bool Equals(object? obj)
@@ -60,12 +81,12 @@ namespace MaelKiller
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Nom, Multiplieur);
+            return HashCode.Combine(Nom, Niveau, Multiplieur, Description, Possession);
         }
 
         public override string? ToString()
         {
-            return "Nom : " + nom + "\nMultiplieur : " + multiplieur + "\nDescription : " + description;
+            return "Nom : " + nom + "\nMultiplieur : " + multiplieur + "\nDescription : " + description + "\nPossession : " + possession;
         }
     }
 }
