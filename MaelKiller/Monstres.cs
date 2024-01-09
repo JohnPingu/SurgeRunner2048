@@ -17,22 +17,21 @@ namespace MaelKiller
         private string couleur;
         private int experience;
 
-        public Monstres(string nom, double degats, double pv, double pvMax, double vitesse, string couleur, int mutation, int experience)
+        public Monstres(string nom, double degats, double pvMax, double vitesse, string couleur, int mutation, int experience)
         {
             Nom = nom;
             Degats = degats;
-            Pv = pv;
             PvMax = pvMax;
             Vitesse = vitesse;
             Couleur = couleur;
             Mutation = mutation;
             Experience = experience;
         }
-        public Monstres(string nom, double degats, double pv, double vitesse, string couleur, int experience)
+        public Monstres(string nom, double degats, double pvMax, double vitesse, string couleur, int experience)
         {
             Nom = nom;
             Degats = degats;
-            Pv = pv;
+            PvMax = pvMax;
             Vitesse = vitesse;
             Couleur = couleur;
             Mutation = 0;
@@ -83,7 +82,6 @@ namespace MaelKiller
             get { return pv; }
             set 
             { 
-                if (value <= 0) throw new ArgumentOutOfRangeException("Les points de vie doivent être supérieur à 0");
                 pv = value; 
             }
         }
