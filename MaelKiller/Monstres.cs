@@ -31,7 +31,7 @@ namespace MaelKiller
         {
             Nom = nom;
             Degats = degats;
-            PvMax = pvMax;
+            PvMax = pv;
             Vitesse = vitesse;
             Couleur = couleur;
             Mutation = 0;
