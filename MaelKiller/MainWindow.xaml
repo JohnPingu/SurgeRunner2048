@@ -5,34 +5,15 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MaelKiller"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="FenetrePrincipale"
     Title="MainWindow"
     Width="1200"
     Height="800"
+    KeyDown="FenetrePrincipale_KeyDown"
+    KeyUp="FenetrePrincipale_KeyUp"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Canvas>
-        <StackPanel
-            x:Name="sPanelMenuPrincipal"
-            Canvas.Left="0"
-            Canvas.Top="0"
-            Width="1200"
-            Height="800">
-            <StackPanel.Background>
-                <ImageBrush ImageSource="/MENU_1.png" />
-            </StackPanel.Background>
-            <ComboBox
-                x:Name="cbChoixDifficulte"
-                Width="150"
-                Height="30"
-                VerticalAlignment="Center">
-                <ComboBoxItem
-                    x:Name="cbiDiffNormale"
-                    Content="Normale"
-                    IsSelected="True" />
-                <ComboBoxItem x:Name="cbiDiffExtreme" Content="Extrême" />
-            </ComboBox>
-
-        </StackPanel>
         <Rectangle
             x:Name="rect_Joueur"
             Canvas.Left="538"
@@ -41,8 +22,5 @@
             Height="106"
             Fill="Red"
             Stroke="Black" />
-
-
-
     </Canvas>
 </Window>
