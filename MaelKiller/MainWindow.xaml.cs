@@ -24,6 +24,7 @@ namespace MaelKiller
         private bool gauche, droite, haut, bas, ruee = false;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
+        public bool extremeDiff = false;
 
         public MainWindow()
         {
