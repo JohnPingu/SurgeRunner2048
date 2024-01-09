@@ -14,7 +14,18 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Canvas>
-        <Rectangle x:Name="Carte" Width="4800" Height="3200" Canvas.Left="-1800" Canvas.Top="-1200"/>
+        <Canvas.Background>
+            <RadialGradientBrush>
+                <GradientStop Offset="1" Color="Black" />
+                <GradientStop Color="#FF9400FF" />
+            </RadialGradientBrush>
+        </Canvas.Background>
+        <Rectangle
+            x:Name="Carte"
+            Canvas.Left="-1800"
+            Canvas.Top="-1200"
+            Width="4800"
+            Height="3200" />
         <Rectangle
             x:Name="rect_Joueur"
             Canvas.Left="538"
