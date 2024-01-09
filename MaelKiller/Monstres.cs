@@ -15,8 +15,9 @@ namespace MaelKiller
         private double pvMax;
         private double vitesse;
         private string couleur;
+        private int experience;
 
-        public Monstres(string nom, double degats, double pv, double pvMax, double vitesse, string couleur, int mutation)
+        public Monstres(string nom, double degats, double pv, double pvMax, double vitesse, string couleur, int mutation, int experience)
         {
             Nom = nom;
             Degats = degats;
@@ -25,8 +26,9 @@ namespace MaelKiller
             Vitesse = vitesse;
             Couleur = couleur;
             Mutation = mutation;
+            Experience = experience;
         }
-        public Monstres(string nom, double degats, double pv, double vitesse, string couleur)
+        public Monstres(string nom, double degats, double pv, double vitesse, string couleur, int experience)
         {
             Nom = nom;
             Degats = degats;
@@ -34,6 +36,7 @@ namespace MaelKiller
             Vitesse = vitesse;
             Couleur = couleur;
             Mutation = 0;
+            Experience = experience;
         }
 
         public string Nom
@@ -53,6 +56,15 @@ namespace MaelKiller
             { 
                 if(value < 0) throw new ArgumentOutOfRangeException("Le niveau de mutation doit être supérieur ou égal à 0");
                 mutation = value; 
+            }
+        }
+        public int Experience
+        {
+            get { return experience; }
+            set
+            {
+                if (value <= 0) throw new ArgumentOutOfRangeException("L'experience doit être supérieur à 0");
+                experience = value;
             }
         }
 
