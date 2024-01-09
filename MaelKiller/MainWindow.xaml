@@ -14,18 +14,19 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Canvas>
-        <Canvas.Background>
-            <RadialGradientBrush>
-                <GradientStop Offset="1" Color="Black" />
-                <GradientStop Color="#FF9400FF" />
-            </RadialGradientBrush>
-        </Canvas.Background>
         <Rectangle
             x:Name="Carte"
             Canvas.Left="-1800"
             Canvas.Top="-1200"
             Width="4800"
-            Height="3200" />
+            Height="3200">
+            <Rectangle.Fill>
+                <RadialGradientBrush>
+                    <GradientStop Color="Black" />
+                    <GradientStop Offset="1" Color="#FF9400FF" />
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
         <Rectangle
             x:Name="rect_Joueur"
             Canvas.Left="538"
@@ -34,8 +35,18 @@
             Height="106"
             Fill="Red"
             Stroke="Black" />
-        <StackPanel Height="540" Canvas.Left="122" Canvas.Top="125" Width="950" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden">
-            <Rectangle Height="540" Stroke="Black" Width="740"/>
+        <StackPanel
+            Canvas.Left="122"
+            Canvas.Top="125"
+            Width="950"
+            Height="540"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Visibility="Hidden">
+            <Rectangle
+                Width="740"
+                Height="540"
+                Stroke="Black" />
         </StackPanel>
     </Canvas>
 </Window>
