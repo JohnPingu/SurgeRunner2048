@@ -19,14 +19,26 @@ namespace MaelKiller
     /// </summary>
     public partial class Menu : Window
     {
+        public bool extremeDiff = false;
         public Menu()
         {
             InitializeComponent();
+            ImageBrush brush1 = new ImageBrush();
+            brush1.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Menu/MENU.png"));
+            rectFond.Fill = brush1;
+            ImageBrush brush2 = new ImageBrush();
+            brush2.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Menu/boutonPlay.png"));
+            butPlay.Background = brush2;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            if (cbiDiffExtreme.IsSelected = true)
+            { 
+                extremeDiff = true; 
+            }
+            this.Close();
         }
+                
     }
 }

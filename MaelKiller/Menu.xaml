@@ -5,17 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MaelKiller"
         mc:Ignorable="d"
-        Title="Menu" Height="800" Width="1200">
+        Title="Menu" Height="800" Width="1200" ResizeMode="NoResize">
     <Canvas>
-        <Rectangle Height="784" Stroke="Black" Width="1200" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/ressources/img/Menu/MENU.png"/>
-            </Rectangle.Fill>
+        <Rectangle x:Name="rectFond" Height="784" Stroke="Black" Width="1200" HorizontalAlignment="Center" VerticalAlignment="Top">
         </Rectangle>
         <ComboBox x:Name="cbChoixDifficulte" Height="30" Width="150" Canvas.Left="525" Canvas.Top="627" HorizontalAlignment="Center" VerticalAlignment="Top">
             <ComboBoxItem x:Name="cbiDiffNormale" IsSelected="True" Content="Normale"/>
             <ComboBoxItem x:Name="cbiDiffExtreme" Content="Extrême"/>
         </ComboBox>
-        <Button Content="Button" Height="106" Canvas.Left="473" Canvas.Top="462" Width="251" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click"/>
+        <Button x:Name="butPlay" Content="" Height="106" Canvas.Left="473" Canvas.Top="462" Width="251" BorderBrush="{x:Null}" Click="Button_Click" Background="White" Foreground="{x:Null}"/>
     </Canvas>
 </Window>
