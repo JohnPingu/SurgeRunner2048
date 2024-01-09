@@ -21,10 +21,11 @@ namespace MaelKiller
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool gauche, droite, haut, bas, ruee = false;
+        private bool gauche, droite, haut, bas, ruee, dispoRuee = false;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
-        public bool extremeDiff = false;
+        private int cdrRuee = 250, cdRuee;
+        private Joueur joueur = new Joueur(25, 10, 30, 1);
 
         public MainWindow()
         {
@@ -54,7 +55,11 @@ namespace MaelKiller
             }
             if (e.Key == Key.Space)
             {
-                ruee = true;
+                if (dispoRuee = true)
+                {
+                    ruee = true;
+                    dispoRuee = false;
+                }
             }
         }
         private void FenetrePrincipale_KeyUp(object sender, KeyEventArgs e)
@@ -82,7 +87,20 @@ namespace MaelKiller
         }
         private void MoteurJeu(object sender, EventArgs e)
         {
-            Rect joueur = new Rect(Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur), rect_Joueur.Width, rect_Joueur.Height);
+            Rect rectJoueur = new Rect(Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur), rect_Joueur.Width, rect_Joueur.Height);
+            if (dispoRuee == false)
+            {
+                cdRuee -= 1;
+                if (cdRuee == 0)
+                {
+                    dispoRuee = true;
+                    cdRuee = cdrRuee;
+                }
+            }
+            if (gauche == true && Canvas.GetLeft(Carte) < 0)
+            {
+                Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse);
+            }
         }
     }
    
