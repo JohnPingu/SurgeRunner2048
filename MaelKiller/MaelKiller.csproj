@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="ressources\img\Game\LevelUP\FONDCARTE.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ressources\img\Menu\boutonPlay.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

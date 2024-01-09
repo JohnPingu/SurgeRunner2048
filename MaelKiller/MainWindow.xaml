@@ -34,5 +34,8 @@
             Height="106"
             Fill="Red"
             Stroke="Black" />
+        <StackPanel Height="540" Canvas.Left="122" Canvas.Top="125" Width="950" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden">
+            <Rectangle Height="540" Stroke="Black" Width="740"/>
+        </StackPanel>
     </Canvas>
 </Window>
