@@ -8,11 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="MENU.jpg" />
+    <None Update="ressources\img\Menu\boutonPlay.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Menu\MENU.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="MENU.jpg" />
+    <Folder Include="ressources\img\Menu\" />
   </ItemGroup>
 
 </Project>
