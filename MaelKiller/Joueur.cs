@@ -111,7 +111,7 @@ namespace MaelKiller
 
         public override string? ToString()
         {
-            return base.ToString();
+            return "Dégats : " + degats + "\nVie maximum : " + PvMax + "\nVitesse : " + vitesse + "\nNiveau : " + niveau;
         }
     }
 }

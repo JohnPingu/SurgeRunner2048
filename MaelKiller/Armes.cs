@@ -13,14 +13,16 @@ namespace MaelKiller
         private double portee;
         private double vitesseAttaque;
         private int niveau;
+        private string description;
 
-        public Armes(string nom, double degats, double portee, double vitesseAttaque, int niveau)
+        public Armes(string nom, double degats, double portee, double vitesseAttaque, int niveau, string description)
         {
             Nom = nom;
             Degats = degats;
             Portee = portee;
             VitesseAttaque = vitesseAttaque;
             Niveau = niveau;
+            Description = description;
         }
 
         public string Nom
@@ -99,6 +101,17 @@ namespace MaelKiller
                     this.niveau = value; 
             }
         }
+        public string Description
+        {
+            get
+            {
+                return description;
+            }
+            set 
+            { 
+                description = value; 
+            }
+        }
 
         public override bool Equals(object? obj)
         {
@@ -109,12 +122,12 @@ namespace MaelKiller
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Nom, Degats, Portee, VitesseAttaque, Niveau);
+            return HashCode.Combine(Nom, Degats, Portee, VitesseAttaque, Niveau, Description);
         }
 
         public override string ToString()
         {
-            return "Nom : " + nom + "\nDégats : " + degats + "\nPortée : " + portee + "\nVitesse d'attaque : " + vitesseAttaque + "\nNiveau : " + niveau;
+            return "Nom : " + nom + "\nDégats : " + degats + "\nPortée : " + portee + "\nVitesse d'attaque : " + vitesseAttaque + "\nNiveau : " + niveau + "\n" + description;
         }
     }
 }
