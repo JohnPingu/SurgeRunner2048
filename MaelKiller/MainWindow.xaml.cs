@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Xml;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace MaelKiller
 {
@@ -21,6 +25,17 @@ namespace MaelKiller
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool pause = false;
+        private int seconde = 0;
+        private int minute = 0;
+        private int tempsSeconde = 0;
+        DispatcherTimer timer = new DispatcherTimer();
+        TimeSpan tempsEcoule = new TimeSpan();
+        private DateTime DebutChrono = new DateTime();
+        private int increment = 0;
+        
+        
+        
         private const int CENTREX = 566;
         private const int CENTREY = 347;
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false;
@@ -35,17 +50,53 @@ namespace MaelKiller
             Menu menu = new Menu();
             menu.ShowDialog();
             if (menu.DialogResult == false) Application.Current.Shutdown();
-            Chargement();
+            ChargementJeu();
             intervalle.Tick += MoteurJeu;
             intervalle.Interval = TimeSpan.FromMilliseconds(16);
             intervalle.Start();
         }
 
-        private void Chargement()
+        private void CalculTemps()
         {
+            /*tempsEcoule = DateTime.Now - DebutChrono;
+            minute = tempsEcoule.Minutes;
+            seconde = tempsEcoule.Seconds;*/
+
+            minute = (int)Math.Ceiling((double)(increment / 60));
+            seconde = increment - (minute*60);
+            Console.WriteLine(seconde);
+
+        }
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            increment++;
+            Console.WriteLine(increment);
+        }
+
+        private void MiseAJourTemps()
+        {
+            string minuteTexte = minute.ToString();
+            string secondeTexte = seconde.ToString();
+            if (minute >= 0 && minute <= 9)
+            {
+                minuteTexte = "0" + minute;
+            }
+            if (seconde >= 0 && seconde <= 9)
+            {
+                secondeTexte = "0" + seconde;
+            }
+            chrono.Content = minuteTexte + ":" + secondeTexte;
+           
+        }
+        private void ChargementJeu()
+        {
+            DebutChrono = DateTime.Now;
             ImageBrush brush1 = new ImageBrush();
             brush1.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/FondMap.png"));
             Carte.Fill = brush1;
+            timer.Tick += Timer_Tick;
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Start();
         }
 
         private void FenetrePrincipale_KeyDown(object sender, KeyEventArgs e)
@@ -101,6 +152,12 @@ namespace MaelKiller
         private void MoteurJeu(object sender, EventArgs e)
         {
             Rect rectJoueur = new Rect(Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur), rect_Joueur.Width, rect_Joueur.Height);
+            if(pause == false)
+            {
+                CalculTemps();
+                MiseAJourTemps();
+            }
+            
             if (dispoRuee == false)
             {
                 cdRuee -= 1;

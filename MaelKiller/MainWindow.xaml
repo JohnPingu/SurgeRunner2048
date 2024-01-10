@@ -23,7 +23,7 @@
             <Rectangle.Fill>
                 <RadialGradientBrush>
                     <GradientStop Color="Black" />
-                    <GradientStop Offset="1" Color="#FF9400FF" />
+                    <GradientStop Offset="1" Color="White" />
                 </RadialGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
@@ -48,5 +48,6 @@
                 Height="540"
                 Stroke="Black" />
         </StackPanel>
+        <Label x:Name="chrono" Content="chrono1" Height="71" Canvas.Left="508" Canvas.Top="10" Width="186" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="72" FontSize="48" HorizontalAlignment="Left" VerticalAlignment="Top"/>
     </Canvas>
 </Window>

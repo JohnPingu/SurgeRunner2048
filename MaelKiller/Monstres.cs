@@ -128,6 +128,11 @@ namespace MaelKiller
             return HashCode.Combine(Nom, Degats, Pv, PvMax, Vitesse, Couleur, Mutation);
         }
 
+        public void ApparationMonstre()
+        {
+            
+        }
+
         public override string? ToString()
         {
             return "Nom : " + nom + "\nDegats : " + degats + "\nPoints de Vie : " + pv + "\nPoints de Vie Max : " + pvMax + "\nVitesse: " + vitesse + "\nCouleur : " + couleur + "\nMutation : " + mutation;
