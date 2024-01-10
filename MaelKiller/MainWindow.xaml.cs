@@ -34,6 +34,7 @@ namespace MaelKiller
             menu.ShowDialog();
             intervalle.Tick += MoteurJeu;
             intervalle.Interval = TimeSpan.FromMilliseconds(16);
+            intervalle.Start();
         }
         private void FenetrePrincipale_KeyDown(object sender, KeyEventArgs e)
         {
@@ -98,6 +99,18 @@ namespace MaelKiller
                 }
             }
             if (gauche == true && Canvas.GetLeft(Carte) < 0)
+            {
+                Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse);
+            }
+            else if (droite == true && Canvas.GetLeft(Carte) > -3600)
+            {
+                Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse);
+            }
+            if (haut == true && Canvas.GetTop(Carte) < 0)
+            {
+                Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse);
+            }
+            else if (bas == true && Canvas.GetTop(Carte) > -2600)
             {
                 Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse);
             }
