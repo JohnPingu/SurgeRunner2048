@@ -23,11 +23,14 @@ namespace MaelKiller
     {
         private const int CENTREX = 566;
         private const int CENTREY = 347;
+        private const int INTERVALLETICK = 16;
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
         private Joueur joueur = new Joueur(25, 10, 30, 1);
+        private Armes epeeNv1 = new Armes("Épée", 25, 15, 1.5, 1, "Une épée");
+        private int cdArme1, cdArme2, cdrArme1, cdrArme2;
 
         public MainWindow()
         {
@@ -35,8 +38,10 @@ namespace MaelKiller
             Menu menu = new Menu();
             menu.ShowDialog();
             intervalle.Tick += MoteurJeu;
-            intervalle.Interval = TimeSpan.FromMilliseconds(16);
+            intervalle.Interval = TimeSpan.FromMilliseconds(INTERVALLETICK);
             intervalle.Start();
+            cdrArme1 = InitialisationVitesseAttaque(epeeNv1.VitesseAttaque);
+            cdArme1 = cdrArme1;
         }
         private void FenetrePrincipale_KeyDown(object sender, KeyEventArgs e)
         {
@@ -100,6 +105,9 @@ namespace MaelKiller
                     cdRuee = cdrRuee;
                 }
             }
+            //------------------------------------------------//
+            //DEPLACEMENT//
+            //------------------------------------------------//
             if (gauche == true && Canvas.GetLeft(Carte) < 0)
             {
                 Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse);
@@ -154,6 +162,23 @@ namespace MaelKiller
                     Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse/2);
                 }
             }
+            //------------------------------------------------//
+            //ATTAQUE//
+            //------------------------------------------------//
+            cdArme1 -= 1;
+            if (cdArme1 <= 0)
+            {
+                Attaque(epeeNv1, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
+            }
+        }
+        private int InitialisationVitesseAttaque(double vitesseAttaque)
+        {
+            int cdrArme =(int)( 1000 / INTERVALLETICK / vitesseAttaque);
+            return cdrArme;
+        }
+        private void Attaque(Armes arme, double xjoueur, double yjoueur)
+        {
+
         }
     }
    
