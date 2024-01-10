@@ -29,7 +29,8 @@ namespace MaelKiller
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
         private Joueur joueur = new Joueur(25, 10, 30, 1);
-        private Armes epeeNv1 = new Armes("Épée", 25, 15, 1.5, 1, "Une épée");
+        private Armes epee = new Armes("Épée", 25, 15, 1.5, 1, "Une épée, solide et mortelle");
+        private Armes[] tabEpee = new Armes[10];
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;
 
         public MainWindow()
@@ -42,8 +43,9 @@ namespace MaelKiller
             intervalle.Tick += MoteurJeu;
             intervalle.Interval = TimeSpan.FromMilliseconds(INTERVALLETICK);
             intervalle.Start();
-            cdrArme1 = InitialisationVitesseAttaque(epeeNv1.VitesseAttaque);
+            cdrArme1 = InitialisationVitesseAttaque(epee.VitesseAttaque);
             cdArme1 = cdrArme1;
+            tabEpee = InitialisationArmes(epee);
         }
 
         private void Chargement()
@@ -182,7 +184,7 @@ namespace MaelKiller
             cdArme1 -= 1;
             if (cdArme1 <= 0)
             {
-                Attaque(epeeNv1, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
+                Attaque(epee, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
             }
         }
         private int InitialisationVitesseAttaque(double vitesseAttaque)
@@ -193,6 +195,19 @@ namespace MaelKiller
         private void Attaque(Armes arme, double xjoueur, double yjoueur)
         {
 
+        }
+        private Armes[] InitialisationArmes(Armes arme)
+        {
+            Armes[] tabArme;
+            tabArme = new Armes[10];
+            tabArme[0] = arme;
+            for (int i = 1; i < 10; i++)
+            {
+                tabArme[i] = arme;
+                tabArme[i].Degats = arme.Degats*2;
+                tabArme[i].Niveau = arme.Niveau + i;
+            }
+            return tabArme;
         }
     }
    
