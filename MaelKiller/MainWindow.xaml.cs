@@ -38,11 +38,15 @@ namespace MaelKiller
         
         private const int CENTREX = 566;
         private const int CENTREY = 347;
+        private const int INTERVALLETICK = 16;
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
         private Joueur joueur = new Joueur(25, 10, 30, 1);
+        private Armes epee = new Armes("Épée", 25, 15, 1.5, 1, "Une épée, solide et mortelle");
+        private Armes[] tabEpee = new Armes[10];
+        private int cdArme1, cdArme2, cdrArme1, cdrArme2;
 
         public MainWindow()
         {
@@ -52,8 +56,11 @@ namespace MaelKiller
             if (menu.DialogResult == false) Application.Current.Shutdown();
             ChargementJeu();
             intervalle.Tick += MoteurJeu;
-            intervalle.Interval = TimeSpan.FromMilliseconds(16);
+            intervalle.Interval = TimeSpan.FromMilliseconds(INTERVALLETICK);
             intervalle.Start();
+            cdrArme1 = InitialisationVitesseAttaque(epee.VitesseAttaque);
+            cdArme1 = cdrArme1;
+            tabEpee = InitialisationArmes(epee);
         }
 
         private void CalculTemps()
@@ -167,6 +174,9 @@ namespace MaelKiller
                     cdRuee = cdrRuee;
                 }
             }
+            //------------------------------------------------//
+            //DEPLACEMENT//
+            //------------------------------------------------//
             if (gauche == true && Canvas.GetLeft(Carte) < 0)
             {
                 Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse);
@@ -225,6 +235,36 @@ namespace MaelKiller
                     Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse / 2);
                 }
             }
+            //------------------------------------------------//
+            //ATTAQUE//
+            //------------------------------------------------//
+            cdArme1 -= 1;
+            if (cdArme1 <= 0)
+            {
+                Attaque(epee, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
+            }
+        }
+        private int InitialisationVitesseAttaque(double vitesseAttaque)
+        {
+            int cdrArme =(int)( 1000 / INTERVALLETICK / vitesseAttaque);
+            return cdrArme;
+        }
+        private void Attaque(Armes arme, double xjoueur, double yjoueur)
+        {
+
+        }
+        private Armes[] InitialisationArmes(Armes arme)
+        {
+            Armes[] tabArme;
+            tabArme = new Armes[10];
+            tabArme[0] = arme;
+            for (int i = 1; i < 10; i++)
+            {
+                tabArme[i] = arme;
+                tabArme[i].Degats = arme.Degats*2;
+                tabArme[i].Niveau = arme.Niveau + i;
+            }
+            return tabArme;
         }
     }
    
