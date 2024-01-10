@@ -29,8 +29,8 @@
         </Rectangle>
         <Rectangle
             x:Name="rect_Joueur"
-            Canvas.Left="538"
-            Canvas.Top="412"
+            Canvas.Left="566"
+            Canvas.Top="347"
             Width="62"
             Height="106"
             Fill="Red"
