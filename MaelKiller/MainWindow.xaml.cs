@@ -32,6 +32,7 @@ namespace MaelKiller
             InitializeComponent();
             Menu menu = new Menu();
             menu.ShowDialog();
+            if (menu.DialogResult == false) Application.Current.Shutdown();
             intervalle.Tick += MoteurJeu;
             intervalle.Interval = TimeSpan.FromMilliseconds(16);
         }
