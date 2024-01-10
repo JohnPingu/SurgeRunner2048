@@ -13,7 +13,7 @@
     KeyUp="FenetrePrincipale_KeyUp"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
-    <Canvas>
+    <Canvas x:Name="monCanvas">
         <Rectangle
             x:Name="Carte"
             Canvas.Left="-1800"

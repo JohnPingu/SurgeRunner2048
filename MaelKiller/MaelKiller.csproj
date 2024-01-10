@@ -8,10 +8,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="ressources\img\Game\Fleche\flechebas.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ressources\img\Game\Fleche\flecheBD.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ressources\img\Game\Fleche\flecheBG.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Fleche\flechedroite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Fleche\flechegauche.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Fleche\flechehaut.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Fleche\flecheHD.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Fleche\flecheHG.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ressources\img\Game\FondMap.png">

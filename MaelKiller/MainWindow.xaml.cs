@@ -33,16 +33,16 @@ namespace MaelKiller
         TimeSpan tempsEcoule = new TimeSpan();
         private DateTime DebutChrono = new DateTime();
         private int increment = 0;
-        
-        
-        
-        private const int PIXCARRE = 13;
+
+
+
+        private const int PIXCARRE = 26;
         private const int CENTREX = 566;
         private const int CENTREY = 347;
         private const int INTERVALLETICK = 16;
         private const int LARGEURATKEPEE = 40;
         private const double EVODEGATS = 2, EVOVITESSEATTAQUE = 1.1;
-        private bool gauche, droite, haut, bas, faceGauche = false, faceDroite = true, faceHaut = false, faceBas = false, ruee, dispoRuee = false;
+        private bool gauche, droite, haut, bas, ruee, dispoRuee = false;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
@@ -53,6 +53,7 @@ namespace MaelKiller
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;
         private double xfleche, yfleche, lfleche, hfleche;
         private ImageBrush skinFleche = new ImageBrush();
+        private char[] directionAtk = new char[2];
 
         public MainWindow()
         {
@@ -67,6 +68,20 @@ namespace MaelKiller
             cdrArme1 = InitialisationVitesseAttaque(epee.VitesseAttaque);
             cdArme1 = cdrArme1;
             tabEpee = InitialisationArmes(epee);
+            directionAtk[1] = 'D';
+
+            Rectangle fleche = new Rectangle
+            {
+                Tag = "flecheAtk",
+                Height = PIXCARRE,
+                Width = PIXCARRE,
+                Fill = Brushes.Purple,
+                Stroke = Brushes.Transparent,
+            };
+            xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
+            yfleche = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height / 2;
+            monCanvas.Children.Add(fleche);
+            skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechedroite.png"));
         }
 
         private void CalculTemps()
@@ -76,7 +91,7 @@ namespace MaelKiller
             seconde = tempsEcoule.Seconds;*/
 
             minute = (int)Math.Ceiling((double)(increment / 60));
-            seconde = increment - (minute*60);
+            seconde = increment - (minute * 60);
             Console.WriteLine(seconde);
 
         }
@@ -99,7 +114,7 @@ namespace MaelKiller
                 secondeTexte = "0" + seconde;
             }
             chrono.Content = minuteTexte + ":" + secondeTexte;
-           
+
         }
         private void ChargementJeu()
         {
@@ -117,26 +132,22 @@ namespace MaelKiller
             if (e.Key == Key.Left)
             {
                 gauche = true;
-                faceDroite = false;
-                faceGauche = true;
+                directionAtk[1] = 'G';
             }
             else if (e.Key == Key.Right)
             {
                 droite = true;
-                faceGauche = false;
-                faceDroite = true;
+                directionAtk[1] = 'D';
             }
             if (e.Key == Key.Up)
             {
                 haut = true;
-                faceBas = false;
-                faceHaut = true;
+                directionAtk[0] = 'H';
             }
             else if (e.Key == Key.Down)
             {
                 bas = true;
-                faceHaut = false;
-                faceBas = true;
+                directionAtk[0] = 'B';
             }
             if (e.Key == Key.Space)
             {
@@ -152,7 +163,6 @@ namespace MaelKiller
             if (e.Key == Key.Left)
             {
                 gauche = false;
-                
             }
             if (e.Key == Key.Right)
             {
@@ -177,12 +187,12 @@ namespace MaelKiller
             //JOUEUR//
             //------------------------------------------------//
             Rect rectJoueur = new Rect(Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur), rect_Joueur.Width, rect_Joueur.Height);
-            if(pause == false)
+            if (pause == false)
             {
                 CalculTemps();
                 MiseAJourTemps();
             }
-            
+
 
             //------------------------------------------------//
             //RUEE//
@@ -205,15 +215,15 @@ namespace MaelKiller
                 Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse);
                 if (Canvas.GetLeft(rect_Joueur) > (CENTREX - 50))
                 {
-                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse/2);
-                }  
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse / 2);
+                }
             }
             else if (droite == true && Canvas.GetLeft(Carte) > -3600)
             {
                 Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse);
                 if (Canvas.GetLeft(rect_Joueur) < (CENTREX + 50))
                 {
-                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse/2);
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse / 2);
                 }
             }
             if (haut == true && Canvas.GetTop(Carte) < 0)
@@ -221,7 +231,7 @@ namespace MaelKiller
                 Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse);
                 if (Canvas.GetTop(rect_Joueur) > (CENTREY - 50))
                 {
-                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse/2);
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse / 2);
                 }
             }
             else if (bas == true && Canvas.GetTop(Carte) > -2600)
@@ -229,19 +239,19 @@ namespace MaelKiller
                 Canvas.SetTop(Carte, Canvas.GetTop(Carte) - joueur.Vitesse);
                 if (Canvas.GetTop(rect_Joueur) < (CENTREY + 50))
                 {
-                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse/2);
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse / 2);
                 }
             }
             if (!gauche && !droite)
             {
                 if (Canvas.GetLeft(rect_Joueur) > CENTREX)
                 {
-                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse/2);
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse / 2);
                     Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse / 2);
                 }
                 else if (Canvas.GetLeft(rect_Joueur) < CENTREX)
                 {
-                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse/2);
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse / 2);
                     Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse / 2);
                 }
             }
@@ -249,54 +259,134 @@ namespace MaelKiller
             {
                 if (Canvas.GetTop(rect_Joueur) > CENTREY)
                 {
-                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse/2);
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse / 2);
                     Canvas.SetTop(Carte, Canvas.GetTop(Carte) - joueur.Vitesse / 2);
                 }
                 else if (Canvas.GetTop(rect_Joueur) < CENTREY)
                 {
-                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse/2);
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse / 2);
                     Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse / 2);
                 }
             }
             //------------------------------------------------//
             //FLÊCHE//
             //------------------------------------------------//
-            hfleche = PIXCARRE;
-            lfleche = PIXCARRE;
-            if (faceBas == true)
+            if (directionAtk[0] == 'H')
+            {
+                if (haut == false)
+                {
+                    if (gauche == true || droite == true)
+                    {
+                        directionAtk[0] = 'N';
+                    }
+                }
+            }
+            else if (directionAtk[0] == 'B')
+            {
+                if (bas == false)
+                {
+                    if (gauche == true || droite == true)
+                    {
+                        directionAtk[0] = 'N';
+                    }
+                }
+            }
+            if (directionAtk[1] == 'G')
+            {
+                if (gauche == false)
+                {
+                    if (bas == true || haut == true)
+                    {
+                        directionAtk[1] = 'N';
+                    }
+                }
+            }
+            else if (directionAtk[1] == 'D')
+            {
+                if (droite == false)
+                {
+                    if (bas == true || haut == true)
+                    {
+                        directionAtk[1] = 'N';
+                    }
+                }
+            }
+
+            foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+            {
+                if (x is Rectangle && (string)x.Tag == "flecheAtk")
+                {
+                    objetsSuppr.Add(x);
+                }
+            }
+            foreach (Rectangle y in objetsSuppr)
+            {
+                monCanvas.Children.Remove(y);
+            }
+            if (directionAtk[0] == 'B')
             {
                 yfleche = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height + joueur.Vitesse;
-                if (faceGauche == true)
+                if (directionAtk[1] == 'G')
                 {
+                    xfleche = Canvas.GetLeft(rect_Joueur) - PIXCARRE - joueur.Vitesse;
                     skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheBG.png"));
                 }
-                else if(faceDroite == true) 
+                else if (directionAtk[1] == 'D')
                 {
+                    xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
                     skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheBD.png"));
                 }
+                else
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (PIXCARRE / 2);
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechebas.png"));
+                }     
             }
-            else if (faceHaut == true)
+            else if (directionAtk[0] == 'H')
             {
-                yfleche = Canvas.GetTop(rect_Joueur) + joueur.Vitesse;
+                yfleche = Canvas.GetTop(rect_Joueur) - joueur.Vitesse - PIXCARRE;
+                if (directionAtk[1] == 'G')
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) - PIXCARRE - joueur.Vitesse;
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheHG.png"));
+                }
+                else if (directionAtk[1] == 'D')
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheHD.png"));
+                }
+                else
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (PIXCARRE / 2);
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechehaut.png"));
+                }
+                    
             }
-            else if (faceBas == false && faceHaut == false)
+            else
             {
-                yfleche = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height / 2;
-            }
-            if (faceDroite == true)
-            {
-                xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
-            }
-            else if (faceGauche == true)
-            {
-                xfleche = Canvas.GetLeft(rect_Joueur) + joueur.Vitesse;
-            }
-            else if (faceDroite == false && faceGauche == false)
-            {
-                xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width / 2;
-            }
-            Rect fleche = new Rect(xfleche, yfleche, lfleche, hfleche);
+                yfleche = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (PIXCARRE / 2);
+                if (directionAtk[1] == 'G')
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) - PIXCARRE - joueur.Vitesse;
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechegauche.png"));
+                }
+                else if (directionAtk[1] == 'D')
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechedroite.png"));
+                }
 
+            }
+            Rectangle fleche = new Rectangle
+            {
+                Tag = "flecheAtk",
+                Height = PIXCARRE,
+                Width = PIXCARRE,
+                Fill = skinFleche,
+            };
+            Canvas.SetLeft(fleche, xfleche);
+            Canvas.SetTop(fleche, yfleche);
+            monCanvas.Children.Add(fleche);
             //------------------------------------------------//
             //ATTAQUE//
             //------------------------------------------------//
@@ -306,6 +396,7 @@ namespace MaelKiller
                 Attaque(epee, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
             }
         }
+
         private int InitialisationVitesseAttaque(double vitesseAttaque)
         {
             int cdrArme =(int)( 1000 / INTERVALLETICK / vitesseAttaque);
@@ -314,19 +405,23 @@ namespace MaelKiller
         private void Attaque(Armes arme, double xjoueur, double yjoueur)
         {
             double xAtk, yAtk, largeur = arme.Portee, hauteur = LARGEURATKEPEE;
-            if (faceGauche == true)
+            if (directionAtk[1] == 'G')
             {
-                xAtk = Canvas.GetLeft(rect_Joueur);
+                xAtk = Canvas.GetLeft(rect_Joueur) - largeur;
             }
-            else
+            else if (directionAtk[1] == 'D')
             {
                 xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width;
             }
-            if (faceHaut == true)
+            else
             {
-                yAtk = Canvas.GetTop(rect_Joueur);
+                xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width / 2;
             }
-            else if (faceBas == true)
+            if (directionAtk[0] == 'H')
+            {
+                yAtk = Canvas.GetTop(rect_Joueur) - hauteur;
+            }
+            else if (directionAtk[0] == 'B')
             {
                 yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height;
             }
@@ -351,5 +446,4 @@ namespace MaelKiller
             return tabArme;
         }
     }
-   
 }
