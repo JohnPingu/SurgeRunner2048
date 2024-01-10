@@ -40,20 +40,22 @@ namespace MaelKiller
         private const int CENTREX = 566;
         private const int CENTREY = 347;
         private const int INTERVALLETICK = 16;
-        private const int LARGEURATKEPEE = 40;
+        private const int LARGEURATKEPEE = 80;
         private const double EVODEGATS = 2, EVOVITESSEATTAQUE = 1.1;
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
         private Joueur joueur = new Joueur(25, 10, 30, 1);
-        private Armes epee = new Armes("Épée", 25, 15, 1.5, 1, "Une épée, solide et mortelle");
+        private Armes epee = new Armes("Épée", 25, 50, 1.5, 1, "Une épée, solide et mortelle");
         private Armes[] tabEpee = new Armes[10];
         private Armes arme1, arme2;
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;
         private double xfleche, yfleche, lfleche, hfleche;
         private ImageBrush skinFleche = new ImageBrush();
         private char[] directionAtk = new char[2];
+        private ImageBrush frameAtk = new ImageBrush();
+        private int checkFrame;
 
         public MainWindow()
         {
@@ -393,7 +395,24 @@ namespace MaelKiller
             cdArme1 -= 1;
             if (cdArme1 <= 0)
             {
+                checkFrame = cdArme1 / 3;
+                frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Atk/Atk" + checkFrame + ".png"));
                 Attaque(epee, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
+            }
+            if (cdArme1 == -9) 
+            {
+                foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+                {
+                    if (x is Rectangle && (string)x.Tag == "attaque")
+                    {
+                        objetsSuppr.Add(x);
+                    }
+                }
+                foreach (Rectangle y in objetsSuppr)
+                {
+                    monCanvas.Children.Remove(y);
+                }
+                cdArme1 = cdrArme1;
             }
         }
 
@@ -430,6 +449,16 @@ namespace MaelKiller
                 yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height / 2;
             }
             Rect attaque = new Rect(xAtk, yAtk, largeur, hauteur);
+            Rectangle atk = new Rectangle
+            {
+                Tag = "attaque",
+                Width = largeur,
+                Height = hauteur,
+                Fill = frameAtk,
+            };
+            Canvas.SetLeft(atk, xAtk);
+            Canvas.SetTop(atk, yAtk);
+            monCanvas.Children.Add(atk);
         }
         private Armes[] InitialisationArmes(Armes arme)
         {
