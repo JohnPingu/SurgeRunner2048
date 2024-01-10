@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="ressources\img\Game\FondMap.png">
+    <None Update="ressources\img\Game\Fleche\flecheBD.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Fleche\flecheBG.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ressources\img\Game\LevelUP\FONDCARTE.png">

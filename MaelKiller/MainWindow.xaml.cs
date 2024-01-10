@@ -36,17 +36,23 @@ namespace MaelKiller
         
         
         
+        private const int PIXCARRE = 13;
         private const int CENTREX = 566;
         private const int CENTREY = 347;
         private const int INTERVALLETICK = 16;
-        private bool gauche, droite, haut, bas, ruee, dispoRuee = false;
+        private const int LARGEURATKEPEE = 40;
+        private const double EVODEGATS = 2, EVOVITESSEATTAQUE = 1.1;
+        private bool gauche, droite, haut, bas, faceGauche = false, faceDroite = true, faceHaut = false, faceBas = false, ruee, dispoRuee = false;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
         private Joueur joueur = new Joueur(25, 10, 30, 1);
         private Armes epee = new Armes("Épée", 25, 15, 1.5, 1, "Une épée, solide et mortelle");
         private Armes[] tabEpee = new Armes[10];
+        private Armes arme1, arme2;
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;
+        private double xfleche, yfleche, lfleche, hfleche;
+        private ImageBrush skinFleche = new ImageBrush();
 
         public MainWindow()
         {
@@ -111,18 +117,26 @@ namespace MaelKiller
             if (e.Key == Key.Left)
             {
                 gauche = true;
+                faceDroite = false;
+                faceGauche = true;
             }
-            if (e.Key == Key.Right)
+            else if (e.Key == Key.Right)
             {
                 droite = true;
+                faceGauche = false;
+                faceDroite = true;
             }
             if (e.Key == Key.Up)
             {
                 haut = true;
+                faceBas = false;
+                faceHaut = true;
             }
-            if (e.Key == Key.Down)
+            else if (e.Key == Key.Down)
             {
                 bas = true;
+                faceHaut = false;
+                faceBas = true;
             }
             if (e.Key == Key.Space)
             {
@@ -138,6 +152,7 @@ namespace MaelKiller
             if (e.Key == Key.Left)
             {
                 gauche = false;
+                
             }
             if (e.Key == Key.Right)
             {
@@ -158,6 +173,9 @@ namespace MaelKiller
         }
         private void MoteurJeu(object sender, EventArgs e)
         {
+            //------------------------------------------------//
+            //JOUEUR//
+            //------------------------------------------------//
             Rect rectJoueur = new Rect(Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur), rect_Joueur.Width, rect_Joueur.Height);
             if(pause == false)
             {
@@ -165,6 +183,10 @@ namespace MaelKiller
                 MiseAJourTemps();
             }
             
+
+            //------------------------------------------------//
+            //RUEE//
+            //------------------------------------------------//
             if (dispoRuee == false)
             {
                 cdRuee -= 1;
@@ -174,6 +196,7 @@ namespace MaelKiller
                     cdRuee = cdrRuee;
                 }
             }
+
             //------------------------------------------------//
             //DEPLACEMENT//
             //------------------------------------------------//
@@ -236,6 +259,45 @@ namespace MaelKiller
                 }
             }
             //------------------------------------------------//
+            //FLÊCHE//
+            //------------------------------------------------//
+            hfleche = PIXCARRE;
+            lfleche = PIXCARRE;
+            if (faceBas == true)
+            {
+                yfleche = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height + joueur.Vitesse;
+                if (faceGauche == true)
+                {
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheBG.png"));
+                }
+                else if(faceDroite == true) 
+                {
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheBD.png"));
+                }
+            }
+            else if (faceHaut == true)
+            {
+                yfleche = Canvas.GetTop(rect_Joueur) + joueur.Vitesse;
+            }
+            else if (faceBas == false && faceHaut == false)
+            {
+                yfleche = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height / 2;
+            }
+            if (faceDroite == true)
+            {
+                xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
+            }
+            else if (faceGauche == true)
+            {
+                xfleche = Canvas.GetLeft(rect_Joueur) + joueur.Vitesse;
+            }
+            else if (faceDroite == false && faceGauche == false)
+            {
+                xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width / 2;
+            }
+            Rect fleche = new Rect(xfleche, yfleche, lfleche, hfleche);
+
+            //------------------------------------------------//
             //ATTAQUE//
             //------------------------------------------------//
             cdArme1 -= 1;
@@ -251,7 +313,28 @@ namespace MaelKiller
         }
         private void Attaque(Armes arme, double xjoueur, double yjoueur)
         {
-
+            double xAtk, yAtk, largeur = arme.Portee, hauteur = LARGEURATKEPEE;
+            if (faceGauche == true)
+            {
+                xAtk = Canvas.GetLeft(rect_Joueur);
+            }
+            else
+            {
+                xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width;
+            }
+            if (faceHaut == true)
+            {
+                yAtk = Canvas.GetTop(rect_Joueur);
+            }
+            else if (faceBas == true)
+            {
+                yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height;
+            }
+            else
+            {
+                yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height / 2;
+            }
+            Rect attaque = new Rect(xAtk, yAtk, largeur, hauteur);
         }
         private Armes[] InitialisationArmes(Armes arme)
         {
@@ -261,8 +344,9 @@ namespace MaelKiller
             for (int i = 1; i < 10; i++)
             {
                 tabArme[i] = arme;
-                tabArme[i].Degats = arme.Degats*2;
                 tabArme[i].Niveau = arme.Niveau + i;
+                tabArme[i].Degats = arme.Degats * EVODEGATS * tabArme[i].Niveau;
+                tabArme[i].VitesseAttaque = arme.VitesseAttaque * EVOVITESSEATTAQUE * tabArme[i].Niveau;
             }
             return tabArme;
         }
