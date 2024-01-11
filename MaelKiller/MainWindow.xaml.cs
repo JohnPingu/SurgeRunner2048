@@ -212,183 +212,15 @@ namespace MaelKiller
             //------------------------------------------------//
             //DEPLACEMENT//
             //------------------------------------------------//
-            if (gauche == true && Canvas.GetLeft(Carte) < 0)
-            {
-                Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse);
-                if (Canvas.GetLeft(rect_Joueur) > (CENTREX - 50))
-                {
-                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse / 2);
-                }
-            }
-            else if (droite == true && Canvas.GetLeft(Carte) > -3600)
-            {
-                Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse);
-                if (Canvas.GetLeft(rect_Joueur) < (CENTREX + 50))
-                {
-                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse / 2);
-                }
-            }
-            if (haut == true && Canvas.GetTop(Carte) < 0)
-            {
-                Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse);
-                if (Canvas.GetTop(rect_Joueur) > (CENTREY - 50))
-                {
-                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse / 2);
-                }
-            }
-            else if (bas == true && Canvas.GetTop(Carte) > -2600)
-            {
-                Canvas.SetTop(Carte, Canvas.GetTop(Carte) - joueur.Vitesse);
-                if (Canvas.GetTop(rect_Joueur) < (CENTREY + 50))
-                {
-                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse / 2);
-                }
-            }
-            if (!gauche && !droite)
-            {
-                if (Canvas.GetLeft(rect_Joueur) > CENTREX)
-                {
-                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse / 2);
-                    Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse / 2);
-                }
-                else if (Canvas.GetLeft(rect_Joueur) < CENTREX)
-                {
-                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse / 2);
-                    Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse / 2);
-                }
-            }
-            if (!haut && !bas)
-            {
-                if (Canvas.GetTop(rect_Joueur) > CENTREY)
-                {
-                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse / 2);
-                    Canvas.SetTop(Carte, Canvas.GetTop(Carte) - joueur.Vitesse / 2);
-                }
-                else if (Canvas.GetTop(rect_Joueur) < CENTREY)
-                {
-                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse / 2);
-                    Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse / 2);
-                }
-            }
+
+            Deplacements();
+
             //------------------------------------------------//
             //FLÊCHE//
             //------------------------------------------------//
-            if (directionFleche[0] == 'H')
-            {
-                if (haut == false)
-                {
-                    if (gauche == true || droite == true)
-                    {
-                        directionFleche[0] = 'N';
-                    }
-                }
-            }
-            else if (directionFleche[0] == 'B')
-            {
-                if (bas == false)
-                {
-                    if (gauche == true || droite == true)
-                    {
-                        directionFleche[0] = 'N';
-                    }
-                }
-            }
-            if (directionFleche[1] == 'G')
-            {
-                if (gauche == false)
-                {
-                    if (bas == true || haut == true)
-                    {
-                        directionFleche[1] = 'N';
-                    }
-                }
-            }
-            else if (directionFleche[1] == 'D')
-            {
-                if (droite == false)
-                {
-                    if (bas == true || haut == true)
-                    {
-                        directionFleche[1] = 'N';
-                    }
-                }
-            }
 
-            foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
-            {
-                if (x is Rectangle && (string)x.Tag == "flecheAtk")
-                {
-                    objetsSuppr.Add(x);
-                }
-            }
-            foreach (Rectangle y in objetsSuppr)
-            {
-                monCanvas.Children.Remove(y);
-            }
-            if (directionFleche[0] == 'B')
-            {
-                yfleche = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height + joueur.Vitesse;
-                if (directionFleche[1] == 'G')
-                {
-                    xfleche = Canvas.GetLeft(rect_Joueur) - PIXCARRE - joueur.Vitesse;
-                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheBG.png"));
-                }
-                else if (directionFleche[1] == 'D')
-                {
-                    xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
-                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheBD.png"));
-                }
-                else
-                {
-                    xfleche = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (PIXCARRE / 2);
-                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechebas.png"));
-                }     
-            }
-            else if (directionFleche[0] == 'H')
-            {
-                yfleche = Canvas.GetTop(rect_Joueur) - joueur.Vitesse - PIXCARRE;
-                if (directionFleche[1] == 'G')
-                {
-                    xfleche = Canvas.GetLeft(rect_Joueur) - PIXCARRE - joueur.Vitesse;
-                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheHG.png"));
-                }
-                else if (directionFleche[1] == 'D')
-                {
-                    xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
-                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheHD.png"));
-                }
-                else
-                {
-                    xfleche = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (PIXCARRE / 2);
-                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechehaut.png"));
-                }
-                    
-            }
-            else
-            {
-                yfleche = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (PIXCARRE / 2);
-                if (directionFleche[1] == 'G')
-                {
-                    xfleche = Canvas.GetLeft(rect_Joueur) - PIXCARRE - joueur.Vitesse;
-                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechegauche.png"));
-                }
-                else if (directionFleche[1] == 'D')
-                {
-                    xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
-                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechedroite.png"));
-                }
+            VerifDirection();
 
-            }
-            Rectangle fleche = new Rectangle
-            {
-                Tag = "flecheAtk",
-                Height = PIXCARRE,
-                Width = PIXCARRE,
-                Fill = skinFleche,
-            };
-            Canvas.SetLeft(fleche, xfleche);
-            Canvas.SetTop(fleche, yfleche);
-            monCanvas.Children.Add(fleche);
             //------------------------------------------------//
             //ATTAQUE//
             //------------------------------------------------//
@@ -515,6 +347,218 @@ namespace MaelKiller
                 tabArme[i].VitesseAttaque = arme.VitesseAttaque * EVOVITESSEATTAQUE * tabArme[i].Niveau;
             }
             return tabArme;
+        }
+        private void Deplacements()
+        {
+            if (gauche == true && Canvas.GetLeft(Carte) < 0)
+            {
+                Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse);
+                if (Canvas.GetLeft(rect_Joueur) > (CENTREX - 50))
+                {
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse / 2);
+                }
+            }
+            else if (gauche == true && Canvas.GetLeft(Carte) >= 0)
+            {
+                if (Canvas.GetLeft(rect_Joueur) - joueur.Vitesse >= 0)
+                {
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse);
+                }
+                else Canvas.SetLeft(rect_Joueur, 0);
+            }
+            else if (droite == true && Canvas.GetLeft(Carte) > -3600)
+            {
+                Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse);
+                if (Canvas.GetLeft(rect_Joueur) < (CENTREX + 50))
+                {
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse / 2);
+                }
+            }
+            else if (droite == true && Canvas.GetLeft(Carte) <= -3600)
+            {
+                if (Canvas.GetLeft(rect_Joueur) - joueur.Vitesse >= 1200 - rect_Joueur.Width)
+                {
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse);
+                }
+                else Canvas.SetLeft(rect_Joueur, 1200 - rect_Joueur.Width);
+            }
+            if (haut == true && Canvas.GetTop(Carte) < 0)
+            {
+                Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse);
+                if (Canvas.GetTop(rect_Joueur) > (CENTREY - 50))
+                {
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse / 2);
+                }
+            }
+            else if (haut == true && Canvas.GetTop(Carte) >= 0)
+            {
+                if (Canvas.GetTop(rect_Joueur) - joueur.Vitesse >= 0)
+                {
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse);
+                }
+                else Canvas.SetTop(rect_Joueur, 0);
+            }
+            else if (bas == true && Canvas.GetTop(Carte) > -2600)
+            {
+                Canvas.SetTop(Carte, Canvas.GetTop(Carte) - joueur.Vitesse);
+                if (Canvas.GetTop(rect_Joueur) < (CENTREY + 50))
+                {
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse / 2);
+                }
+            }
+            else if (bas == true && Canvas.GetTop(Carte) <= -2600)
+            {
+                if (Canvas.GetTop(rect_Joueur) + rect_Joueur.Height + joueur.Vitesse <= 800)
+                {
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse);
+                }
+                else Canvas.SetTop(rect_Joueur, 800 - rect_Joueur.Height);
+            }
+            if (!gauche && !droite)
+            {
+                if (Canvas.GetLeft(rect_Joueur) > CENTREX)
+                {
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse / 2);
+                    Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse / 2);
+                }
+                else if (Canvas.GetLeft(rect_Joueur) < CENTREX)
+                {
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse / 2);
+                    Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse / 2);
+                }
+            }
+            if (!haut && !bas)
+            {
+                if (Canvas.GetTop(rect_Joueur) > CENTREY)
+                {
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse / 2);
+                    Canvas.SetTop(Carte, Canvas.GetTop(Carte) - joueur.Vitesse / 2);
+                }
+                else if (Canvas.GetTop(rect_Joueur) < CENTREY)
+                {
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse / 2);
+                    Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse / 2);
+                }
+            }
+        }
+        private void VerifDirection()
+        {
+            if (directionFleche[0] == 'H')
+            {
+                if (haut == false)
+                {
+                    if (gauche == true || droite == true)
+                    {
+                        directionFleche[0] = 'N';
+                    }
+                }
+            }
+            else if (directionFleche[0] == 'B')
+            {
+                if (bas == false)
+                {
+                    if (gauche == true || droite == true)
+                    {
+                        directionFleche[0] = 'N';
+                    }
+                }
+            }
+            if (directionFleche[1] == 'G')
+            {
+                if (gauche == false)
+                {
+                    if (bas == true || haut == true)
+                    {
+                        directionFleche[1] = 'N';
+                    }
+                }
+            }
+            else if (directionFleche[1] == 'D')
+            {
+                if (droite == false)
+                {
+                    if (bas == true || haut == true)
+                    {
+                        directionFleche[1] = 'N';
+                    }
+                }
+            }
+
+            foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+            {
+                if (x is Rectangle && (string)x.Tag == "flecheAtk")
+                {
+                    objetsSuppr.Add(x);
+                }
+            }
+            foreach (Rectangle y in objetsSuppr)
+            {
+                monCanvas.Children.Remove(y);
+            }
+            if (directionFleche[0] == 'B')
+            {
+                yfleche = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height + joueur.Vitesse;
+                if (directionFleche[1] == 'G')
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) - PIXCARRE - joueur.Vitesse;
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheBG.png"));
+                }
+                else if (directionFleche[1] == 'D')
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheBD.png"));
+                }
+                else
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (PIXCARRE / 2);
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechebas.png"));
+                }
+            }
+            else if (directionFleche[0] == 'H')
+            {
+                yfleche = Canvas.GetTop(rect_Joueur) - joueur.Vitesse - PIXCARRE;
+                if (directionFleche[1] == 'G')
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) - PIXCARRE - joueur.Vitesse;
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheHG.png"));
+                }
+                else if (directionFleche[1] == 'D')
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheHD.png"));
+                }
+                else
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (PIXCARRE / 2);
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechehaut.png"));
+                }
+
+            }
+            else
+            {
+                yfleche = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (PIXCARRE / 2);
+                if (directionFleche[1] == 'G')
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) - PIXCARRE - joueur.Vitesse;
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechegauche.png"));
+                }
+                else if (directionFleche[1] == 'D')
+                {
+                    xfleche = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width + joueur.Vitesse;
+                    skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechedroite.png"));
+                }
+
+            }
+            Rectangle fleche = new Rectangle
+            {
+                Tag = "flecheAtk",
+                Height = PIXCARRE,
+                Width = PIXCARRE,
+                Fill = skinFleche,
+            };
+            Canvas.SetLeft(fleche, xfleche);
+            Canvas.SetTop(fleche, yfleche);
+            monCanvas.Children.Add(fleche);
         }
     }
 }
