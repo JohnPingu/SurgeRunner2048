@@ -117,9 +117,6 @@ namespace MaelKiller
                 secondeTexte = "0" + seconde;
             }
             chrono.Content = minuteTexte + ":" + secondeTexte;
-            if (secondeTexte == "10")
-                timer.Stop();
-
         }
         private void ChargementJeu()
         {
@@ -422,7 +419,6 @@ namespace MaelKiller
                 }
                 cdArme1 = cdrArme1;
             }
-            Console.WriteLine(estAttaquant);
         }
 
         private int InitialisationVitesseAttaque(double vitesseAttaque)
@@ -500,9 +496,11 @@ namespace MaelKiller
             Canvas.SetLeft(atk, xAtk);
             Canvas.SetTop(atk, yAtk);
             monCanvas.Children.Add(atk);
+#if DEBUG 
             Console.WriteLine("x : " + xAtk + " y : " + yAtk);
             Console.WriteLine("Fleche : " + directionFleche[0] + " " + directionFleche[1]);
             Console.WriteLine("Atk : " + directionAtk[0] + " " + directionAtk[1]);
+#endif
         }
         private Armes[] InitialisationArmes(Armes arme)
         {
