@@ -54,6 +54,12 @@ namespace MaelKiller
         private double xfleche, yfleche, lfleche, hfleche;
         private ImageBrush skinFleche = new ImageBrush();
         private char[] directionFleche = new char[2];
+
+        private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
+
         private char[] directionAtk = new char[2];
         private ImageBrush frameAtk = new ImageBrush();
         private int checkFrame;
@@ -101,6 +107,7 @@ namespace MaelKiller
         private void Timer_Tick(object sender, EventArgs e)
         {
             increment++;
+            joueur.GainExperience(10);
             Console.WriteLine(increment);
         }
 
@@ -127,6 +134,13 @@ namespace MaelKiller
             timer.Tick += Timer_Tick;
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
+        }
+
+        private void MiseAJourBarXp()
+        {
+            barXP.Minimum = 0;
+            barXP.Maximum = joueur.XpPourNiveauSuivant;
+            barXP.Value = joueur.Xp;
         }
 
         private void FenetrePrincipale_KeyDown(object sender, KeyEventArgs e)
@@ -185,6 +199,8 @@ namespace MaelKiller
         }
         private void MoteurJeu(object sender, EventArgs e)
         {
+            MiseAJourBarXp();
+            
             //------------------------------------------------//
             //JOUEUR//
             //------------------------------------------------//

@@ -144,7 +144,7 @@ namespace MaelKiller
             }
         }
 
-        private void GainExperience(double xp)
+        public void GainExperience(double xp)
         {
             double res;
             res = this.Xp + xp;
@@ -162,7 +162,7 @@ namespace MaelKiller
 
         }
 
-        private void PrendreDegats(double degats)
+        public void PrendreDegats(double degats)
         {
             double res;
             res = this.Pv - degats;
