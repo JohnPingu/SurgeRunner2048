@@ -12,7 +12,11 @@ namespace MaelKiller
         private double pvMax;
         private double vitesse;
         private double porteeRuee;
+        private double xp;
+        private double xpPourNiveauSuivant;
         private int niveau;
+        private bool estMort;
+        private const double CONSTANTE_MULTIPLIEUR_NIVEAU = 1.5;
 
         public Joueur(double pvMax, double vitesse, double porteeRuee, int niveau)
         {
@@ -20,6 +24,10 @@ namespace MaelKiller
             Vitesse = vitesse;
             PorteeRuee = porteeRuee;
             Niveau = niveau;
+            Pv = pvMax;
+            Xp = xp;
+            XpPourNiveauSuivant = 100;
+            estMort = false;
         }
         public double Pv
         {
@@ -45,6 +53,37 @@ namespace MaelKiller
                     throw new ArgumentOutOfRangeException("Les points de vie maximums doivent être supérieurs à 0");
                 }
                 pvMax = value;
+            }
+        }
+        public double Xp
+        {
+            get
+            {
+                return xp;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("L'experience doit être égal ou supérieur à 0");
+                }
+                xp = value;
+            }
+        }
+
+        public double XpPourNiveauSuivant
+        {
+            get
+            {
+                return xpPourNiveauSuivant;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("L'xp pour le niveau suivant doit être supérieur à 0");
+                }
+                xpPourNiveauSuivant = value;
             }
         }
         public double Vitesse
@@ -77,6 +116,18 @@ namespace MaelKiller
                 porteeRuee = value;
             }
         }
+
+        public bool EstMort
+        {
+            get
+            {
+                return EstMort;
+            }
+            set
+            {
+                estMort = value;
+            }
+        }
         public int Niveau
         {
             get
@@ -90,6 +141,37 @@ namespace MaelKiller
                     throw new ArgumentOutOfRangeException("Le niveau doit être supérieur à 0");
                 }
                 niveau = value;
+            }
+        }
+
+        private void GainExperience(double xp)
+        {
+            double res;
+            res = this.Xp + xp;
+            if (res >= this.XpPourNiveauSuivant)
+            {
+                this.XpPourNiveauSuivant = this.XpPourNiveauSuivant * CONSTANTE_MULTIPLIEUR_NIVEAU;
+                this.Xp = 0;
+#if DEBUG
+                Console.WriteLine("xp pour niveau suivant: " + XpPourNiveauSuivant);
+#endif
+            } else
+            {
+                this.Xp += res;
+            }
+
+        }
+
+        private void PrendreDegats(double degats)
+        {
+            double res;
+            res = this.Pv - degats;
+            if (res <= 0)
+            {
+                this.EstMort = true;
+            } else
+            {
+                this.Pv = res;
             }
         }
 
@@ -110,7 +192,7 @@ namespace MaelKiller
 
         public override string? ToString()
         {
-            return "Vie maximum : " + PvMax + "\nVitesse : " + vitesse + "\nNiveau : " + niveau;
+            return "Vie maximum : " + PvMax + "\nVitesse : " + Vitesse + "\nNiveau : " + Niveau + "\nXp : " + Xp + "\nXp pour niveau suivant : " + XpPourNiveauSuivant;
         }
     }
 }

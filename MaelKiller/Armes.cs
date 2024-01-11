@@ -15,11 +15,11 @@ namespace MaelKiller
         private double vitesseAttaque;
         private int niveau;
         private string description;
-        private bool isMelee;
+        private bool estMelee;
         private double taille;
         private double vitesseProjectile;
 
-        public Armes(string nom, double degats, double portee, double vitesseAttaque, double taille, int niveau, string description, bool isMelee)
+        public Armes(string nom, double degats, double portee, double vitesseAttaque, double taille, int niveau, string description, bool estMelee)
         {
             Nom = nom;
             Degats = degats;
@@ -27,11 +27,11 @@ namespace MaelKiller
             VitesseAttaque = vitesseAttaque;
             Niveau = niveau;
             Description = description;
-            IsMelee = isMelee;
+            EstMelee = estMelee;
             Taille = taille;
             vitesseProjectile = 0;
         }
-        public Armes(string nom, double degats, double portee, double vitesseAttaque, double taille, int niveau, string description, bool isMelee, double vitesseProjectile)
+        public Armes(string nom, double degats, double portee, double vitesseAttaque, double taille, int niveau, string description, bool estMelee, double vitesseProjectile)
         {
             Nom = nom;
             Degats = degats;
@@ -39,19 +39,19 @@ namespace MaelKiller
             VitesseAttaque = vitesseAttaque;
             Niveau = niveau;
             Description = description;
-            IsMelee = isMelee;
+            EstMelee = estMelee;
             Taille = taille;
             VitesseProjectile = vitesseProjectile;
         }
-        public bool IsMelee
+        public bool EstMelee
         {
             get
             {
-                return isMelee;
+                return estMelee;
             }
             set
             {
-                this.isMelee = value;
+                this.estMelee = value;
             }
         }
         public string Nom
@@ -185,12 +185,12 @@ namespace MaelKiller
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Nom, Degats, Portee, VitesseAttaque, Niveau, Description);
+            return HashCode.Combine(Nom, Degats, Portee, VitesseAttaque, Taille, Niveau, Description, VitesseProjectile);
         }
 
         public override string ToString()
         {
-            return "Nom : " + nom + "\nDégats : " + degats + "\nPortée : " + portee + "\nVitesse d'attaque : " + vitesseAttaque + "\nVitesse projectile : " + vitesseProjectile + "\nEst melée? : " + estMelee + "\nNiveau : " + niveau + "\n" + description;
+            return "Nom : " + Nom + "\nDégats : " + Degats + "\nPortée : " + Portee + "\nVitesse d'attaque : " + VitesseAttaque + "\nVitesse projectile : " + VitesseProjectile + "\nEst melée? : " + EstMelee + "\nNiveau : " + Niveau + "\n" + Description;
         }
     }
 }
