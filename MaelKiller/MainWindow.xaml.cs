@@ -47,7 +47,7 @@ namespace MaelKiller
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
         private Joueur joueur = new Joueur(25, 10, 30, 1);
-        private Armes epee = new Armes("Épée", 25, 50, 1.5, 1, "Une épée, solide et mortelle");
+        private Armes epee = new Armes("Épée", 25, 50, 1.5, 1, 25, "Une épée, solide et mortelle", false);
         private Armes[] tabEpee = new Armes[10];
         private Armes arme1, arme2;
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;

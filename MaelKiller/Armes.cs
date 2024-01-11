@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Printing.IndexedProperties;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,8 +15,11 @@ namespace MaelKiller
         private double vitesseAttaque;
         private int niveau;
         private string description;
+        private bool isMelee;
+        private double taille;
+        private double vitesseProjectile;
 
-        public Armes(string nom, double degats, double portee, double vitesseAttaque, int niveau, string description)
+        public Armes(string nom, double degats, double portee, double vitesseAttaque, double taille, int niveau, string description, bool isMelee)
         {
             Nom = nom;
             Degats = degats;
@@ -23,8 +27,33 @@ namespace MaelKiller
             VitesseAttaque = vitesseAttaque;
             Niveau = niveau;
             Description = description;
+            IsMelee = isMelee;
+            Taille = taille;
+            vitesseProjectile = 0;
         }
-
+        public Armes(string nom, double degats, double portee, double vitesseAttaque, double taille, int niveau, string description, bool isMelee, double vitesseProjectile)
+        {
+            Nom = nom;
+            Degats = degats;
+            Portee = portee;
+            VitesseAttaque = vitesseAttaque;
+            Niveau = niveau;
+            Description = description;
+            IsMelee = isMelee;
+            Taille = taille;
+            VitesseProjectile = vitesseProjectile;
+        }
+        public bool IsMelee
+        {
+            get
+            {
+                return isMelee;
+            }
+            set
+            {
+                this.isMelee = value;
+            }
+        }
         public string Nom
         {
             get 
@@ -85,6 +114,40 @@ namespace MaelKiller
                     this.vitesseAttaque = value;
             }
         }
+
+        public double VitesseProjectile
+        {
+            get
+            {
+                return vitesseProjectile;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("La vitesse d'attaque doit être supérieure à 0");
+                }
+                else
+                    this.vitesseProjectile = value;
+            }
+        }
+
+        public double Taille
+        {
+            get
+            {
+                return taille;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException("La taille doit être supérieure à 0");
+                }
+                else
+                    this.taille = value;
+            }
+        }
         public int Niveau
         {
             get 
@@ -127,7 +190,7 @@ namespace MaelKiller
 
         public override string ToString()
         {
-            return "Nom : " + nom + "\nDégats : " + degats + "\nPortée : " + portee + "\nVitesse d'attaque : " + vitesseAttaque + "\nNiveau : " + niveau + "\n" + description;
+            return "Nom : " + nom + "\nDégats : " + degats + "\nPortée : " + portee + "\nVitesse d'attaque : " + vitesseAttaque + "\nVitesse projectile : " + vitesseProjectile + "\nEst melée? : " + estMelee + "\nNiveau : " + niveau + "\n" + description;
         }
     }
 }
