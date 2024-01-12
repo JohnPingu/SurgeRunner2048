@@ -48,7 +48,7 @@
                 Height="540"
                 Stroke="Black" />
         </StackPanel>
-        <Label x:Name="chrono" Content="chrono1" Height="71" Canvas.Left="507" Canvas.Top="54" Width="186" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="72" FontSize="48" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="chrono1" Content="chrono1" Height="71" Canvas.Left="507" Canvas.Top="54" Width="186" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="72" FontSize="48" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <ProgressBar x:Name="barXP" Height="49" Canvas.Left="-2" Width="1202" HorizontalAlignment="Left" VerticalAlignment="Center" ValueChanged="ProgressBar_ValueChanged" Foreground="#FF1F00FF" Background="#4C000000"/>
         <Label
             x:Name="chrono"
