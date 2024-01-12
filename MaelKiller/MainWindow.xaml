@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MaelKiller"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="FenetrePrincipale"
+    x:Name="fenetrePrincipale"
     Title="MainWindow"
     Width="1200"
     Height="800"
@@ -48,6 +48,18 @@
                 Height="540"
                 Stroke="Black" />
         </StackPanel>
-        <Label x:Name="chrono" Content="chrono1" Height="71" Canvas.Left="508" Canvas.Top="10" Width="186" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="72" FontSize="48" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label
+            x:Name="chrono"
+            Canvas.Left="508"
+            Canvas.Top="10"
+            Width="186"
+            Height="71"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            HorizontalContentAlignment="Center"
+            Content="chrono1"
+            FontFamily="72"
+            FontSize="48"
+            Foreground="Black" />
     </Canvas>
 </Window>

@@ -332,6 +332,8 @@ namespace MaelKiller
             Console.WriteLine("x : " + xAtk + " y : " + yAtk);
             Console.WriteLine("Fleche : " + directionFleche[0] + " " + directionFleche[1]);
             Console.WriteLine("Atk : " + directionAtk[0] + " " + directionAtk[1]);
+            Console.WriteLine("Haut : " + haut + "\nBas : " + bas + "\nGauche : " + gauche + "\nDroite : " + droite);
+            Console.WriteLine("Largeur Canvas : " + monCanvas.Width + "\nHauteur Canvas : " + monCanvas.Height);
 #endif
         }
         private Armes[] InitialisationArmes(Armes arme)
@@ -350,7 +352,10 @@ namespace MaelKiller
         }
         private void Deplacements()
         {
-            if (gauche == true && Canvas.GetLeft(Carte) < 0)
+            //---------------------------------------------------------//
+            //DEPLACEMENT VERS LA GAUCHE//
+            //---------------------------------------------------------//
+            if (gauche == true && Canvas.GetLeft(Carte) < 0 && Canvas.GetLeft(Carte) > -3600)
             {
                 Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse);
                 if (Canvas.GetLeft(rect_Joueur) > (CENTREX - 50))
@@ -366,7 +371,22 @@ namespace MaelKiller
                 }
                 else Canvas.SetLeft(rect_Joueur, 0);
             }
-            else if (droite == true && Canvas.GetLeft(Carte) > -3600)
+            else if (gauche == true && Canvas.GetLeft(Carte) <= -3600 && Canvas.GetLeft(rect_Joueur) > CENTREX)
+            {
+                Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse);
+            }
+            else if (gauche == true && Canvas.GetLeft(Carte) <= -3600 && Canvas.GetLeft(rect_Joueur) <= CENTREX)
+            {
+                Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse);
+                if (Canvas.GetLeft(rect_Joueur) > (CENTREX - 50))
+                {
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse / 2);
+                }
+            }
+            //---------------------------------------------------------//
+            //DEPLACEMENT VERS LA DROITE//
+            //---------------------------------------------------------//
+            else if (droite == true && Canvas.GetLeft(Carte) > -3600 && Canvas.GetLeft(Carte) < 0)
             {
                 Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse);
                 if (Canvas.GetLeft(rect_Joueur) < (CENTREX + 50))
@@ -376,13 +396,28 @@ namespace MaelKiller
             }
             else if (droite == true && Canvas.GetLeft(Carte) <= -3600)
             {
-                if (Canvas.GetLeft(rect_Joueur) - joueur.Vitesse >= 1200 - rect_Joueur.Width)
+                if (Canvas.GetLeft(rect_Joueur) + joueur.Vitesse <= fenetrePrincipale.ActualWidth - rect_Joueur.Width)
                 {
-                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse);
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse);
                 }
-                else Canvas.SetLeft(rect_Joueur, 1200 - rect_Joueur.Width);
+                else Canvas.SetLeft(rect_Joueur, fenetrePrincipale.ActualWidth - rect_Joueur.Width);
             }
-            if (haut == true && Canvas.GetTop(Carte) < 0)
+            else if (droite == true && Canvas.GetLeft(Carte) >= 0 && Canvas.GetLeft(rect_Joueur) < CENTREX)
+            {
+                Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse);
+            }
+            else if (droite == true && Canvas.GetLeft(Carte) >= 0 && Canvas.GetLeft(rect_Joueur) >= CENTREX)
+            {
+                Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse);
+                if (Canvas.GetLeft(rect_Joueur) < (CENTREX + 50))
+                {
+                    Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse / 2);
+                }
+            }
+            //---------------------------------------------------------//
+            //DEPLACEMENT VERS LE HAUT//
+            //---------------------------------------------------------//
+            if (haut == true && Canvas.GetTop(Carte) < 0 && Canvas.GetTop(Carte) > -2400)
             {
                 Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse);
                 if (Canvas.GetTop(rect_Joueur) > (CENTREY - 50))
@@ -398,7 +433,22 @@ namespace MaelKiller
                 }
                 else Canvas.SetTop(rect_Joueur, 0);
             }
-            else if (bas == true && Canvas.GetTop(Carte) > -2600)
+            else if (haut == true && Canvas.GetTop(Carte) <= -2400 && Canvas.GetTop(rect_Joueur) > CENTREY)
+            {
+                Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse);
+            }
+            else if (haut == true && Canvas.GetTop(Carte) <= -2400 && Canvas.GetTop(rect_Joueur) <= CENTREY)
+            {
+                Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse);
+                if (Canvas.GetTop(rect_Joueur) > (CENTREY - 50))
+                {
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse / 2);
+                }
+            }
+            //---------------------------------------------------------//
+            //DEPLACEMENT VERS LE BAS//
+            //---------------------------------------------------------//
+            else if (bas == true && Canvas.GetTop(Carte) > -2400 && Canvas.GetTop(Carte) < 0)
             {
                 Canvas.SetTop(Carte, Canvas.GetTop(Carte) - joueur.Vitesse);
                 if (Canvas.GetTop(rect_Joueur) < (CENTREY + 50))
@@ -406,35 +456,50 @@ namespace MaelKiller
                     Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse / 2);
                 }
             }
-            else if (bas == true && Canvas.GetTop(Carte) <= -2600)
+            else if (bas == true && Canvas.GetTop(Carte) <= -2400)
             {
-                if (Canvas.GetTop(rect_Joueur) + rect_Joueur.Height + joueur.Vitesse <= 800)
+                if (Canvas.GetTop(rect_Joueur) + joueur.Vitesse <= 770 - rect_Joueur.Height)
                 {
                     Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse);
                 }
-                else Canvas.SetTop(rect_Joueur, 800 - rect_Joueur.Height);
+                else Canvas.SetTop(rect_Joueur, 770 - rect_Joueur.Height);
             }
-            if (!gauche && !droite)
+            else if (bas == true && Canvas.GetTop(Carte) >= 0 && Canvas.GetTop(rect_Joueur) < CENTREY)
             {
-                if (Canvas.GetLeft(rect_Joueur) > CENTREX)
+                Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse);
+            }
+            else if (bas == true && Canvas.GetTop(Carte) >= 0 && Canvas.GetTop(rect_Joueur) >= CENTREY)
+            {
+                Canvas.SetTop(Carte, Canvas.GetTop(Carte) - joueur.Vitesse);
+                if (Canvas.GetTop(rect_Joueur) < (CENTREY + 50))
+                {
+                    Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse / 2);
+                }
+            }
+            //---------------------------------------------------------//
+            //RECENTRAGE CAMERA//
+            //---------------------------------------------------------//
+            if (!gauche && !droite && Canvas.GetLeft(rect_Joueur) - joueur.Vitesse >= 0 && Canvas.GetLeft(rect_Joueur) - joueur.Vitesse >= 1200 - rect_Joueur.Width)
+            {
+                if (Canvas.GetLeft(rect_Joueur) > CENTREX && Canvas.GetLeft(Carte) < 0)
                 {
                     Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - joueur.Vitesse / 2);
                     Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) - joueur.Vitesse / 2);
                 }
-                else if (Canvas.GetLeft(rect_Joueur) < CENTREX)
+                else if (Canvas.GetLeft(rect_Joueur) < CENTREX && Canvas.GetLeft(Carte) > -3600)
                 {
                     Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) + joueur.Vitesse / 2);
                     Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse / 2);
                 }
             }
-            if (!haut && !bas)
+            if (!haut && !bas && Canvas.GetTop(rect_Joueur) - joueur.Vitesse >= 0 && Canvas.GetTop(rect_Joueur) + rect_Joueur.Height + joueur.Vitesse <= 800)
             {
-                if (Canvas.GetTop(rect_Joueur) > CENTREY)
+                if (Canvas.GetTop(rect_Joueur) > CENTREY && Canvas.GetTop(Carte) > -2400)
                 {
                     Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) - joueur.Vitesse / 2);
                     Canvas.SetTop(Carte, Canvas.GetTop(Carte) - joueur.Vitesse / 2);
                 }
-                else if (Canvas.GetTop(rect_Joueur) < CENTREY)
+                else if (Canvas.GetTop(rect_Joueur) < CENTREY && Canvas.GetTop(Carte) < 0)
                 {
                     Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + joueur.Vitesse / 2);
                     Canvas.SetTop(Carte, Canvas.GetTop(Carte) + joueur.Vitesse / 2);
