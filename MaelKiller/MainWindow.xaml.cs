@@ -111,7 +111,7 @@ namespace MaelKiller
         private void Timer_Tick(object sender, EventArgs e)
         {
             increment++;
-            joueur.GainExperience(10);
+            //joueur.GainExperience(10);
             Console.WriteLine(increment);
         }
 
@@ -650,7 +650,7 @@ namespace MaelKiller
             Random random = new Random();
             int typeMonstre;
             double nbHasard = random.Next(1,100) + random.Next(1,20) * (seconde * 0.25);
-            Monstres nouveauMonstre = new Monstres();
+            //Monstres nouveauMonstre = new Monstres();
 
             if (nbHasard < 25)
             {
@@ -660,8 +660,8 @@ namespace MaelKiller
                     ApparitionMonstre(robot);
                 } else
                 {
-                    nouveauMonstre = robot;
-                    nouveauMonstre.Couleur = "rouge";
+                    //nouveauMonstre = robot;
+                    //nouveauMonstre.Couleur = "rouge";
                     ApparitionMonstre(robot);
                 }
             } else if (nbHasard < 50){
