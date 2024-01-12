@@ -31,11 +31,22 @@ namespace MaelKiller
         {
             Nom = nom;
             Degats = degats;
-            PvMax = pv;
+            PvMax = pvMax;
             Vitesse = vitesse;
             Couleur = couleur;
             Mutation = 0;
             Experience = experience;
+        }
+
+        public Monstres()
+        {
+            Nom = "null";
+            Degats = 1;
+            PvMax = 1;
+            Vitesse = 1;
+            Couleur = "bleu";
+            Mutation = 0;
+            Experience = 0;
         }
 
         public string Nom
@@ -130,7 +141,7 @@ namespace MaelKiller
 
         public void ApparationMonstre()
         {
-            
+                 
         }
 
         public override string? ToString()
