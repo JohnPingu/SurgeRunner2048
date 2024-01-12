@@ -34,14 +34,16 @@ namespace MaelKiller
         private DateTime DebutChrono = new DateTime();
         private int increment = 0;
 
-
-
         private const int PIXCARRE = 26;
         private const int CENTREX = 566;
         private const int CENTREY = 347;
         private const int INTERVALLETICK = 16;
         private const int LARGEURATKEPEE = 80;
         private const double EVODEGATS = 2, EVOVITESSEATTAQUE = 1.1;
+        
+        private List<Rectangle> listeMonstreRect = new List<Rectangle>();
+        private List<Monstres> listMonstre = new List<Monstres>();
+
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false, estAttaquant = false;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
@@ -54,6 +56,8 @@ namespace MaelKiller
         private double xfleche, yfleche, lfleche, hfleche;
         private ImageBrush skinFleche = new ImageBrush();
         private char[] directionFleche = new char[2];
+
+        private Monstres robot = new Monstres("robot", 5, 20, 30, "bleu", 20);
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -640,6 +644,59 @@ namespace MaelKiller
             Canvas.SetLeft(fleche, xfleche);
             Canvas.SetTop(fleche, yfleche);
             monCanvas.Children.Add(fleche);
+        }
+        private void GenerationMonstreHasard()
+        {
+            Random random = new Random();
+            int typeMonstre;
+            double nbHasard = random.Next(1,100) + random.Next(1,20) * (seconde * 0.25);
+            Monstres nouveauMonstre = new Monstres();
+
+            if (nbHasard < 25)
+            {
+                typeMonstre = random.Next(1, 10);
+                if (typeMonstre < 3)
+                {
+                    ApparitionMonstre(robot);
+                } else
+                {
+                    nouveauMonstre = robot;
+                    nouveauMonstre.Couleur = "rouge";
+                    ApparitionMonstre(robot);
+                }
+            } else if (nbHasard < 50){
+                
+            }
+            
+        }
+        private void ApparitionMonstre(Monstres monstre)
+        {
+            Rectangle nouveauMonstreRect = new Rectangle();
+
+            if (monstre.Nom == "robot") 
+            {
+                nouveauMonstreRect.Height = 105;
+                nouveauMonstreRect.Width = 60;
+            };
+
+            if (monstre.Couleur == "rouge")
+            {
+                monstre.PvMax *= 1.5;
+                monstre.Degats *= 1.5;
+            } 
+            else if(monstre.Couleur == "noir")
+            {
+                monstre.PvMax *= 2.5;
+                monstre.PvMax *= 2.5;
+            };
+
+            listeMonstreRect.Add(nouveauMonstreRect);
+            listMonstre.Add(monstre);
+
+        }
+        private bool verificationCollisions(Rectangle rect)
+        {
+            return false;
         }
     }
 }
