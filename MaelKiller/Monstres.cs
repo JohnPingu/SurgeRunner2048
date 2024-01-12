@@ -121,7 +121,7 @@ namespace MaelKiller
             get { return couleur; }
             set 
             {
-                if (!(value == "bleu" && value == "rouge" && value == "noir")) throw new ArgumentException("La couleur doit être bleu, rouge ou noir");
+                if (value != "bleu" && value != "rouge" && value != "noir") throw new ArgumentException("La couleur doit être bleu, rouge ou noir");
                 couleur = value; 
             }
         }
