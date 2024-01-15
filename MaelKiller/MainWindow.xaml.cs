@@ -46,6 +46,7 @@ namespace MaelKiller
         private List<Monstres> listMonstre = new List<Monstres>();
 
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false, estAttaquant = false;
+        private bool estEnHaut = false, estEnBas = false, estAGauche = false, estADroite = false;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
@@ -524,6 +525,25 @@ namespace MaelKiller
                     Canvas.SetTop(rect_Joueur, Canvas.GetTop(rect_Joueur) + vitesseCam);
                     Canvas.SetTop(Carte, Canvas.GetTop(Carte) + vitesseCam);
                 }
+            }
+        }
+        private void VerifPosition()
+        {
+            if (Canvas.GetLeft(Carte) >= 0)
+            {
+                estAGauche = true;
+            }
+            if (Canvas.GetLeft(Carte) <= -3600)
+            {
+                estADroite = true;
+            }
+            if (Canvas.GetTop(Carte) >=0)
+            {
+                estEnHaut = true;
+            }
+            if (Canvas.GetTop(Carte) <= -2400)
+            {
+                estEnBas = true;
             }
         }
         private void VerifDirection()
