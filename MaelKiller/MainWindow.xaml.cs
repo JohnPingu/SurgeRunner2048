@@ -56,6 +56,7 @@ namespace MaelKiller
         private ImageBrush skinFleche = new ImageBrush();
         private ImageBrush drone = new ImageBrush();
         private char[] directionFleche = new char[2];
+        private int numMonstre = 1;
 
         //-----------------------------------//
         //ARMES//
@@ -123,7 +124,6 @@ namespace MaelKiller
 
             minute = (int)Math.Ceiling((double)(increment / 60));
             seconde = increment - (minute * 60);
-            Console.WriteLine(seconde);
 
         }
         private void MinuterieTick(object sender, EventArgs e)
@@ -419,6 +419,12 @@ namespace MaelKiller
             if (gauche == true && estAGauche == false && estADroite == false)
             {
                 Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse);
+                foreach (Rectangle rectmonstre in listeMonstreRect)
+                {
+                    Console.WriteLine("Monstre:" + numMonstre);
+                    int i = 1;
+                    Canvas.SetTop(rectmonstre, Canvas.GetLeft(rectmonstre) + joueur.Vitesse + listMonstre[i].Vitesse);
+                }
                 if (Canvas.GetLeft(rect_Joueur) > (CENTREX - 50))
                 {
                     Canvas.SetLeft(rect_Joueur, Canvas.GetLeft(rect_Joueur) - vitesseCam);
@@ -735,8 +741,10 @@ namespace MaelKiller
         }
         private void ApparitionMonstre(Monstres monstre)
         {
+            string numserie = "Monstre" + numMonstre.ToString();
             Rectangle nouveauMonstreRect = new Rectangle
             {
+                Name = numserie,
                 Tag = "Monstre",
                 Height = 105,
                 Width = 60,
@@ -758,21 +766,46 @@ namespace MaelKiller
             else if(monstre.Couleur == "noir")
             {
                 monstre.PvMax *= 2.5;
-                monstre.PvMax *= 2.5;
+                monstre.Degats *= 2.5;
             };
             PlacerNouveauMonstre(nouveauMonstreRect);
             listeMonstreRect.Add(nouveauMonstreRect);
             monCanvas.Children.Add(nouveauMonstreRect);
             listMonstre.Add(monstre);
+            numMonstre++;
         }
 
         private void PlacerNouveauMonstre(Rectangle monstre)
         {
             Random random = new Random();
-            int coorX;
-            int coorY;
-            Canvas.SetTop(monstre, 500);
-            Canvas.SetLeft(monstre, 500);
+            int rdm = random.Next(1,2);
+            int coorX = 0;
+            int coorY = 0;
+
+            rdm = random.Next(1,4);
+
+            switch (rdm)
+            {
+                case 1:
+                    coorX = -40;
+                    coorY = random.Next(0, 800);
+                    break;
+                case 2:
+                    coorX = 1240;
+                    coorY = random.Next(0, 800);
+                    break;
+                case 3:
+                    coorX = random.Next(0, 1200);
+                    coorY = -40;
+                    break;
+                case 4:
+                    coorX = random.Next(0, 1200);
+                    coorY = 840;
+                    break;
+            }
+
+            Canvas.SetTop(monstre, coorY);
+            Canvas.SetLeft(monstre, coorX);
         }
         private bool verificationCollisions(Rectangle rect)
         {
