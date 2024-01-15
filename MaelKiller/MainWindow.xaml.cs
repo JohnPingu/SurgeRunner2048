@@ -55,7 +55,10 @@ namespace MaelKiller
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;
         private double xfleche, yfleche, lfleche, hfleche;
         private ImageBrush skinFleche = new ImageBrush();
+        private ImageBrush drone = new ImageBrush();
         private char[] directionFleche = new char[2];
+
+        private string couleurGlobal = "bleu";
 
         private Monstres robot = new Monstres("robot", 5, 20, 30, "bleu", 20);
 
@@ -108,10 +111,16 @@ namespace MaelKiller
             Console.WriteLine(seconde);
 
         }
-        private void Timer_Tick(object sender, EventArgs e)
+        private void MinuterieTick(object sender, EventArgs e)
         {
             increment++;
             //joueur.GainExperience(10);
+            MiseAJourCouleur();
+            if (seconde % 2 == 0)
+            {
+                GenerationMonstreHasard();
+                Console.WriteLine("NoveauMonstre");
+            }
             Console.WriteLine(increment);
         }
 
@@ -135,7 +144,7 @@ namespace MaelKiller
             ImageBrush brush1 = new ImageBrush();
             brush1.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/FondMap.png"));
             Carte.Fill = brush1;
-            timer.Tick += Timer_Tick;
+            timer.Tick += MinuterieTick;
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
         }
@@ -145,6 +154,22 @@ namespace MaelKiller
             barXP.Minimum = 0;
             barXP.Maximum = joueur.XpPourNiveauSuivant;
             barXP.Value = joueur.Xp;
+        }
+
+        private void MiseAJourCouleur()
+        {
+            switch (minute)
+            {
+                case < 3:
+                    couleurGlobal = "bleu";
+                    break;
+                case < 5:
+                    couleurGlobal = "rouge";
+                    break;
+                case > 5:
+                    couleurGlobal = "noir";
+                    break;
+            }
         }
 
         private void FenetrePrincipale_KeyDown(object sender, KeyEventArgs e)
@@ -271,6 +296,7 @@ namespace MaelKiller
                 }
                 cdArme1 = cdrArme1;
             }
+
         }
 
         private int InitialisationVitesseAttaque(double vitesseAttaque)
@@ -648,35 +674,42 @@ namespace MaelKiller
         private void GenerationMonstreHasard()
         {
             Random random = new Random();
-            int typeMonstre;
-            double nbHasard = random.Next(1,100) + random.Next(1,20) * (seconde * 0.25);
-            //Monstres nouveauMonstre = new Monstres();
-
-            if (nbHasard < 25)
-            {
-                typeMonstre = random.Next(1, 10);
-                if (typeMonstre < 3)
-                {
-                    ApparitionMonstre(robot);
-                } else
-                {
-                    //nouveauMonstre = robot;
-                    //nouveauMonstre.Couleur = "rouge";
-                    ApparitionMonstre(robot);
-                }
-            } else if (nbHasard < 50){
-                
+            Monstres nouveauMonstre = new Monstres();
+            double nbHasard = random.Next(1, 3);
+            switch (nbHasard) {
+                case 1:
+                    nouveauMonstre = robot;
+                    nouveauMonstre.Couleur = couleurGlobal;
+                    ApparitionMonstre(nouveauMonstre);
+                    break;
+                case 2:
+                    nouveauMonstre = robot;
+                    nouveauMonstre.Couleur = couleurGlobal;
+                    ApparitionMonstre(nouveauMonstre);
+                    break;
+                case 3:
+                    nouveauMonstre = robot;
+                    nouveauMonstre.Couleur = couleurGlobal;
+                    ApparitionMonstre(nouveauMonstre);
+                    break;
             }
             
         }
         private void ApparitionMonstre(Monstres monstre)
         {
-            Rectangle nouveauMonstreRect = new Rectangle();
+            Rectangle nouveauMonstreRect = new Rectangle
+            {
+                Tag = "Monstre",
+                Height = 105,
+                Width = 60,
+            };
 
             if (monstre.Nom == "robot") 
             {
-                nouveauMonstreRect.Height = 105;
-                nouveauMonstreRect.Width = 60;
+                nouveauMonstreRect.Height = 96;
+                nouveauMonstreRect.Width = 96;
+                drone.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Monstre/Drone/Idle/1.png"));
+                nouveauMonstreRect.Fill = drone;
             };
 
             if (monstre.Couleur == "rouge")
@@ -689,8 +722,10 @@ namespace MaelKiller
                 monstre.PvMax *= 2.5;
                 monstre.PvMax *= 2.5;
             };
-
+            Canvas.SetTop(nouveauMonstreRect, 500);
+            Canvas.SetLeft(nouveauMonstreRect, 500);
             listeMonstreRect.Add(nouveauMonstreRect);
+            monCanvas.Children.Add(nouveauMonstreRect);
             listMonstre.Add(monstre);
 
         }

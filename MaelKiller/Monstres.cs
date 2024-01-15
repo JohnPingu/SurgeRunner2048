@@ -46,7 +46,7 @@ namespace MaelKiller
             Vitesse = 1;
             Couleur = "bleu";
             Mutation = 0;
-            Experience = 0;
+            Experience = 1;
         }
 
         public string Nom
