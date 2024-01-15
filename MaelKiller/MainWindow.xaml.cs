@@ -39,7 +39,6 @@ namespace MaelKiller
         private const int CENTREX = 566;
         private const int CENTREY = 347;
         private const int INTERVALLETICK = 15;
-        private const int LARGEURATKEPEE = 80;
         private const double EVODEGATS = 2, EVOVITESSEATTAQUE = 1.1;
         
         private List<Rectangle> listeMonstreRect = new List<Rectangle>();
@@ -51,14 +50,24 @@ namespace MaelKiller
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
         private Joueur joueur = new Joueur(25, 10, 30, 1);
-        private Armes epee = new Armes("Épée", 25, 50, 1.5, 1, 25, "Une épée, solide et mortelle", false);
-        private Armes[] tabEpee = new Armes[10];
         private Armes arme1, arme2;
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;
         private double xfleche, yfleche, lfleche, hfleche;
         private ImageBrush skinFleche = new ImageBrush();
         private ImageBrush drone = new ImageBrush();
         private char[] directionFleche = new char[2];
+
+        //-----------------------------------//
+        //ARMES//
+        //-----------------------------------//
+        private Armes epee = new Armes("Épée", 25, 100, 1.5, 100, 1, "Une épée classique, solide et mortelle", true);
+        private Armes[] tabEpee = new Armes[10];
+        private Armes lance = new Armes("Lance", 30, 200, 1.2, 50, 1, "Une lance de soldat, utile pour tenir les adversaires à distance", true);
+        private Armes[] tabLance = new Armes[10];
+        private Armes fouet = new Armes("Fouet", 10, 150, 1.75, 100, 1, "Le fouet est une arme inhabituelle, mais fort utile pour les ennemis nombreux", true);
+        private Armes[] tabFouet = new Armes[10];
+        private Armes hache = new Armes("Hache", 50, 50, 1, 100, 1, "Une hache avec peut de portée, masi des dégâts conséquents au corps-à-coprs", true);
+        private Armes[] tabHache = new Armes[10];
 
         private string couleurGlobal = "bleu";
 
@@ -83,9 +92,13 @@ namespace MaelKiller
             intervalle.Tick += MoteurJeu;
             intervalle.Interval = TimeSpan.FromMilliseconds(INTERVALLETICK);
             intervalle.Start();
-            cdrArme1 = InitialisationVitesseAttaque(epee.VitesseAttaque);
+            cdrArme1 = InitialisationVitesseAttaque(lance.VitesseAttaque);
             cdArme1 = cdrArme1;
             tabEpee = InitialisationArmes(epee);
+            tabLance = InitialisationArmes(lance);
+            tabFouet = InitialisationArmes(fouet);
+            tabHache = InitialisationArmes(hache);
+
             directionFleche[1] = 'D';
 
             Rectangle fleche = new Rectangle
@@ -282,7 +295,7 @@ namespace MaelKiller
             {
                 checkFrame = cdArme1 / 3;
                 frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Atk/Atk" + checkFrame + ".png"));
-                Attaque(epee, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
+                Attaque(lance, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
             }
             if (cdArme1 == -9) 
             {
@@ -309,7 +322,7 @@ namespace MaelKiller
         }
         private void Attaque(Armes arme, double xjoueur, double yjoueur)
         {
-            double xAtk, yAtk, largeur = arme.Portee, hauteur = LARGEURATKEPEE;
+            double xAtk, yAtk, largeur = arme.Portee, hauteur = arme.Taille;
             if (estAttaquant == true)
             {
                 directionAtk[0] = directionFleche[0];

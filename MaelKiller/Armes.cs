@@ -18,6 +18,7 @@ namespace MaelKiller
         private bool estMelee;
         private double taille;
         private double vitesseProjectile;
+        private double amplitude;
 
         public Armes(string nom, double degats, double portee, double vitesseAttaque, double taille, int niveau, string description, bool estMelee)
         {
@@ -29,7 +30,8 @@ namespace MaelKiller
             Description = description;
             EstMelee = estMelee;
             Taille = taille;
-            vitesseProjectile = 0;
+            VitesseProjectile = 0;
+
         }
         public Armes(string nom, double degats, double portee, double vitesseAttaque, double taille, int niveau, string description, bool estMelee, double vitesseProjectile)
         {
@@ -173,6 +175,18 @@ namespace MaelKiller
             set 
             { 
                 description = value; 
+            }
+        }
+        public double Amplitude
+        {
+            get { return amplitude; }
+            set
+            {
+                if (double.IsNaN(value))
+                {
+                    throw new ArgumentOutOfRangeException("Veuillez rentrer un chiffre");
+                }
+                amplitude = value;
             }
         }
 
