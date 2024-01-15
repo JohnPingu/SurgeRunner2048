@@ -295,7 +295,7 @@ namespace MaelKiller
                 }
                 else
                 {
-                    xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width / 2;
+                    xAtk = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (largeur / 2);
                 }
                 if (directionFleche[0] == 'H')
                 {
@@ -307,7 +307,7 @@ namespace MaelKiller
                 }
                 else
                 {
-                    yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height / 2;
+                    yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
                 }
             }
             else
@@ -322,7 +322,7 @@ namespace MaelKiller
                 }
                 else
                 {
-                    xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width / 2;
+                    xAtk = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (largeur / 2);
                 }
                 if (directionAtk[0] == 'H')
                 {
@@ -334,7 +334,7 @@ namespace MaelKiller
                 }
                 else
                 {
-                    yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height / 2;
+                    yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
                 }
             }
             Rect attaque = new Rect(xAtk, yAtk, largeur, hauteur);
@@ -353,7 +353,6 @@ namespace MaelKiller
             Console.WriteLine("Fleche : " + directionFleche[0] + " " + directionFleche[1]);
             Console.WriteLine("Atk : " + directionAtk[0] + " " + directionAtk[1]);
             Console.WriteLine("Haut : " + haut + "\nBas : " + bas + "\nGauche : " + gauche + "\nDroite : " + droite);
-            Console.WriteLine("Largeur Canvas : " + monCanvas.Width + "\nHauteur Canvas : " + monCanvas.Height);
 #endif
         }
         private Armes[] InitialisationArmes(Armes arme)
