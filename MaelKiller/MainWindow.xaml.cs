@@ -722,12 +722,23 @@ namespace MaelKiller
                 monstre.PvMax *= 2.5;
                 monstre.PvMax *= 2.5;
             };
-            Canvas.SetTop(nouveauMonstreRect, 500);
-            Canvas.SetLeft(nouveauMonstreRect, 500);
+            PlacerNouveauMonstre(nouveauMonstreRect);
             listeMonstreRect.Add(nouveauMonstreRect);
             monCanvas.Children.Add(nouveauMonstreRect);
             listMonstre.Add(monstre);
+        }
 
+        private void PlacerNouveauMonstre(Rectangle monstre)
+        {
+            Random random = new Random();
+            int coorX;
+            int coorY;
+            if()
+            {
+
+            }
+            Canvas.SetTop(monstre, 500);
+            Canvas.SetLeft(monstre, 500);
         }
         private bool verificationCollisions(Rectangle rect)
         {
