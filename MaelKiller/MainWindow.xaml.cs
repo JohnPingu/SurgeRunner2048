@@ -325,71 +325,89 @@ namespace MaelKiller
             double xAtk, yAtk, largeur = arme.Portee, hauteur = arme.Taille;
             if (estAttaquant == true)
             {
-                directionAtk[0] = directionFleche[0];
-                directionAtk[1] = directionFleche[1];
-                if (directionFleche[1] == 'G')
+                if (arme.Amplitude != 0)
                 {
-                    xAtk = Canvas.GetLeft(rect_Joueur) - largeur;
-                }
-                else if (directionFleche[1] == 'D')
-                {
-                    xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width;
+
+
                 }
                 else
                 {
-                    xAtk = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (largeur / 2);
-                }
-                if (directionFleche[0] == 'H')
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) - hauteur;
-                }
-                else if (directionFleche[0] == 'B')
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height;
-                }
-                else
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
+                    directionAtk[0] = directionFleche[0];
+                    directionAtk[1] = directionFleche[1];
+                    if (directionFleche[1] == 'G')
+                    {
+                        xAtk = Canvas.GetLeft(rect_Joueur) - largeur;
+                    }
+                    else if (directionFleche[1] == 'D')
+                    {
+                        xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width;
+                    }
+                    else
+                    {
+                        xAtk = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (largeur / 2);
+                    }
+                    if (directionFleche[0] == 'H')
+                    {
+                        yAtk = Canvas.GetTop(rect_Joueur) - hauteur;
+                    }
+                    else if (directionFleche[0] == 'B')
+                    {
+                        yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height;
+                    }
+                    else
+                    {
+                        yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
+                    }
                 }
             }
             else
             {
-                if (directionAtk[1] == 'G')
+                if (arme.Amplitude != 0)
                 {
-                    xAtk = Canvas.GetLeft(rect_Joueur) - largeur;
-                }
-                else if (directionAtk[1] == 'D')
-                {
-                    xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width;
+                     attaque = new EllipseGeometry();
+                    Ellipse atk = new Ellipse();
+
                 }
                 else
                 {
-                    xAtk = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (largeur / 2);
-                }
-                if (directionAtk[0] == 'H')
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) - hauteur;
-                }
-                else if (directionAtk[0] == 'B')
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height;
-                }
-                else
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
+                    if (directionAtk[1] == 'G')
+                    {
+                        xAtk = Canvas.GetLeft(rect_Joueur) - largeur;
+                    }
+                    else if (directionAtk[1] == 'D')
+                    {
+                        xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width;
+                    }
+                    else
+                    {
+                        xAtk = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (largeur / 2);
+                    }
+                    if (directionAtk[0] == 'H')
+                    {
+                        yAtk = Canvas.GetTop(rect_Joueur) - hauteur;
+                    }
+                    else if (directionAtk[0] == 'B')
+                    {
+                        yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height;
+                    }
+                    else
+                    {
+                        yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
+                    }
+                    Rect attaque = new Rect(xAtk, yAtk, largeur, hauteur);
+                    Rectangle atk = new Rectangle
+                    {
+                        Tag = "attaque",
+                        Width = largeur,
+                        Height = hauteur,
+                        Fill = frameAtk,
+                    };
+                    Canvas.SetLeft(atk, xAtk);
+                    Canvas.SetTop(atk, yAtk);
+                    monCanvas.Children.Add(atk);
                 }
             }
-            Rect attaque = new Rect(xAtk, yAtk, largeur, hauteur);
-            Rectangle atk = new Rectangle
-            {
-                Tag = "attaque",
-                Width = largeur,
-                Height = hauteur,
-                Fill = frameAtk,
-            };
-            Canvas.SetLeft(atk, xAtk);
-            Canvas.SetTop(atk, yAtk);
-            monCanvas.Children.Add(atk);
+            
 #if DEBUG 
             Console.WriteLine("x : " + xAtk + " y : " + yAtk);
             Console.WriteLine("Fleche : " + directionFleche[0] + " " + directionFleche[1]);
