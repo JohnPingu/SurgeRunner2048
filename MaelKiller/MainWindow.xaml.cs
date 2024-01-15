@@ -733,10 +733,6 @@ namespace MaelKiller
             Random random = new Random();
             int coorX;
             int coorY;
-            if()
-            {
-
-            }
             Canvas.SetTop(monstre, 500);
             Canvas.SetLeft(monstre, 500);
         }
