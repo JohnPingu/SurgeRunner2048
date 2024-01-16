@@ -34,7 +34,7 @@
             Width="62"
             Height="106"
             Fill="Red"
-            Stroke="Black" />
+            Stroke="Transparent" />
         <StackPanel
             Canvas.Left="122"
             Canvas.Top="125"
