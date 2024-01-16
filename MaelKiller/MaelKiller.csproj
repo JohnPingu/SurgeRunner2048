@@ -8,6 +8,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="ressources\img\Game\Armes\Lance\Lance_G-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Lance\Lance_G-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Lance\Lance_G-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Lance\Lance_G-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Lance\Lance_G-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Lance\Lance_G-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Lance\Lance_G-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Lance\Lance_G-8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Lance\Lance_G-9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Lance\Lance_G0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ressources\img\Game\Armes\Lance\Lance_G_0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

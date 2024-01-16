@@ -46,6 +46,7 @@ namespace MaelKiller
         private List<Monstres> listMonstre = new List<Monstres>();
 
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false, estAttaquant = false;
+        private bool niveauSupp = true;
         private bool estEnHaut = false, estEnBas = false, estAGauche = false, estADroite = false;
         private double directionProjectile = 0;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
@@ -72,7 +73,7 @@ namespace MaelKiller
         private Armes[] tabLance = new Armes[10];
         private Armes fouet = new Armes("Fouet", 10, 150, 1.75, 100, 1, "Le fouet est une arme inhabituelle, mais fort utile pour les ennemis nombreux", true);
         private Armes[] tabFouet = new Armes[10];
-        private Armes hache = new Armes("Hache", 50, 50, 1, 100, 1, "Une hache avec peut de portée, masi des dégâts conséquents au corps-à-coprs", true);
+        private Armes hache = new Armes("Hache", 50, 50, 1, 100, 1, "Une hache avec peu de portée, mais des dégâts conséquents au corps-à-coprs", true);
         private Armes[] tabHache = new Armes[10];
 
         private string couleurGlobal = "bleu";
@@ -161,6 +162,7 @@ namespace MaelKiller
             }
             chrono.Content = minuteTexte + ":" + secondeTexte;
         }
+
         private void ChargementJeu()
         {
             DebutChrono = DateTime.Now;
@@ -226,6 +228,11 @@ namespace MaelKiller
                     ruee = true;
                     dispoRuee = false;
                 }
+            }
+            if (e.Key == Key.Escape)
+            {
+                pause = true;
+                MiseEnPause();
             }
         }
         private void FenetrePrincipale_KeyUp(object sender, KeyEventArgs e)
@@ -305,8 +312,8 @@ namespace MaelKiller
             }
             if (cdArme1 <= 0)
             {
-                checkFrame = cdArme1 / 2;
-                frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/Lance/Lance_G_" + checkFrame + ".png"));
+                checkFrame = cdArme1;
+                frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/Lance/Lance_G" + checkFrame + ".png"));
                 Attaque(lance, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
             }
             if (cdArme1 == -9) 
@@ -873,6 +880,43 @@ namespace MaelKiller
             {
                 skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoRun_" + directionSkin[1] + "_" + (skinFrameCompte / 10 % PERSORUN) + ".png"));
             }
+        }
+        private void MiseEnPause()
+        {
+            timer.Stop();
+            intervalle.Stop();
+            if (niveauSupp == true)
+            {
+                foreach (Rectangle x in monCanvas.Children)
+                {
+                    if (x.Tag == "NVSUP")
+                    {
+                        x.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+            else if (pause == true)
+            {
+                foreach (Rectangle x in monCanvas.Children)
+                {
+                    if (x.Tag == "Pause")
+                    {
+                        x.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
+        private void FondPause_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (Rectangle x in monCanvas.Children)
+            {
+                if (x.Tag == "NVSUP")
+                {
+                    x.Visibility = Visibility.Hidden;
+                }
+            }
+            timer.Start();
+            intervalle.Start();
         }
     }
 }
