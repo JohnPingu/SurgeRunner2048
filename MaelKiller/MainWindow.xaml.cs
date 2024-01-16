@@ -305,8 +305,8 @@ namespace MaelKiller
             }
             if (cdArme1 <= 0)
             {
-                checkFrame = cdArme1 / 3;
-                frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Atk/Atk" + checkFrame + ".png"));
+                checkFrame = cdArme1 / 2;
+                frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/Lance/Lance_G_" + checkFrame + ".png"));
                 Attaque(lance, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
             }
             if (cdArme1 == -9) 
