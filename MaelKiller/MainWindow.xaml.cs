@@ -181,6 +181,8 @@ namespace MaelKiller
             barXP.Value = joueur.Xp;
         }
 
+        
+
         private void MiseAJourCouleur()
         {
             switch (minute)
@@ -196,6 +198,8 @@ namespace MaelKiller
                     break;
             }
         }
+
+        
 
         private void FenetrePrincipale_KeyDown(object sender, KeyEventArgs e)
         {
@@ -265,6 +269,7 @@ namespace MaelKiller
             MiseAJourBarXp();
             vitesseCam = (int)Math.Round(joueur.Vitesse / 2);
             VerifPosition();
+            if (niveauSupp == true) MiseEnPause();
             //------------------------------------------------//
             //JOUEUR//
             //------------------------------------------------//
@@ -887,9 +892,9 @@ namespace MaelKiller
             intervalle.Stop();
             if (niveauSupp == true)
             {
-                foreach (Rectangle x in monCanvas.Children)
+                foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
                 {
-                    if (x.Tag == "NVSUP")
+                    if ((string)x.Tag == "NVSUP" && x is Rectangle)
                     {
                         x.Visibility = Visibility.Visible;
                     }
@@ -897,24 +902,69 @@ namespace MaelKiller
             }
             else if (pause == true)
             {
-                foreach (Rectangle x in monCanvas.Children)
+                foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
                 {
-                    if (x.Tag == "Pause")
+                    if ((string)x.Tag == "Pause" && x is Rectangle)
                     {
                         x.Visibility = Visibility.Visible;
                     }
                 }
             }
         }
-        private void FondPause_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void Reprendre_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            foreach (Rectangle x in monCanvas.Children)
+            foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
             {
-                if (x.Tag == "NVSUP")
+                if ((string)x.Tag == "Pause" && x is Rectangle)
                 {
                     x.Visibility = Visibility.Hidden;
                 }
             }
+            pause = false;
+            timer.Start();
+            intervalle.Start();
+        }
+        private void Quitter_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Environment.Exit(0);
+        }
+        private void Bonus1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+            {
+                if ((string)x.Tag == "NVSUP" && x is Rectangle)
+                {
+                    x.Visibility = Visibility.Hidden;
+                }
+            }
+            niveauSupp = false;
+            timer.Start();
+            intervalle.Start();
+        }
+        private void Bonus2_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+            {
+                if ((string)x.Tag == "NVSUP" && x is Rectangle)
+                {
+                    x.Visibility = Visibility.Hidden;
+                }
+            }
+            niveauSupp = false;
+            timer.Start();
+            intervalle.Start();
+        }
+
+        private void Bonus3_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+            {
+                if ((string)x.Tag == "NVSUP" && x is Rectangle)
+                {
+                    x.Visibility = Visibility.Hidden;
+                }
+            }
+            niveauSupp = false;
             timer.Start();
             intervalle.Start();
         }
