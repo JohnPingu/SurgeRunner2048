@@ -56,7 +56,7 @@ namespace MaelKiller
         private ImageBrush skinFleche = new ImageBrush();
         private ImageBrush drone = new ImageBrush();
         private char[] directionFleche = new char[2];
-        private int numMonstre = 1;
+        private int numMonstre = 0;
 
         //-----------------------------------//
         //ARMES//
@@ -419,11 +419,12 @@ namespace MaelKiller
             if (gauche == true && estAGauche == false && estADroite == false)
             {
                 Canvas.SetLeft(Carte, Canvas.GetLeft(Carte) + joueur.Vitesse);
-                foreach (Rectangle rectmonstre in listeMonstreRect)
+                foreach (Monstres monstre in listMonstre)
                 {
                     Console.WriteLine("Monstre:" + numMonstre);
-                    int i = 1;
-                    Canvas.SetTop(rectmonstre, Canvas.GetLeft(rectmonstre) + joueur.Vitesse + listMonstre[i].Vitesse);
+                    int i = monstre.Index;
+                    if()
+                    Canvas.SetTop(listeMonstreRect[i], Canvas.GetLeft(listeMonstreRect[i]) + joueur.Vitesse + listMonstre[i].Vitesse);
                 }
                 if (Canvas.GetLeft(rect_Joueur) > (CENTREX - 50))
                 {
@@ -741,10 +742,9 @@ namespace MaelKiller
         }
         private void ApparitionMonstre(Monstres monstre)
         {
-            string numserie = "Monstre" + numMonstre.ToString();
+            monstre.Index = numMonstre;
             Rectangle nouveauMonstreRect = new Rectangle
             {
-                Name = numserie,
                 Tag = "Monstre",
                 Height = 105,
                 Width = 60,
