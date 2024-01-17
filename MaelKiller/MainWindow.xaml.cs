@@ -423,7 +423,6 @@ namespace MaelKiller
                 {
                     Console.WriteLine("Monstre:" + numMonstre);
                     int i = monstre.Index;
-                    if()
                     Canvas.SetTop(listeMonstreRect[i], Canvas.GetLeft(listeMonstreRect[i]) + joueur.Vitesse + listMonstre[i].Vitesse);
                 }
                 if (Canvas.GetLeft(rect_Joueur) > (CENTREX - 50))
