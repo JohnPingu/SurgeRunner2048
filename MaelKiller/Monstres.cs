@@ -16,6 +16,7 @@ namespace MaelKiller
         private double vitesse;
         private string couleur;
         private int experience;
+        private int index;
 
         public Monstres(string nom, double degats, double pvMax, double vitesse, string couleur, int mutation, int experience)
         {
@@ -103,6 +104,14 @@ namespace MaelKiller
             {
                 if (value <= 0) throw new ArgumentOutOfRangeException("Les points de vie max doivent être supérieur à 0");
                 pv = value;
+            }
+        }
+        public int Index
+        {
+            get { return index; }
+            set
+            {
+                index = value;
             }
         }
 
