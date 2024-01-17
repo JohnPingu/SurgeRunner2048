@@ -40,23 +40,29 @@ namespace MaelKiller
         private const int CENTREY = 347;
         private const int INTERVALLETICK = 15;
         private const double EVODEGATS = 2, EVOVITESSEATTAQUE = 1.1;
+        private const int PERSOIDLE = 4, PERSORUN = 6;
         
         private List<Rectangle> listeMonstreRect = new List<Rectangle>();
         private List<Monstres> listMonstre = new List<Monstres>();
 
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false, estAttaquant = false;
+        private bool niveauSupp = true;
         private bool estEnHaut = false, estEnBas = false, estAGauche = false, estADroite = false;
+        private double directionProjectile = 0;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
-        private Joueur joueur = new Joueur(25, 10, 30, 1);
+        private Joueur joueur = new Joueur(25, 6, 30, 1);
         private Armes arme1, arme2;
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;
         private double xfleche, yfleche, lfleche, hfleche;
         private ImageBrush skinFleche = new ImageBrush();
         private ImageBrush drone = new ImageBrush();
         private char[] directionFleche = new char[2];
-        private int numMonstre = 0;
+        private char[] directionSkin = new char[2];
+        private int numMonstre = 1;
+        private ImageBrush skinPerso = new ImageBrush();
+        private int skinFrameCompte = 0;
 
         //-----------------------------------//
         //ARMES//
@@ -67,7 +73,7 @@ namespace MaelKiller
         private Armes[] tabLance = new Armes[10];
         private Armes fouet = new Armes("Fouet", 10, 150, 1.75, 100, 1, "Le fouet est une arme inhabituelle, mais fort utile pour les ennemis nombreux", true);
         private Armes[] tabFouet = new Armes[10];
-        private Armes hache = new Armes("Hache", 50, 50, 1, 100, 1, "Une hache avec peut de portée, masi des dégâts conséquents au corps-à-coprs", true);
+        private Armes hache = new Armes("Hache", 50, 50, 1, 100, 1, "Une hache avec peu de portée, mais des dégâts conséquents au corps-à-coprs", true);
         private Armes[] tabHache = new Armes[10];
 
         private string couleurGlobal = "bleu";
@@ -101,6 +107,7 @@ namespace MaelKiller
             tabHache = InitialisationArmes(hache);
 
             directionFleche[1] = 'D';
+            directionSkin[1] = 'D';
 
             Rectangle fleche = new Rectangle
             {
@@ -114,6 +121,8 @@ namespace MaelKiller
             yfleche = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height / 2;
             monCanvas.Children.Add(fleche);
             skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechedroite.png"));
+            skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoIdle_D_1.png"));
+            rect_Joueur.Fill = skinPerso;
         }
 
         private void CalculTemps()
@@ -153,6 +162,7 @@ namespace MaelKiller
             }
             chrono.Content = minuteTexte + ":" + secondeTexte;
         }
+
         private void ChargementJeu()
         {
             DebutChrono = DateTime.Now;
@@ -193,11 +203,13 @@ namespace MaelKiller
             {
                 gauche = true;
                 directionFleche[1] = 'G';
+                directionSkin[1] = 'G';
             }
             else if (e.Key == Key.Right)
             {
                 droite = true;
                 directionFleche[1] = 'D';
+                directionSkin[1] = 'D';
             }
             if (e.Key == Key.Up)
             {
@@ -216,6 +228,11 @@ namespace MaelKiller
                     ruee = true;
                     dispoRuee = false;
                 }
+            }
+            if (e.Key == Key.Escape)
+            {
+                pause = true;
+                MiseEnPause();
             }
         }
         private void FenetrePrincipale_KeyUp(object sender, KeyEventArgs e)
@@ -243,6 +260,8 @@ namespace MaelKiller
         }
         private void MoteurJeu(object sender, EventArgs e)
         {
+            skinFrameCompte++;
+            SkinPersonnage();
             MiseAJourBarXp();
             vitesseCam = (int)Math.Round(joueur.Vitesse / 2);
             VerifPosition();
@@ -293,8 +312,8 @@ namespace MaelKiller
             }
             if (cdArme1 <= 0)
             {
-                checkFrame = cdArme1 / 3;
-                frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Atk/Atk" + checkFrame + ".png"));
+                checkFrame = cdArme1;
+                frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/Lance/Lance_G" + checkFrame + ".png"));
                 Attaque(lance, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
             }
             if (cdArme1 == -9) 
@@ -322,80 +341,120 @@ namespace MaelKiller
         }
         private void Attaque(Armes arme, double xjoueur, double yjoueur)
         {
-            double xAtk, yAtk, largeur = arme.Portee, hauteur = arme.Taille;
+            double xAtk = 0, yAtk = 0, largeur = arme.Portee, hauteur = arme.Taille;
             if (estAttaquant == true)
             {
-                directionAtk[0] = directionFleche[0];
-                directionAtk[1] = directionFleche[1];
-                if (directionFleche[1] == 'G')
+                if (arme.EstMelee == true)
                 {
-                    xAtk = Canvas.GetLeft(rect_Joueur) - largeur;
-                }
-                else if (directionFleche[1] == 'D')
-                {
-                    xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width;
+                    if (arme.Amplitude != 0)
+                    {
+                        xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width / 2 - arme.Amplitude;
+                        yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height / 2 - arme.Amplitude;
+                        largeur = arme.Amplitude * 2;
+                        hauteur = arme.Amplitude * 2;
+                    }
+                    else
+                    {
+                        directionAtk[0] = directionFleche[0];
+                        directionAtk[1] = directionFleche[1];
+                        if (directionFleche[1] == 'G')
+                        {
+                            xAtk = Canvas.GetLeft(rect_Joueur) - largeur;
+                        }
+                        else if (directionFleche[1] == 'D')
+                        {
+                            xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width;
+                        }
+                        else
+                        {
+                            largeur = arme.Taille;
+                            xAtk = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (largeur / 2);
+                        }
+                        if (directionFleche[0] == 'H')
+                        {
+                            hauteur = arme.Portee;
+                            yAtk = Canvas.GetTop(rect_Joueur) - hauteur;
+                        }
+                        else if (directionFleche[0] == 'B')
+                        {
+                            hauteur = arme.Portee;
+                            yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height;
+                        }
+                        else
+                        {
+                            yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
+                        }
+                    }
                 }
                 else
                 {
-                    xAtk = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (largeur / 2);
+                    TirArmeDistance();
                 }
-                if (directionFleche[0] == 'H')
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) - hauteur;
-                }
-                else if (directionFleche[0] == 'B')
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height;
-                }
-                else
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
-                }
+                
             }
             else
             {
-                if (directionAtk[1] == 'G')
+                if (arme.EstMelee == true)
                 {
-                    xAtk = Canvas.GetLeft(rect_Joueur) - largeur;
+                    if (arme.Amplitude != 0)
+                    {
+                        xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width / 2 - arme.Amplitude;
+                        yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height / 2 - arme.Amplitude;
+                    }
+                    else
+                    {
+                        if (directionAtk[1] == 'G')
+                        {
+                            xAtk = Canvas.GetLeft(rect_Joueur) - largeur;
+                        }
+                        else if (directionAtk[1] == 'D')
+                        {
+                            xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width;
+                        }
+                        else
+                        {
+                            largeur = arme.Taille;
+                            xAtk = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (largeur / 2);
+                        }
+                        if (directionAtk[0] == 'H')
+                        {
+                            hauteur = arme.Portee;
+                            yAtk = Canvas.GetTop(rect_Joueur) - hauteur;
+                        }
+                        else if (directionAtk[0] == 'B')
+                        {
+                            hauteur = arme.Portee;
+                            yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height;
+                        }
+                        else
+                        {
+                            yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
+                        }
+                    }
                 }
-                else if (directionAtk[1] == 'D')
+                Rect attaque = new Rect(xAtk, yAtk, largeur, hauteur);
+                Rectangle atk = new Rectangle
                 {
-                    xAtk = Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width;
-                }
-                else
-                {
-                    xAtk = Canvas.GetLeft(rect_Joueur) + (rect_Joueur.Width / 2) - (largeur / 2);
-                }
-                if (directionAtk[0] == 'H')
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) - hauteur;
-                }
-                else if (directionAtk[0] == 'B')
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) + rect_Joueur.Height;
-                }
-                else
-                {
-                    yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
-                }
+                    Tag = "attaque",
+                    Width = largeur,
+                    Height = hauteur,
+                    Fill = frameAtk,
+                };
+                Canvas.SetLeft(atk, xAtk);
+                Canvas.SetTop(atk, yAtk);
+                monCanvas.Children.Add(atk);
             }
-            Rect attaque = new Rect(xAtk, yAtk, largeur, hauteur);
-            Rectangle atk = new Rectangle
-            {
-                Tag = "attaque",
-                Width = largeur,
-                Height = hauteur,
-                Fill = frameAtk,
-            };
-            Canvas.SetLeft(atk, xAtk);
-            Canvas.SetTop(atk, yAtk);
-            monCanvas.Children.Add(atk);
+            
 #if DEBUG 
             Console.WriteLine("x : " + xAtk + " y : " + yAtk);
             Console.WriteLine("Fleche : " + directionFleche[0] + " " + directionFleche[1]);
             Console.WriteLine("Atk : " + directionAtk[0] + " " + directionAtk[1]);
             Console.WriteLine("Haut : " + haut + "\nBas : " + bas + "\nGauche : " + gauche + "\nDroite : " + droite);
 #endif
+        }
+        private void TirArmeDistance()
+        {
+
         }
         private Armes[] InitialisationArmes(Armes arme)
         {
@@ -809,6 +868,54 @@ namespace MaelKiller
         private bool verificationCollisions(Rectangle rect)
         {
             return false;
+        }
+        private void SkinPersonnage()
+        {
+            if (!gauche && !droite && !haut && !bas)
+            {
+                skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoIdle_" + directionSkin[1] + "_" + (skinFrameCompte / INTERVALLETICK % PERSOIDLE) + ".png")); 
+            }
+            else
+            {
+                skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoRun_" + directionSkin[1] + "_" + (skinFrameCompte / 10 % PERSORUN) + ".png"));
+            }
+        }
+        private void MiseEnPause()
+        {
+            timer.Stop();
+            intervalle.Stop();
+            if (niveauSupp == true)
+            {
+                foreach (Rectangle x in monCanvas.Children)
+                {
+                    if (x.Tag == "NVSUP")
+                    {
+                        x.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+            else if (pause == true)
+            {
+                foreach (Rectangle x in monCanvas.Children)
+                {
+                    if (x.Tag == "Pause")
+                    {
+                        x.Visibility = Visibility.Visible;
+                    }
+                }
+            }
+        }
+        private void FondPause_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (Rectangle x in monCanvas.Children)
+            {
+                if (x.Tag == "NVSUP")
+                {
+                    x.Visibility = Visibility.Hidden;
+                }
+            }
+            timer.Start();
+            intervalle.Start();
         }
     }
 }
