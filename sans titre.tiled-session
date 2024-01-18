@@ -12,15 +12,18 @@
         "": {
             "scaleInDock": 0.75
         },
+        "#tilemap80 (1)": {
+            "scaleInDock": 0.25
+        },
         "#tilesetarranged256": {
             "scaleInDock": 0.0625
         }
     },
     "last.imagePath": "P:/sae_1_01/resources/tileset",
-    "map.height": 13,
-    "map.tileHeight": 256,
-    "map.tileWidth": 256,
-    "map.width": 19,
+    "map.height": 40,
+    "map.tileHeight": 80,
+    "map.tileWidth": 80,
+    "map.width": 60,
     "openFiles": [
     ],
     "project": "sans titre.tiled-project",
@@ -28,7 +31,7 @@
     ],
     "tileset.embedInMap": true,
     "tileset.tileSize": {
-        "height": 256,
-        "width": 256
+        "height": 80,
+        "width": 80
     }
 }

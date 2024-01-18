@@ -54,7 +54,7 @@ namespace MaelKiller
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
-        private Joueur joueur = new Joueur(25, 6, 30, 1);
+        private Joueur joueur = new Joueur(25, 4, 30, 1);
         private Armes arme1, arme2;
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;
         private double xfleche, yfleche, lfleche, hfleche;
@@ -177,7 +177,7 @@ namespace MaelKiller
         {
             DebutChrono = DateTime.Now;
             ImageBrush brush1 = new ImageBrush();
-            brush1.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/FondMap.png"));
+            brush1.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/map.png"));
             Carte.Fill = brush1;
             timer.Tick += MinuterieTick;
             timer.Interval = TimeSpan.FromSeconds(1);

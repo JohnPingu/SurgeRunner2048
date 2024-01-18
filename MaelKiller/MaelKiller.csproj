@@ -101,6 +101,9 @@
     <None Update="ressources\img\Game\LevelUP\FONDCARTE.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="ressources\img\Game\map.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="ressources\img\Game\Monstre\Drone\Idle\1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
