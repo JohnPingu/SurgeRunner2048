@@ -12,15 +12,13 @@ namespace MaelKiller
         private string multiplieur;
         private string description;
         private int niveau;
-        private bool possession;
 
-        public Supports(string nom, int niveau, string multiplieur, string description, bool possession)
+        public Supports(string nom, int niveau, string multiplieur, string description)
         {
             Nom = nom;
             Niveau = niveau;
             Multiplieur = multiplieur;
             Description = description;
-            Possession = possession;
         }
 
         public string Nom
@@ -47,7 +45,7 @@ namespace MaelKiller
             get { return multiplieur; }
             set 
             {
-                if (value != "vitesse" && value != "pv" && value != "regen" && value != "attraction") throw new ArgumentException("Le multiplieur doit être parmmis ces propositions: vitesse,pv,regen,attraction,");
+                if (value != "vitesse" && value != "pv" && value != "regen" && value != "attraction" && value != "vitesseAtk" && value != "degats") throw new ArgumentException("Le multiplieur doit être parmmis ces propositions: vitesse,pv,regen,attraction,");
                 multiplieur = value; 
             }
         }
@@ -57,14 +55,6 @@ namespace MaelKiller
             set
             {
                 description = value;
-            }
-        }
-        public bool Possession
-        {
-            get { return possession; }
-            set
-            {
-                possession = value;
             }
         }
 

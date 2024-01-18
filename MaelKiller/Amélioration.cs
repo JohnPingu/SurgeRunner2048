@@ -10,11 +10,13 @@ namespace MaelKiller
     {
         private string type;
         private string nom;
+        private string description;
 
         public Amélioration(string type, string nom)
         {
             Type = type;
             Nom = nom;
+            Description = description;
         }
 
         public string Type 
@@ -39,7 +41,17 @@ namespace MaelKiller
                 nom = value;
             }
         }
-
+        public string Description
+        {
+            get
+            {
+                return description;
+            }
+            set
+            {
+                description = value;
+            }
+        }
         public override bool Equals(object? obj)
         {
             return obj is Amélioration amélioration &&

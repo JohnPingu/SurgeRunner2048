@@ -73,19 +73,37 @@ namespace MaelKiller
         //-----------------------------------//
         private Armes epee = new Armes("Épée", 25, 100, 1.5, 100, 1, "Une épée classique, solide et mortelle", true);
         private Armes[] tabEpee = new Armes[10];
-        private Amélioration augEpee = new Amélioration("Armes", "Épée");
         private Armes lance = new Armes("Lance", 30, 200, 1.2, 50, 1, "Une lance de soldat, utile pour tenir les adversaires à distance", true);
         private Armes[] tabLance = new Armes[10];
-        private Amélioration augLance = new Amélioration("Armes", "Lance");
-        private Armes fouet = new Armes("Fouet", 10, 150, 1.75, 100, 1, "Le fouet est une arme inhabituelle, mais fort utile pour les ennemis nombreux", true);
+        private Armes fouet = new Armes("Fouet", 10, 150, 1.75, 100, 1, "Le fouet est une arme inhabituelle, mais utile pour les ennemis nombreux", true);
         private Armes[] tabFouet = new Armes[10];
-        private Amélioration augFouet = new Amélioration("Armes", "Fouet");
         private Armes hache = new Armes("Hache", 50, 50, 1, 100, 1, "Une hache avec peu de portée, mais des dégâts conséquents au corps-à-coprs", true);
         private Armes[] tabHache = new Armes[10];
-        private Amélioration augHache = new Amélioration("Armes", "Hache");
+        private Armes revolver = new Armes("Revolver", 50, 750, 0.75, 20, 1, "Une puissance de feu bienvenue pour se battre de loin, mais lente à l'utilisation", false, 10);
+        private Armes[] tabRevolver = new Armes[10];
+        private Armes fusilSnip = new Armes("Fusil de précision", 75, 900, 0.5, 20, 1, "Une arme de très longue portée, qui en paie le prix. A metre entre les mains d'experts", false, 10);
+        private Armes[] tabFusilSnip = new Armes[10];
+        private Armes fusilAssaut = new Armes("Fusil d'Assaut", 5, 700, 2, 20, 1, "L'arme de prédilection des soldats faisant face à de grands groupes d'ennemis", false, 10);
+        private Armes[] tabFusilAssaut = new Armes[10];
+        private Armes canon = new Armes("Canon à main", 150, 800, 0.25, 100, 1, "On ne fait plus dans la dentelle. Préparez vos propre frappes d'artiellerie directement depuis le front", false, 2);
+        private Armes[]tabCanon = new Armes[10];
         private Amélioration[] ameliorations = new Amélioration[4];
-
+        private Armes[] listeArmes = new Armes[8];
         private string couleurGlobal = "bleu";
+
+        //-----------------------------------//
+        //SUPPORTS//
+        //-----------------------------------//
+        private Supports jambes = new Supports("Jambes Bioniques", 1, "vitesse", "Vos jambes à la pointe de la technologie vous permettent de vous déplacer plus vite !");
+        private Supports exosquelette = new Supports("Exosquelette", 1, "pv", "Un exosquelette ultra-résistant réduit considérablement les risque de mort");
+        private Supports nanoMachine = new Supports("Nano-Machine", 1, "regen", "De nanoscopiques automates remplacent vos globules rouges pour une capacité de guérison maximale");
+        private Supports coeurOr = new Supports("Coeur en or", 1, "attraction", "Votre coeur métallique crée un champmagnétique permettant d'attirer l'expérience de plus loin");
+        private Supports[] listeSupports = new Supports[4];
+
+        //-----------------------------------//
+        //AMELIORATIONS//
+        //-----------------------------------//
+        private Amélioration déferlement = new Amélioration("Arme", "Déferlement");
 
         private Monstres robot = new Monstres("robot", 5, 20, 6, "bleu", 20);
 
@@ -105,6 +123,7 @@ namespace MaelKiller
             menu.ShowDialog();
             if (menu.DialogResult == false) Application.Current.Shutdown();
             ChargementJeu();
+            InitialisationAmelioration();
             intervalle.Tick += MoteurJeu;
             intervalle.Interval = TimeSpan.FromMilliseconds(INTERVALLETICK);
             intervalle.Start();
@@ -114,8 +133,6 @@ namespace MaelKiller
             tabLance = InitialisationArmes(lance);
             tabFouet = InitialisationArmes(fouet);
             tabHache = InitialisationArmes(hache);
-            InitialisationAmelioration();
-
             directionFleche[1] = 'D';
             directionSkin[1] = 'D';
 
@@ -1100,10 +1117,14 @@ namespace MaelKiller
         }
         private void InitialisationAmelioration()
         {
-            ameliorations[0] = augEpee;
-            ameliorations[1] = augLance;
-            ameliorations[2] = augFouet;
-            ameliorations[3] = augHache; 
+            listeArmes[0] = epee;
+            listeArmes[1] = lance;
+            listeArmes[2] = fouet;
+            listeArmes[3] = hache;
+            listeArmes[4] = revolver;
+            listeArmes[5] = fusilSnip;
+            listeArmes[6] = fusilAssaut;
+            listeArmes[7] = canon;
         }
         private void NiveauSupérieur()
         {
