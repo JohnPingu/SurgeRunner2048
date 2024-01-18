@@ -18,6 +18,7 @@ using System.Xml;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Diagnostics.Eventing.Reader;
+using System.Transactions;
 
 namespace MaelKiller
 {
@@ -53,7 +54,7 @@ namespace MaelKiller
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee;
-        private Joueur joueur = new Joueur(25, 6, 30, 1);
+        private Joueur joueur = new Joueur(25, 4, 30, 1);
         private Armes arme1, arme2;
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;
         private double xfleche, yfleche, lfleche, hfleche;
@@ -167,10 +168,9 @@ namespace MaelKiller
             increment++;
             //joueur.GainExperience(10);
             MiseAJourCouleur();
-            if (seconde % 2 == 0)
+            if (seconde % 3 == 0)
             {
                 GenerationMonstreHasard();
-                Console.WriteLine("NoveauMonstre");
             }
             Console.WriteLine(increment);
         }
@@ -194,7 +194,7 @@ namespace MaelKiller
         {
             DebutChrono = DateTime.Now;
             ImageBrush brush1 = new ImageBrush();
-            brush1.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/FondMap.png"));
+            brush1.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/map.png"));
             Carte.Fill = brush1;
             timer.Tick += MinuterieTick;
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -328,8 +328,8 @@ namespace MaelKiller
             //------------------------------------------------//
             //DEPLACEMENT//
             //------------------------------------------------//
-            cameraEstEnMouvement();
             Deplacements();
+            cameraEstEnMouvement();
             DeplacementMonstre();
 
             //------------------------------------------------//
@@ -683,8 +683,7 @@ namespace MaelKiller
         }
         private void cameraEstEnMouvement() 
         {
-            Console.WriteLine(CameraEstEnMouvement);
-            if(CameraEstEnMouvement = false)
+            if(CameraEstEnMouvement == false)
             {
                 CameraMouvement = 0;
             } else
@@ -692,6 +691,29 @@ namespace MaelKiller
                 CameraMouvement = vitesseCam;
             }
         }
+        
+        private void VerificationCollisionMonstreJoueur()
+        {
+            foreach (Rectangle monstrerectangle in listeMonstreRect)
+            {
+                int Xmonstre = (int)Canvas.GetLeft(monstrerectangle);
+                int Ymonstre = (int)Canvas.GetTop(monstrerectangle);
+                int Xjoueur = (int)Canvas.GetTop(rect_Joueur);
+                int Yjoueur = (int)Canvas.GetTop(rect_Joueur);
+                Rect monstrerect = new Rect(Xmonstre,Ymonstre,monstrerectangle.Width, monstrerectangle.Height);
+                Rect joueurrect = new Rect(Xjoueur, Yjoueur, rect_Joueur.Width, rect_Joueur.Height);
+                bool collision = monstrerect.IntersectsWith(joueurrect);
+                if (collision)
+                {
+                    CollisionAvecJoueur();
+                }
+            }
+        }
+        private void CollisionAvecJoueur()
+        {
+
+        }
+        
         private void DeplacementMonstre()
         {
             foreach (Monstres monstre in listMonstre)
@@ -702,6 +724,7 @@ namespace MaelKiller
                 double vitesseX = monstre.Vitesse;
                 double vitesseY = monstre.Vitesse;
                 double frameMax;
+                
                 if (diffX >= diffY)
                 {
                     frameMax = diffX / monstre.Vitesse;
@@ -712,33 +735,82 @@ namespace MaelKiller
                     frameMax = diffY / monstre.Vitesse;
                     vitesseX = diffX / frameMax;
                 }
-                if (Canvas.GetLeft(rect_Joueur) < Canvas.GetLeft(listeMonstreRect[i - 1]) + 6 && Canvas.GetLeft(rect_Joueur) > Canvas.GetLeft(listeMonstreRect[i - 1]) - 6)
+                if (CameraEstEnMouvement)
+                {
+                    if (!(Canvas.GetLeft(rect_Joueur) < Canvas.GetLeft(listeMonstreRect[i - 1]) + 2 && Canvas.GetLeft(rect_Joueur) > Canvas.GetLeft(listeMonstreRect[i - 1]) - 2))
+                    {
+                        if (gauche && !droite && !estAGauche && !estADroite)
+                        {
+                            if (Canvas.GetLeft(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetLeft(rect_Joueur))
+                            {
+                                vitesseX -= CameraMouvement*1.5;
+                            }
+                            else
+                            {
+                                vitesseX += CameraMouvement*1.5;
+                            }
+                        }
+                        else if (droite && !gauche && !estAGauche && !estADroite)
+                        {
+                            if (Canvas.GetLeft(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetLeft(rect_Joueur))
+                            {
+                                vitesseX += CameraMouvement*1.5;
+                            }
+                            else
+                            {
+                                vitesseX -= CameraMouvement * 1.5;
+                            }
+                        }
+                    }
+                    if(!(Canvas.GetTop(rect_Joueur) < Canvas.GetTop(listeMonstreRect[i - 1]) + 6 && Canvas.GetTop(rect_Joueur) > Canvas.GetTop(listeMonstreRect[i - 1]) - 6))
+                    {
+                        if (haut && !bas && !estEnBas && !estEnHaut)
+                        {
+                            if (Canvas.GetTop(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetTop(rect_Joueur) + monstre.Vitesse)
+                            {
+                                vitesseY -= CameraMouvement;
+                            }
+                            else
+                            {
+                                vitesseY += CameraMouvement;
+                            }
+                        }
+                        else if (bas && !haut && !estEnHaut && !estEnBas)
+                        {
+                            if (Canvas.GetTop(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetTop(rect_Joueur) + monstre.Vitesse)
+                            {
+                                vitesseY += CameraMouvement;
+                            }
+                            else
+                            {
+                                vitesseY -= CameraMouvement;
+                            }
+                        }
+                    }
+                }
+                if (Canvas.GetLeft(rect_Joueur) < Canvas.GetLeft(listeMonstreRect[i - 1]) + 6 && Canvas.GetLeft(rect_Joueur) > Canvas.GetLeft(listeMonstreRect[i - 1]) - 6 && Canvas.GetTop(rect_Joueur) < Canvas.GetTop(listeMonstreRect[i - 1]) + 6 && Canvas.GetTop(rect_Joueur) > Canvas.GetTop(listeMonstreRect[i - 1]) - 6)
                 {
                     continue;
                 }
-                else if (Canvas.GetLeft(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetLeft(rect_Joueur) + monstre.Vitesse)
+                else if (Canvas.GetLeft(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetLeft(rect_Joueur))
                 {
-                    vitesseX = diffX / frameMax + CameraMouvement;
                     Canvas.SetLeft(listeMonstreRect[i - 1], Canvas.GetLeft(listeMonstreRect[i - 1]) - vitesseX);
                 }
                 else
                 {
-                    vitesseX = diffX / frameMax - CameraMouvement;
                     Canvas.SetLeft(listeMonstreRect[i - 1], Canvas.GetLeft(listeMonstreRect[i - 1]) + vitesseX);
                 }
 
-                if (Canvas.GetTop(rect_Joueur) < Canvas.GetTop(listeMonstreRect[i - 1]) + 6 && Canvas.GetTop(rect_Joueur) > Canvas.GetTop(listeMonstreRect[i - 1]) - 6)
+                if (Canvas.GetLeft(rect_Joueur) < Canvas.GetLeft(listeMonstreRect[i - 1]) + 6 && Canvas.GetLeft(rect_Joueur) > Canvas.GetLeft(listeMonstreRect[i - 1]) - 6 && Canvas.GetTop(rect_Joueur) < Canvas.GetTop(listeMonstreRect[i - 1]) + 6 && Canvas.GetTop(rect_Joueur) > Canvas.GetTop(listeMonstreRect[i - 1]) - 6)
                 {
                     continue;
                 }
                 else if (Canvas.GetTop(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetTop(rect_Joueur) + monstre.Vitesse)
                 {
-                    vitesseY = diffX / frameMax + CameraMouvement;
                     Canvas.SetTop(listeMonstreRect[i - 1], Canvas.GetTop(listeMonstreRect[i - 1]) - vitesseY);
                 }
                 else
                 {
-                    vitesseY = diffX / frameMax - CameraMouvement;
                     Canvas.SetTop(listeMonstreRect[i - 1], Canvas.GetTop(listeMonstreRect[i - 1]) + vitesseY);
                 }
 
@@ -892,17 +964,17 @@ namespace MaelKiller
             double nbHasard = random.Next(1, 3);
             switch (nbHasard) {
                 case 1:
-                    Monstres robot = new Monstres("robot", 5, 20, 4, "bleu", 20);
+                    Monstres robot = new Monstres("robot", 5, 20, 2, "bleu", 20);
                     robot.Couleur = couleurGlobal;
                     ApparitionMonstre(robot);
                     break;
                 case 2:
-                    Monstres nouveauMonstre2 = new Monstres("robot", 5, 20, 4, "bleu", 20);
+                    Monstres nouveauMonstre2 = new Monstres("robot", 5, 20, 2, "bleu", 20);
                     nouveauMonstre2.Couleur = couleurGlobal;
                     ApparitionMonstre(nouveauMonstre2);
                     break;
                 case 3:
-                    Monstres nouveauMonstre3 = new Monstres("robot", 5, 20, 4, "bleu", 20);
+                    Monstres nouveauMonstre3 = new Monstres("robot", 5, 20, 2, "bleu", 20);
                     nouveauMonstre3.Couleur = couleurGlobal;
                     ApparitionMonstre(nouveauMonstre3);
                     break;
@@ -1126,7 +1198,7 @@ namespace MaelKiller
             listeArmes[6] = fusilAssaut;
             listeArmes[7] = canon;
         }
-        private void NiveauSupérieur()
+        public void NiveauSupérieur()
         {
             Random random = new Random();
             int bonusArmes, bonusAug, bonus;

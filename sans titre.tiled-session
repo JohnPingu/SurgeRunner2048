@@ -1,0 +1,37 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
+    "fileStates": {
+        "": {
+            "scaleInDock": 0.75
+        },
+        "#tilemap80 (1)": {
+            "scaleInDock": 0.25
+        },
+        "#tilesetarranged256": {
+            "scaleInDock": 0.0625
+        }
+    },
+    "last.imagePath": "P:/sae_1_01/resources/tileset",
+    "map.height": 40,
+    "map.tileHeight": 80,
+    "map.tileWidth": 80,
+    "map.width": 60,
+    "openFiles": [
+    ],
+    "project": "sans titre.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.embedInMap": true,
+    "tileset.tileSize": {
+        "height": 80,
+        "width": 80
+    }
+}
