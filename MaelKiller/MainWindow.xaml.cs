@@ -74,12 +74,17 @@ namespace MaelKiller
         //-----------------------------------//
         private Armes epee = new Armes("Épée", 25, 100, 1.5, 100, 1, "Une épée classique, solide et mortelle", true);
         private Armes[] tabEpee = new Armes[10];
+        private Amélioration augEpee = new Amélioration("Armes", "Épée");
         private Armes lance = new Armes("Lance", 30, 200, 1.2, 50, 1, "Une lance de soldat, utile pour tenir les adversaires à distance", true);
         private Armes[] tabLance = new Armes[10];
+        private Amélioration augLance = new Amélioration("Armes", "Lance");
         private Armes fouet = new Armes("Fouet", 10, 150, 1.75, 100, 1, "Le fouet est une arme inhabituelle, mais fort utile pour les ennemis nombreux", true);
         private Armes[] tabFouet = new Armes[10];
+        private Amélioration augFouet = new Amélioration("Armes", "Fouet");
         private Armes hache = new Armes("Hache", 50, 50, 1, 100, 1, "Une hache avec peu de portée, mais des dégâts conséquents au corps-à-coprs", true);
         private Armes[] tabHache = new Armes[10];
+        private Amélioration augHache = new Amélioration("Armes", "Hache");
+        private Amélioration[] ameliorations = new Amélioration[4];
 
         private string couleurGlobal = "bleu";
 
@@ -110,6 +115,7 @@ namespace MaelKiller
             tabLance = InitialisationArmes(lance);
             tabFouet = InitialisationArmes(fouet);
             tabHache = InitialisationArmes(hache);
+            InitialisationAmelioration();
 
             directionFleche[1] = 'D';
             directionSkin[1] = 'D';
@@ -273,7 +279,11 @@ namespace MaelKiller
             MiseAJourBarXp();
             vitesseCam = (int)Math.Round(joueur.Vitesse / 2);
             VerifPosition();
-            if (niveauSupp == true) MiseEnPause();
+            if (niveauSupp == true)
+            {
+                NiveauSupérieur();
+                MiseEnPause();
+            }
             //------------------------------------------------//
             //JOUEUR//
             //------------------------------------------------//
@@ -1046,12 +1056,26 @@ namespace MaelKiller
                         x.Visibility = Visibility.Visible;
                     }
                 }
+                foreach (TextBlock x in monCanvas.Children.OfType<TextBlock>())
+                {
+                    if ((string)x.Tag == "NVSUP" && x is TextBlock)
+                    {
+                        x.Visibility = Visibility.Visible;
+                    }
+                }
             }
             else if (pause == true)
             {
                 foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
                 {
                     if ((string)x.Tag == "Pause" && x is Rectangle)
+                    {
+                        x.Visibility = Visibility.Visible;
+                    }
+                }
+                foreach (TextBlock x in monCanvas.Children.OfType<TextBlock>())
+                {
+                    if ((string)x.Tag == "Pause" && x is TextBlock)
                     {
                         x.Visibility = Visibility.Visible;
                     }
@@ -1063,6 +1087,13 @@ namespace MaelKiller
             foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
             {
                 if ((string)x.Tag == "Pause" && x is Rectangle)
+                {
+                    x.Visibility = Visibility.Hidden;
+                }
+            }
+            foreach (TextBlock x in monCanvas.Children.OfType<TextBlock>())
+            {
+                if ((string)x.Tag == "Pause" && x is TextBlock)
                 {
                     x.Visibility = Visibility.Hidden;
                 }
@@ -1084,6 +1115,13 @@ namespace MaelKiller
                     x.Visibility = Visibility.Hidden;
                 }
             }
+            foreach (TextBlock x in monCanvas.Children.OfType<TextBlock>())
+            {
+                if ((string)x.Tag == "NVSUP" && x is TextBlock)
+                {
+                    x.Visibility = Visibility.Hidden;
+                }
+            }
             niveauSupp = false;
             timer.Start();
             intervalle.Start();
@@ -1093,6 +1131,13 @@ namespace MaelKiller
             foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
             {
                 if ((string)x.Tag == "NVSUP" && x is Rectangle)
+                {
+                    x.Visibility = Visibility.Hidden;
+                }
+            }
+            foreach (TextBlock x in monCanvas.Children.OfType<TextBlock>())
+            {
+                if ((string)x.Tag == "NVSUP" && x is TextBlock)
                 {
                     x.Visibility = Visibility.Hidden;
                 }
@@ -1111,9 +1156,71 @@ namespace MaelKiller
                     x.Visibility = Visibility.Hidden;
                 }
             }
+            foreach (TextBlock x in monCanvas.Children.OfType<TextBlock>())
+            {
+                if ((string)x.Tag == "NVSUP" && x is TextBlock)
+                {
+                    x.Visibility = Visibility.Hidden;
+                }
+            }
             niveauSupp = false;
             timer.Start();
             intervalle.Start();
+        }
+        private void InitialisationAmelioration()
+        {
+            ameliorations[0] = augEpee;
+            ameliorations[1] = augLance;
+            ameliorations[2] = augFouet;
+            ameliorations[3] = augHache; 
+        }
+        private void NiveauSupérieur()
+        {
+            Random random = new Random();
+            int bonusArmes, bonusAug, bonus;
+            if (Armes.IsNullOrEmpty(arme1))
+            {
+                bonusArmes = random.Next(0,3);
+                bonusAug = random.Next(0,3);
+                while (bonusAug == bonusArmes)
+                {
+                    bonusAug = random.Next(0, 3);
+                }
+                bonus = random.Next(0, 3);
+                while(bonus == bonusArmes || bonus == bonusAug)
+                {
+                    bonus = random.Next(0, 3);
+                }
+            }
+            else if (!Armes.IsNullOrEmpty(arme1) && Armes.IsNullOrEmpty(arme2))
+            {
+                bonusArmes = random.Next(0, 3);
+                while (ameliorations[bonusArmes].Nom == arme1.Nom)
+                {
+                    bonusArmes = random.Next(0, 3);
+                }
+                bonusAug = random.Next(3,ameliorations.Length);
+                bonus = random.Next(0,ameliorations.Length);
+                while (bonus == bonusAug || ameliorations[bonus].Nom == arme1.Nom)
+                {
+                    bonus = random.Next(0, ameliorations.Length);
+                }
+            }
+            else
+            {
+                bonusArmes = random.Next(3, ameliorations.Length);
+                bonusAug = random.Next(3, ameliorations.Length);
+                while (bonusAug == bonusArmes)
+                {
+                    bonusAug = random.Next(3, ameliorations.Length);
+                }
+                bonus = random.Next(3, ameliorations.Length);
+                while (bonus == bonusAug || bonus == bonusArmes)
+                {
+                    bonus = random.Next(3, ameliorations.Length);
+                }
+            }
+            TitreBonus1.Text = ameliorations[bonusArmes].Nom;
         }
     }
 }

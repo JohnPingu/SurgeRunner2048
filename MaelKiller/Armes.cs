@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Printing.IndexedProperties;
 using System.Text;
@@ -219,6 +220,10 @@ namespace MaelKiller
         public override string ToString()
         {
             return "Nom : " + Nom + "\nDégats : " + Degats + "\nPortée : " + Portee + "\nVitesse d'attaque : " + VitesseAttaque + "\nVitesse projectile : " + VitesseProjectile + "\nEst melée? : " + EstMelee + "\nNiveau : " + Niveau + "\n" + Description;
+        }
+        public static bool IsNullOrEmpty([NotNullWhen(false)] Armes? value)
+        {
+            return (value == null || value.Nom == "") ? true : false;
         }
     }
 }
