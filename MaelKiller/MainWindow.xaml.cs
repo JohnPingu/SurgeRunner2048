@@ -18,6 +18,7 @@ using System.Xml;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Diagnostics.Eventing.Reader;
+using System.Transactions;
 
 namespace MaelKiller
 {
@@ -663,6 +664,20 @@ namespace MaelKiller
                 CameraMouvement = vitesseCam;
             }
         }
+        
+        private void VerificationCollisionMonstreJoueur()
+        {
+            foreach (Rectangle monstrerectangle in listeMonstreRect)
+            {
+                int Xmonstre = (int)Canvas.GetLeft(monstrerectangle);
+                int Ymonstre = (int)Canvas.GetTop(monstrerectangle);
+                int Xjoueur = (int)Canvas.GetTop(rect_Joueur);
+                int Yjoueur = (int)Canvas.GetTop(rect_Joueur);
+                Rect monstrerect = new Rect(Xmonstre,Ymonstre,monstrerectangle.Width, monstrerectangle.Height);
+                Rect joueurrect = new Rect(Xjoueur, Yjoueur, rect_Joueur.Width, rect_Joueur.Height);
+            }
+        }
+        
         private void DeplacementMonstre()
         {
             foreach (Monstres monstre in listMonstre)
