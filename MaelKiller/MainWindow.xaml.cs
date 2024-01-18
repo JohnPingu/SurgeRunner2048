@@ -685,7 +685,16 @@ namespace MaelKiller
                 int Yjoueur = (int)Canvas.GetTop(rect_Joueur);
                 Rect monstrerect = new Rect(Xmonstre,Ymonstre,monstrerectangle.Width, monstrerectangle.Height);
                 Rect joueurrect = new Rect(Xjoueur, Yjoueur, rect_Joueur.Width, rect_Joueur.Height);
+                bool collision = monstrerect.IntersectsWith(joueurrect);
+                if (collision)
+                {
+                    CollisionAvecJoueur();
+                }
             }
+        }
+        private void CollisionAvecJoueur()
+        {
+
         }
         
         private void DeplacementMonstre()
@@ -762,12 +771,6 @@ namespace MaelKiller
                         }
                     }
                 }
-
-                Console.WriteLine();
-                Console.WriteLine("VitesseX:" + vitesseX);
-                Console.WriteLine("VitesseY:" + vitesseY);
-                Console.WriteLine();
-
                 if (Canvas.GetLeft(rect_Joueur) < Canvas.GetLeft(listeMonstreRect[i - 1]) + 6 && Canvas.GetLeft(rect_Joueur) > Canvas.GetLeft(listeMonstreRect[i - 1]) - 6 && Canvas.GetTop(rect_Joueur) < Canvas.GetTop(listeMonstreRect[i - 1]) + 6 && Canvas.GetTop(rect_Joueur) > Canvas.GetTop(listeMonstreRect[i - 1]) - 6)
                 {
                     continue;
