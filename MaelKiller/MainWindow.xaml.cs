@@ -1177,7 +1177,7 @@ namespace MaelKiller
             ameliorations[2] = augFouet;
             ameliorations[3] = augHache; 
         }
-        private void NiveauSupérieur()
+        public void NiveauSupérieur()
         {
             Random random = new Random();
             int bonusArmes, bonusAug, bonus;
