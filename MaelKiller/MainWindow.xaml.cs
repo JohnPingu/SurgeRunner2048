@@ -144,10 +144,9 @@ namespace MaelKiller
             increment++;
             //joueur.GainExperience(10);
             MiseAJourCouleur();
-            if (seconde % 2 == 0)
+            if (seconde % 3 == 0)
             {
                 GenerationMonstreHasard();
-                Console.WriteLine("NoveauMonstre");
             }
             Console.WriteLine(increment);
         }
@@ -301,8 +300,8 @@ namespace MaelKiller
             //------------------------------------------------//
             //DEPLACEMENT//
             //------------------------------------------------//
-            cameraEstEnMouvement();
             Deplacements();
+            cameraEstEnMouvement();
             DeplacementMonstre();
 
             //------------------------------------------------//
@@ -656,8 +655,7 @@ namespace MaelKiller
         }
         private void cameraEstEnMouvement() 
         {
-            Console.WriteLine(CameraEstEnMouvement);
-            if(CameraEstEnMouvement = false)
+            if(CameraEstEnMouvement == false)
             {
                 CameraMouvement = 0;
             } else
@@ -675,6 +673,7 @@ namespace MaelKiller
                 double vitesseX = monstre.Vitesse;
                 double vitesseY = monstre.Vitesse;
                 double frameMax;
+                
                 if (diffX >= diffY)
                 {
                     frameMax = diffX / monstre.Vitesse;
@@ -685,33 +684,88 @@ namespace MaelKiller
                     frameMax = diffY / monstre.Vitesse;
                     vitesseX = diffX / frameMax;
                 }
-                if (Canvas.GetLeft(rect_Joueur) < Canvas.GetLeft(listeMonstreRect[i - 1]) + 6 && Canvas.GetLeft(rect_Joueur) > Canvas.GetLeft(listeMonstreRect[i - 1]) - 6)
+                if (CameraEstEnMouvement)
+                {
+                    if (!(Canvas.GetLeft(rect_Joueur) < Canvas.GetLeft(listeMonstreRect[i - 1]) + 2 && Canvas.GetLeft(rect_Joueur) > Canvas.GetLeft(listeMonstreRect[i - 1]) - 2))
+                    {
+                        if (gauche && !droite && !estAGauche && !estADroite)
+                        {
+                            if (Canvas.GetLeft(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetLeft(rect_Joueur))
+                            {
+                                vitesseX -= CameraMouvement*1.5;
+                            }
+                            else
+                            {
+                                vitesseX += CameraMouvement*1.5;
+                            }
+                        }
+                        else if (droite && !gauche && !estAGauche && !estADroite)
+                        {
+                            if (Canvas.GetLeft(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetLeft(rect_Joueur))
+                            {
+                                vitesseX += CameraMouvement*1.5;
+                            }
+                            else
+                            {
+                                vitesseX -= CameraMouvement * 1.5;
+                            }
+                        }
+                    }
+                    if(!(Canvas.GetTop(rect_Joueur) < Canvas.GetTop(listeMonstreRect[i - 1]) + 6 && Canvas.GetTop(rect_Joueur) > Canvas.GetTop(listeMonstreRect[i - 1]) - 6))
+                    {
+                        if (haut && !bas && !estEnBas && !estEnHaut)
+                        {
+                            if (Canvas.GetTop(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetTop(rect_Joueur) + monstre.Vitesse)
+                            {
+                                vitesseY -= CameraMouvement;
+                            }
+                            else
+                            {
+                                vitesseY += CameraMouvement;
+                            }
+                        }
+                        else if (bas && !haut && !estEnHaut && !estEnBas)
+                        {
+                            if (Canvas.GetTop(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetTop(rect_Joueur) + monstre.Vitesse)
+                            {
+                                vitesseY += CameraMouvement;
+                            }
+                            else
+                            {
+                                vitesseY -= CameraMouvement;
+                            }
+                        }
+                    }
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("VitesseX:" + vitesseX);
+                Console.WriteLine("VitesseY:" + vitesseY);
+                Console.WriteLine();
+
+                if (Canvas.GetLeft(rect_Joueur) < Canvas.GetLeft(listeMonstreRect[i - 1]) + 6 && Canvas.GetLeft(rect_Joueur) > Canvas.GetLeft(listeMonstreRect[i - 1]) - 6 && Canvas.GetTop(rect_Joueur) < Canvas.GetTop(listeMonstreRect[i - 1]) + 6 && Canvas.GetTop(rect_Joueur) > Canvas.GetTop(listeMonstreRect[i - 1]) - 6)
                 {
                     continue;
                 }
-                else if (Canvas.GetLeft(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetLeft(rect_Joueur) + monstre.Vitesse)
+                else if (Canvas.GetLeft(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetLeft(rect_Joueur))
                 {
-                    vitesseX = diffX / frameMax + CameraMouvement;
                     Canvas.SetLeft(listeMonstreRect[i - 1], Canvas.GetLeft(listeMonstreRect[i - 1]) - vitesseX);
                 }
                 else
                 {
-                    vitesseX = diffX / frameMax - CameraMouvement;
                     Canvas.SetLeft(listeMonstreRect[i - 1], Canvas.GetLeft(listeMonstreRect[i - 1]) + vitesseX);
                 }
 
-                if (Canvas.GetTop(rect_Joueur) < Canvas.GetTop(listeMonstreRect[i - 1]) + 6 && Canvas.GetTop(rect_Joueur) > Canvas.GetTop(listeMonstreRect[i - 1]) - 6)
+                if (Canvas.GetLeft(rect_Joueur) < Canvas.GetLeft(listeMonstreRect[i - 1]) + 6 && Canvas.GetLeft(rect_Joueur) > Canvas.GetLeft(listeMonstreRect[i - 1]) - 6 && Canvas.GetTop(rect_Joueur) < Canvas.GetTop(listeMonstreRect[i - 1]) + 6 && Canvas.GetTop(rect_Joueur) > Canvas.GetTop(listeMonstreRect[i - 1]) - 6)
                 {
                     continue;
                 }
                 else if (Canvas.GetTop(listeMonstreRect[i - 1]) + monstre.Vitesse > Canvas.GetTop(rect_Joueur) + monstre.Vitesse)
                 {
-                    vitesseY = diffX / frameMax + CameraMouvement;
                     Canvas.SetTop(listeMonstreRect[i - 1], Canvas.GetTop(listeMonstreRect[i - 1]) - vitesseY);
                 }
                 else
                 {
-                    vitesseY = diffX / frameMax - CameraMouvement;
                     Canvas.SetTop(listeMonstreRect[i - 1], Canvas.GetTop(listeMonstreRect[i - 1]) + vitesseY);
                 }
 
@@ -865,17 +919,17 @@ namespace MaelKiller
             double nbHasard = random.Next(1, 3);
             switch (nbHasard) {
                 case 1:
-                    Monstres robot = new Monstres("robot", 5, 20, 4, "bleu", 20);
+                    Monstres robot = new Monstres("robot", 5, 20, 2, "bleu", 20);
                     robot.Couleur = couleurGlobal;
                     ApparitionMonstre(robot);
                     break;
                 case 2:
-                    Monstres nouveauMonstre2 = new Monstres("robot", 5, 20, 4, "bleu", 20);
+                    Monstres nouveauMonstre2 = new Monstres("robot", 5, 20, 2, "bleu", 20);
                     nouveauMonstre2.Couleur = couleurGlobal;
                     ApparitionMonstre(nouveauMonstre2);
                     break;
                 case 3:
-                    Monstres nouveauMonstre3 = new Monstres("robot", 5, 20, 4, "bleu", 20);
+                    Monstres nouveauMonstre3 = new Monstres("robot", 5, 20, 2, "bleu", 20);
                     nouveauMonstre3.Couleur = couleurGlobal;
                     ApparitionMonstre(nouveauMonstre3);
                     break;
