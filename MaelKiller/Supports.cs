@@ -71,12 +71,12 @@ namespace MaelKiller
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Nom, Niveau, Multiplieur, Description, Possession);
+            return HashCode.Combine(Nom, Niveau, Multiplieur, Description);
         }
 
         public override string? ToString()
         {
-            return "Nom : " + nom + "\nMultiplieur : " + multiplieur + "\nDescription : " + description + "\nPossession : " + possession;
+            return "Nom : " + nom + "\nMultiplieur : " + multiplieur + "\nDescription : " + description;
         }
     }
 }

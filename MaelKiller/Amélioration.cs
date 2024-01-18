@@ -12,7 +12,7 @@ namespace MaelKiller
         private string nom;
         private string description;
 
-        public Amélioration(string type, string nom)
+        public Amélioration(string type, string nom, string description)
         {
             Type = type;
             Nom = nom;
@@ -56,12 +56,13 @@ namespace MaelKiller
         {
             return obj is Amélioration amélioration &&
                    Type == amélioration.Type &&
-                   Nom == amélioration.Nom;
+                   Nom == amélioration.Nom &&
+                   Description == amélioration.Description;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Type, Nom);
+            return HashCode.Combine(Type, Nom, Description);
         }
 
     }

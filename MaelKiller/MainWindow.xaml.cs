@@ -99,12 +99,14 @@ namespace MaelKiller
         private Supports exosquelette = new Supports("Exosquelette", 1, "pv", "Un exosquelette ultra-résistant réduit considérablement les risque de mort");
         private Supports nanoMachine = new Supports("Nano-Machine", 1, "regen", "De nanoscopiques automates remplacent vos globules rouges pour une capacité de guérison maximale");
         private Supports coeurOr = new Supports("Coeur en or", 1, "attraction", "Votre coeur métallique crée un champmagnétique permettant d'attirer l'expérience de plus loin");
-        private Supports[] listeSupports = new Supports[4];
+        private Supports forgeage = new Supports("Forgeage adamantin", 1, "degats", "Votre maîtrise de la forge adamantine vous offre des armes de qualité supérieure aux dégats soutenus");
+        private Supports revetement = new Supports("Revêtement Tachyon", 1, "vitesseAtk", "Le revêtement tachyonique de vos armes leur font atteindre des vitesses inégalées");
+        private Supports[] listeSupports = new Supports[6];
 
         //-----------------------------------//
         //AMELIORATIONS//
         //-----------------------------------//
-        private Amélioration déferlement = new Amélioration("Arme", "Déferlement");
+        private Amélioration déferlement = new Amélioration("Arme", "Déferlement", "Un champ d'ondes électriques vous entoure");
 
         private Monstres robot = new Monstres("robot", 5, 20, 6, "bleu", 20);
 
@@ -1219,32 +1221,32 @@ namespace MaelKiller
             else if (!Armes.IsNullOrEmpty(arme1) && Armes.IsNullOrEmpty(arme2))
             {
                 bonusArmes = random.Next(0, 3);
-                while (ameliorations[bonusArmes].Nom == arme1.Nom)
+                while (listeArmes[bonusArmes].Nom == arme1.Nom)
                 {
                     bonusArmes = random.Next(0, 3);
                 }
-                bonusAug = random.Next(3,ameliorations.Length);
-                bonus = random.Next(0,ameliorations.Length);
-                while (bonus == bonusAug || ameliorations[bonus].Nom == arme1.Nom)
+                bonusAug = random.Next(3, listeArmes.Length);
+                bonus = random.Next(0, listeArmes.Length);
+                while (bonus == bonusAug || listeArmes[bonus].Nom == arme1.Nom)
                 {
-                    bonus = random.Next(0, ameliorations.Length);
+                    bonus = random.Next(0, listeArmes.Length);
                 }
             }
             else
             {
-                bonusArmes = random.Next(3, ameliorations.Length);
-                bonusAug = random.Next(3, ameliorations.Length);
+                bonusArmes = random.Next(3, listeArmes.Length);
+                bonusAug = random.Next(3, listeArmes.Length);
                 while (bonusAug == bonusArmes)
                 {
-                    bonusAug = random.Next(3, ameliorations.Length);
+                    bonusAug = random.Next(3, listeArmes.Length);
                 }
-                bonus = random.Next(3, ameliorations.Length);
+                bonus = random.Next(3, listeArmes.Length);
                 while (bonus == bonusAug || bonus == bonusArmes)
                 {
-                    bonus = random.Next(3, ameliorations.Length);
+                    bonus = random.Next(3, listeArmes.Length);
                 }
             }
-            TitreBonus1.Text = ameliorations[bonusArmes].Nom;
+            TitreBonus1.Text = listeArmes[bonusArmes].Nom;
         }
     }
 }
