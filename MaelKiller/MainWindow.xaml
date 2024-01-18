@@ -76,7 +76,7 @@
         <Rectangle x:Name="Bonus2" Tag="NVSUP" Width="240" Height="400" Fill="yellow" Canvas.Left="480" Canvas.Top="200" Visibility="Hidden" MouseLeftButtonDown="Bonus2_MouseLeftButtonDown"/>
         <Rectangle x:Name="Bonus3" Tag="NVSUP" Width="240" Height="400" Fill="red" Canvas.Left="840" Canvas.Top="200" Visibility="Hidden" MouseLeftButtonDown="Bonus3_MouseLeftButtonDown"/>
         <TextBlock Canvas.Left="372" Tag="NVSUP" TextWrapping="Wrap" Text="Niveau Supérieur !" Canvas.Top="54" Foreground="#FF5A00FF" FontSize="56" Visibility="Hidden"/>
-        <TextBlock Canvas.Left="120" Tag="NVSUP" TextWrapping="Wrap" Text="Hache Laser" Canvas.Top="200" Foreground="#FF5A00FF" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Top" Width="240" Height="40" TextAlignment="Center" Background="Black" Visibility="Hidden"/>
+        <TextBlock x:Name="TitreBonus1" Canvas.Left="120" Tag="NVSUP" TextWrapping="Wrap" Text="Hache Laser" Canvas.Top="200" Foreground="#FF5A00FF" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Top" Width="240" Height="40" TextAlignment="Center" Background="Black" Visibility="Hidden"/>
         <TextBlock Canvas.Left="372" Tag="Pause" TextWrapping="Wrap" Text="PAUSE" Canvas.Top="54" Foreground="#FF5A00FF" FontSize="56" Visibility="Hidden"/>
         <Rectangle x:Name="FondPause" Tag="Pause" Width="1200" Height="800" Fill="Black" Opacity="0.4" Stroke="Transparent" Visibility="Hidden"/>
         <Rectangle x:Name="Reprendre" Tag="Pause" Width="250" Height="105" Fill="Green" Canvas.Left="475" Canvas.Top="300" Visibility="Hidden" MouseLeftButtonDown="Reprendre_MouseLeftButtonDown"/>
