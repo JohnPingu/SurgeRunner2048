@@ -41,7 +41,7 @@ namespace MaelKiller
         private const int CENTREX = 566;
         private const int CENTREY = 347;
         private const int INTERVALLETICK = 15;
-        private const double EVODEGATS = 2, EVOVITESSEATTAQUE = 1.1;
+        private const double EVODEGATS = 25, EVOVITESSEATTAQUE = 1.1;
         private const int PERSOIDLE = 4, PERSORUN = 6;
         
         private List<Rectangle> listeMonstreRect = new List<Rectangle>();
@@ -156,8 +156,6 @@ namespace MaelKiller
             intervalle.Tick += MoteurJeu;
             intervalle.Interval = TimeSpan.FromMilliseconds(INTERVALLETICK);
             intervalle.Start();
-            cdrArme1 = InitialisationVitesseAttaque(lance.VitesseAttaque);
-            cdArme1 = cdrArme1;
             directionFleche[1] = 'D';
             directionSkin[1] = 'D';
 
@@ -322,8 +320,9 @@ namespace MaelKiller
             VerifPosition();
             if (niveauSupp == true)
             {
-                NiveauSupérieur();
                 MiseEnPause();
+                NiveauSupérieur();
+                
             }
             //------------------------------------------------//
             //JOUEUR//
@@ -517,29 +516,23 @@ namespace MaelKiller
         {
 
         }
-        private Armes[] InitialisationArmes(Armes arme)
+        private void InitialisationArmes(Armes[] tabArmes, Armes arme)
         {
-            Armes[] tabArme;
-            tabArme = new Armes[10];
-            tabArme[0] = arme;
-            for (int i = 0; i < tabArme.Length; i++)
+            tabArmes[0] = arme;
+            for (int i = 1; i<tabNanoMachine.Length; i++)
             {
-                tabArme[i] = arme;
-                tabArme[i].Niveau = i;
-                tabArme[i].Degats = arme.Degats * EVODEGATS * tabArme[i].Niveau;
-                tabArme[i].VitesseAttaque = arme.VitesseAttaque * EVOVITESSEATTAQUE * tabArme[i].Niveau;
+                tabArmes[i] = new Armes(tabArmes[i - 1].Nom, tabArmes[i - 1].Degats + EVODEGATS, tabArmes[i - 1].Portee, tabArmes[i - 1].VitesseAttaque * EVOVITESSEATTAQUE, tabArmes[i - 1].Taille, tabArmes[i - 1].Niveau +1, tabArmes[i - 1].Description, tabArmes[i - 1].EstMelee, tabArmes[i - 1].VitesseProjectile, tabArmes[i - 1].Amplitude);
             }
-            return tabArme;
         }
         private Supports[] InitialisationSupports(Supports supports) 
         {
             Supports[] tabSupports;
-            tabSupports = new Supports[10];
+            tabSupports = new Supports[11];
             tabSupports[0] = supports;
             for (int i = 1;i < tabSupports.Length;i++) 
             {
                 tabSupports[i] = supports;
-                tabSupports[i].Niveau = supports.Niveau + i;
+                tabSupports[i].Niveau = i;
             }
             return tabSupports;
         }
@@ -1200,6 +1193,13 @@ namespace MaelKiller
                         }
                     }
                 }
+            cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
+            cdArme1 = cdrArme1;
+            if (!Armes.IsNullOrEmpty(arme2))
+            {
+                cdrArme2 = InitialisationVitesseAttaque(arme2.VitesseAttaque);
+                cdArme2 = cdrArme2;
+            }
             //---------------------------------------------------//
             //DISPARITION DU MENU//
             //---------------------------------------------------//
@@ -1231,6 +1231,16 @@ namespace MaelKiller
                 arme1 = listeArmes[bonusAug];
                 listeArmes[bonusAug].Niveau++;
             }
+            cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
+            cdArme1 = cdrArme1;
+            if (!Armes.IsNullOrEmpty(arme2))
+            {
+                cdrArme2 = InitialisationVitesseAttaque(arme2.VitesseAttaque);
+                cdArme2 = cdrArme2;
+            }
+            //---------------------------------------------------//
+            //DISPARITION DU MENU//
+            //---------------------------------------------------//
             foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
             {
                 if ((string)x.Tag == "NVSUP" && x is Rectangle)
@@ -1252,6 +1262,25 @@ namespace MaelKiller
 
         private void Bonus3_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            //---------------------------------------------------//
+            //ASSIGNATION DE L'ARME//
+            //---------------------------------------------------//
+            if (Armes.IsNullOrEmpty(arme1))
+            {
+                arme1 = listeArmes[bonus];
+                listeArmes[bonus].Niveau++;
+            }
+            cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
+            cdArme1 = cdrArme1;
+            if (!Armes.IsNullOrEmpty(arme2))
+            {
+                cdrArme2 = InitialisationVitesseAttaque(arme2.VitesseAttaque);
+                cdArme2 = cdrArme2;
+            }
+            
+            //---------------------------------------------------//
+            //DISPARITION DU MENU//
+            //---------------------------------------------------//
             foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
             {
                 if ((string)x.Tag == "NVSUP" && x is Rectangle)
@@ -1278,38 +1307,38 @@ namespace MaelKiller
             paladin = new Secrets("Paladin de l'annihilation", "Votre esprit a été corrompu par la puissance et vous ne cherchez plus que la destruction de toute chose", hache, exosquelette);
             goldenGun = new Secrets("Desert Eagle Doré mk.XII", "Tout bon jeu en a un, alors pourquoi ne pas le faire tirer dans toutes les directions ?", revolver, coeurOr);
             mechaHuman = new Secrets("Humain Augmenté Ultime", "Vos nano-Machines ont atteint la motion perpétuelle. Existe-t-il encore quelque-chose capable de vous tuer ?", carburant, nanoMachine);
-            tabEpee = InitialisationArmes(epee);
-            tabLance = InitialisationArmes(lance);
-            tabFouet = InitialisationArmes(fouet);
-            tabHache = InitialisationArmes(hache);
-            tabRevolver = InitialisationArmes(revolver);
-            tabFusilSnip = InitialisationArmes(fusilSnip);
-            tabFusilAssaut = InitialisationArmes(fusilAssaut);
-            tabCanon = InitialisationArmes(canon);
+            tabEpee[0] = epee;
+            InitialisationArmes(tabEpee, epee); 
+            InitialisationArmes(tabLance , lance);
+            InitialisationArmes(tabFouet, fouet);
+            InitialisationArmes(tabHache, hache);
+            InitialisationArmes(tabRevolver, revolver);
+            InitialisationArmes(tabFusilSnip, fusilSnip);
+            InitialisationArmes(tabFusilAssaut, fusilAssaut);
+            InitialisationArmes(tabCanon, canon);
             tabJambes = InitialisationSupports(jambes);
             tabExosquelette = InitialisationSupports(exosquelette);
             tabNanoMachine = InitialisationSupports(nanoMachine);
             tabCoeurOr = InitialisationSupports(coeurOr);
             tabForgeage = InitialisationSupports(forgeage);
             tabRevêtement = InitialisationSupports(revetement);
-            listeArmes[0] = tabEpee[0];
-            listeArmes[1] = tabLance[0];
-            listeArmes[2] = tabFouet[0];
-            listeArmes[3] = tabHache[0];
-            listeArmes[4] = tabRevolver[0];
-            listeArmes[5] = tabFusilSnip[0];
-            listeArmes[6] = tabFusilAssaut[0];
-            listeArmes[7] = tabCanon[0];
-            listeSupports[0] = tabJambes[0];
-            listeSupports[1] = tabExosquelette[0];
-            listeSupports[2] = tabNanoMachine[0];
-            listeSupports[3] = tabCoeurOr[0];
-            listeSupports[4] = tabForgeage[0];
-            listeSupports[5] = tabRevêtement[0];
+            listeArmes[0] = tabEpee[1];
+            listeArmes[1] = tabLance[1];
+            listeArmes[2] = tabFouet[1];
+            listeArmes[3] = tabHache[1];
+            listeArmes[4] = tabRevolver[1];
+            listeArmes[5] = tabFusilSnip[1];
+            listeArmes[6] = tabFusilAssaut[1];
+            listeArmes[7] = tabCanon[1];
+            listeSupports[0] = tabJambes[1];
+            listeSupports[1] = tabExosquelette[1];
+            listeSupports[2] = tabNanoMachine[1];
+            listeSupports[3] = tabCoeurOr[1];
+            listeSupports[4] = tabForgeage[1];
+            listeSupports[5] = tabRevêtement[1];
             listeAmélioration[0] = deferlement;
             listeAmélioration[1] = moteur;
             listeAmélioration[2] = carburant;
-
         }
         public void NiveauSupérieur()
         {

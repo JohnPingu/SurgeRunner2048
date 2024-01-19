@@ -60,6 +60,19 @@ namespace MaelKiller
             Taille = taille;
             VitesseProjectile = 0;
         }
+        public Armes(string nom, double degats, double portee, double vitesseAttaque, double taille, int niveau, string description, bool estMelee, double vitesseProjectile, double amplitude)
+        {
+            Nom = nom;
+            Degats = degats;
+            Portee = portee;
+            VitesseAttaque = vitesseAttaque;
+            Niveau = niveau;
+            Description = description;
+            EstMelee = estMelee;
+            Taille = taille;
+            VitesseProjectile = vitesseProjectile;
+            Amplitude = amplitude;
+        }
         public bool EstMelee
         {
             get
