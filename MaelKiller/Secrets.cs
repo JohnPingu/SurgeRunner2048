@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +49,26 @@ namespace MaelKiller
         internal Armes ConditionArme { get => conditionArme; set => conditionArme = value; }
         internal Amélioration ConditionAmelioration { get => conditionAmelioration; set => conditionAmelioration = value; }
         internal Supports ConditionSupports { get => conditionSupports; set => conditionSupports = value; }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Secrets secrets &&
+                   Nom == secrets.Nom &&
+                   Description == secrets.Description &&
+                   EqualityComparer<Armes>.Default.Equals(ConditionArme, secrets.ConditionArme) &&
+                   EqualityComparer<Amélioration>.Default.Equals(ConditionAmelioration, secrets.ConditionAmelioration) &&
+                   EqualityComparer<Supports>.Default.Equals(ConditionSupports, secrets.ConditionSupports);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Nom, Description, ConditionArme, ConditionAmelioration, ConditionSupports);
+        }
+        public static bool IsNullOrEmpty([NotNullWhen(false)] Secrets? value)
+        {
+            return (value == null || value.Nom == "") ? true : false;
+        }
     }
+
 
 }

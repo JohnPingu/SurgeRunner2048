@@ -72,6 +72,9 @@ namespace MaelKiller
         private bool CameraEstEnMouvement = false;
         private double CameraMouvement = 0;
 
+        private Random random = new Random();
+        private int bonusArmes, bonusAug, typeBonus, bonus;
+
         //-----------------------------------//
         //ARMES//
         //-----------------------------------//
@@ -91,7 +94,6 @@ namespace MaelKiller
         private Armes[] tabFusilAssaut = new Armes[10];
         private Armes canon = new Armes("Canon à main", 150, 800, 0.25, 100, 1, "On ne fait plus dans la dentelle. Préparez vos propre frappes d'artiellerie directement depuis le front", false, 2);
         private Armes[]tabCanon = new Armes[10];
-        private Amélioration[] ameliorations = new Amélioration[4];
         private Armes[] listeArmes = new Armes[8];
         private string couleurGlobal = "bleu";
 
@@ -99,11 +101,17 @@ namespace MaelKiller
         //SUPPORTS//
         //-----------------------------------//
         private Supports jambes = new Supports("Jambes Bioniques", 1, "vitesse", "Vos jambes à la pointe de la technologie vous permettent de vous déplacer plus vite !");
+        private Supports[] tabJambes = new Supports[10];
         private Supports exosquelette = new Supports("Exosquelette", 1, "pv", "Un exosquelette ultra-résistant réduit considérablement les risque de mort");
+        private Supports[] tabExosquelette = new Supports[10];
         private Supports nanoMachine = new Supports("Nano-Machine", 1, "regen", "De nanoscopiques automates remplacent vos globules rouges pour une capacité de guérison maximale");
+        private Supports[] tabNanoMachine = new Supports[10];
         private Supports coeurOr = new Supports("Coeur en or", 1, "attraction", "Votre coeur métallique crée un champmagnétique permettant d'attirer l'expérience de plus loin");
+        private Supports[] tabCoeurOr = new Supports[10];
         private Supports forgeage = new Supports("Forgeage adamantin", 1, "degats", "Votre maîtrise de la forge adamantine vous offre des armes de qualité supérieure aux dégats soutenus");
+        private Supports[] tabForgeage = new Supports[10];
         private Supports revetement = new Supports("Revêtement Tachyon", 1, "vitesseAtk", "Le revêtement tachyonique de vos armes leur font atteindre des vitesses inégalées");
+        private Supports[] tabRevêtement = new Supports[10];
         private Supports[] listeSupports = new Supports[6];
 
         //-----------------------------------//
@@ -140,10 +148,6 @@ namespace MaelKiller
             intervalle.Start();
             cdrArme1 = InitialisationVitesseAttaque(lance.VitesseAttaque);
             cdArme1 = cdrArme1;
-            tabEpee = InitialisationArmes(epee);
-            tabLance = InitialisationArmes(lance);
-            tabFouet = InitialisationArmes(fouet);
-            tabHache = InitialisationArmes(hache);
             directionFleche[1] = 'D';
             directionSkin[1] = 'D';
 
@@ -508,7 +512,7 @@ namespace MaelKiller
             Armes[] tabArme;
             tabArme = new Armes[10];
             tabArme[0] = arme;
-            for (int i = 1; i < 10; i++)
+            for (int i = 1; i < tabArme.Length; i++)
             {
                 tabArme[i] = arme;
                 tabArme[i].Niveau = arme.Niveau + i;
@@ -516,6 +520,18 @@ namespace MaelKiller
                 tabArme[i].VitesseAttaque = arme.VitesseAttaque * EVOVITESSEATTAQUE * tabArme[i].Niveau;
             }
             return tabArme;
+        }
+        private Supports[] InitialisationSupports(Supports supports) 
+        {
+            Supports[] tabSupports;
+            tabSupports = new Supports[10];
+            tabSupports[0] = supports;
+            for (int i = 1;i < tabSupports.Length;i++) 
+            {
+                tabSupports[i] = supports;
+                tabSupports[i].Niveau = supports.Niveau + i;
+            }
+            return tabSupports;
         }
         private void Deplacements()
         {
@@ -1205,81 +1221,125 @@ namespace MaelKiller
             Secrets paladin = new Secrets("Paladin de l'annihilation", "Votre esprit a été corrompu par la puissance et vous ne cherchez plus que la destruction de toute chose", hache, exosquelette);
             Secrets goldenGun = new Secrets("Desert Eagle Doré mk.XII", "Tout bon jeu en a un, alors pourquoi ne pas le faire tirer dans toutes les directions ?", revolver, coeurOr);
             Secrets robot = new Secrets("Humain Augmenté Ultime", "Vos nano-Machine ont atteint la motion perpétuelle. Existe-t-il encore quelque-chose capable de vous tuer ?", carburant, nanoMachine);
-            listeArmes[0] = epee;
-            listeArmes[1] = lance;
-            listeArmes[2] = fouet;
-            listeArmes[3] = hache;
-            listeArmes[4] = revolver;
-            listeArmes[5] = fusilSnip;
-            listeArmes[6] = fusilAssaut;
-            listeArmes[7] = canon;
-            listeSupports[0] = jambes;
-            listeSupports[1] = exosquelette;
-            listeSupports[2] = nanoMachine;
-            listeSupports[3] = coeurOr;
-            listeSupports[4] = forgeage;
-            listeSupports[5] = revetement;
+            tabEpee = InitialisationArmes(epee);
+            tabLance = InitialisationArmes(lance);
+            tabFouet = InitialisationArmes(fouet);
+            tabHache = InitialisationArmes(hache);
+            tabRevolver = InitialisationArmes(revolver);
+            tabFusilSnip = InitialisationArmes(fusilSnip);
+            tabFusilAssaut = InitialisationArmes(fusilAssaut);
+            tabCanon = InitialisationArmes(canon);
+            tabJambes = InitialisationSupports(jambes);
+            tabExosquelette = InitialisationSupports(exosquelette);
+            tabNanoMachine = InitialisationSupports(nanoMachine);
+            tabCoeurOr = InitialisationSupports(coeurOr);
+            tabForgeage = InitialisationSupports(forgeage);
+            tabRevêtement = InitialisationSupports(revetement);
+            listeArmes[0] = tabEpee[0];
+            listeArmes[1] = tabLance[0];
+            listeArmes[2] = tabFouet[0];
+            listeArmes[3] = tabHache[0];
+            listeArmes[4] = tabRevolver[0];
+            listeArmes[5] = tabFusilSnip[0];
+            listeArmes[6] = tabFusilAssaut[0];
+            listeArmes[7] = tabCanon[0];
+            listeSupports[0] = tabJambes[0];
+            listeSupports[1] = tabExosquelette[0];
+            listeSupports[2] = tabNanoMachine[0];
+            listeSupports[3] = tabCoeurOr[0];
+            listeSupports[4] = tabForgeage[0];
+            listeSupports[5] = tabRevêtement[0];
             listeAmélioration[0] = deferlement;
             listeAmélioration[1] = moteur;
             listeAmélioration[2] = carburant;
+
         }
         public void NiveauSupérieur()
         {
-            Random random = new Random();
-            int bonusArmes, bonusAug,typeBonus, bonus;
+            //----------------------------------//
+            //ROLL SUPPORTS//
+            //----------------------------------//
+            if (Supports.IsNullOrEmpty(support1))
+            {
+                bonusAug = random.Next(0, 5);
+                do
+                {
+                    bonusArmes = random.Next(0, 5);
+                } while (bonusArmes == bonusAug);
+                do
+                {
+                    bonus = random.Next(0, 5);
+                } while(bonus == bonusAug || bonus == bonusArmes);
+                TitreBonus1.Text = listeSupports[bonusArmes].Nom;
+                TitreBonus2.Text = listeSupports[bonusAug].Nom;
+                TitreBonus3.Text = listeSupports[bonus].Nom;
+            }
+            else if (!Supports.IsNullOrEmpty(support1) && Supports.IsNullOrEmpty(support2)) 
+            {
+                bonusAug = random.Next(0, 5);
+                TitreBonus2.Text = listeSupports[bonusAug].Nom;
+            }
+            else if (!Supports.IsNullOrEmpty(support1) && !Supports.IsNullOrEmpty(support2))
+            {
+                bonusAug = random.Next(1, 2);
+                if (bonusAug == 1)
+                {
+                    TitreBonus2.Text = support1.Nom;
+                }
+                else TitreBonus2.Text = support2.Nom;
+            }
+            else if (support1.Niveau == 10)
+            {
+                bonusAug = 2;
+                TitreBonus2.Text = support2.Nom;
+            }
+            else if (support2.Niveau == 10)
+            {
+                bonusAug = 1;
+                TitreBonus2.Text = support1.Nom;
+            }
+            //----------------------------------//
+            //ROLL ARMES//
+            //----------------------------------//
             if (Armes.IsNullOrEmpty(arme1))
             {
-                bonusArmes = random.Next(0,7);
-                bonusAug = random.Next(0,7);
-                while (bonusAug == bonusArmes)
+                bonusArmes = random.Next(0, 7);
+                do
                 {
-                    bonusAug = random.Next(0, 5);
-                }
-                bonus = random.Next(0, 7);
-                while(bonus == bonusArmes || bonus == bonusAug)
+                    bonusAug = random.Next(0, 7);
+                } while (bonusAug == bonusArmes);
+                do
                 {
                     bonus = random.Next(0, 7);
-                }
+                } while (bonus == bonusArmes || bonus == bonusAug);
+                TitreBonus1.Text = listeArmes[bonusArmes].Nom;
+                TitreBonus2.Text = listeArmes[bonusAug].Nom;
+                TitreBonus3.Text = listeArmes[bonus].Nom;
             }
-            else if (!Armes.IsNullOrEmpty(arme1) && Armes.IsNullOrEmpty(arme2))
+            else if (!Armes.IsNullOrEmpty(arme1) && Armes.IsNullOrEmpty(arme2)) 
             {
                 bonusArmes = random.Next(0, 7);
-                while (listeArmes[bonusArmes].Nom == arme1.Nom)
-                {
-                    bonusArmes = random.Next(0, 3);
-                }
-                bonusAug = random.Next(0, 5);
-                typeBonus = random.Next(0, 2);
-                if (typeBonus == 0)
-                    do
-                    {
-                        bonus = random.Next(0, 7);
-                    } while (bonus == bonusArmes);
-                else if (typeBonus == 1)
-                    do
-                    {
-                        bonus = random.Next(0, 5);
-                    }while (bonus == bonusAug);
-                else
-                {
-                    bonus = random.Next(0,2);
-                }
+                TitreBonus1.Text = listeArmes[bonusArmes].Nom;
             }
-            else
+            else if (!Armes.IsNullOrEmpty(arme1) && !Armes.IsNullOrEmpty(arme2))
             {
-                bonusArmes = random.Next(3, listeArmes.Length);
-                bonusAug = random.Next(3, listeArmes.Length);
-                while (bonusAug == bonusArmes)
+                bonusArmes = random.Next(1, 2);
+                if (bonusArmes == 1)
                 {
-                    bonusAug = random.Next(3, listeArmes.Length);
+                    TitreBonus1.Text = arme1.Nom;
                 }
-                bonus = random.Next(3, listeArmes.Length);
-                while (bonus == bonusAug || bonus == bonusArmes)
-                {
-                    bonus = random.Next(3, listeArmes.Length);
-                }
+                else TitreBonus1.Text = arme2.Nom;
             }
-            TitreBonus1.Text = listeArmes[bonusArmes].Nom;
+            else if (arme1.Niveau == 10)
+            {
+                bonusArmes = 2;
+                TitreBonus1.Text = arme2.Nom;
+            }
+            else if (arme2.Niveau == 10)
+            {
+                bonusArmes = 1;
+                TitreBonus1.Text = arme1.Nom;
+            }
         }
     }
 }
