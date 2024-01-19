@@ -56,6 +56,9 @@ namespace MaelKiller
         private int cdrRuee = 250, cdRuee;
         private Joueur joueur = new Joueur(25, 4, 30, 1);
         private Armes arme1, arme2;
+        private Supports support1, support2;
+        private Amélioration amélioration1, amélioration2;
+        private Secrets secret;
         private int cdArme1, cdArme2, cdrArme1, cdrArme2;
         private double xfleche, yfleche, lfleche, hfleche;
         private ImageBrush skinFleche = new ImageBrush();
@@ -106,7 +109,12 @@ namespace MaelKiller
         //-----------------------------------//
         //AMELIORATIONS//
         //-----------------------------------//
-        private Amélioration déferlement = new Amélioration("Arme", "Déferlement", "Un champ d'ondes électriques vous entoure");
+        private Amélioration deferlement = new Amélioration("Arme", "Déferlement", "Un champ d'ondes électriques vous entoure");
+        private Amélioration moteur = new Amélioration("Support", "Moteur Quantique", "La portée de vitre ruée est grandement améliorée");
+        private Amélioration carburant = new Amélioration("Support","Carburant Quantique", "Votre ruée est plus efficiente, vous pouvez l'effectuer plus souvent");
+        private Amélioration[] listeAmélioration = new Amélioration[3];
+
+        private Secrets[] listeSecrets = new Secrets[3];
 
         private Monstres robot = new Monstres("robot", 5, 20, 6, "bleu", 20);
 
@@ -1191,6 +1199,12 @@ namespace MaelKiller
         }
         private void InitialisationAmelioration()
         {
+            Secrets surgeRunner = new Secrets("Surge Runner", "Le jeu n'a plus de secrets pour vous", epee, deferlement, jambes);
+            Secrets fouetAdamantin = new Secrets("Orage Adamantin", "Votre fouet dépasse la solidité des matériaux connus et inflige des dégâts irréparables", fouet, forgeage);
+            Secrets lanceTachyon = new Secrets("Frappes Tachyon", "Votre vitesse d'exécution surpasse même la lumière", lance, revetement);
+            Secrets paladin = new Secrets("Paladin de l'annihilation", "Votre esprit a été corrompu par la puissance et vous ne cherchez plus que la destruction de toute chose", hache, exosquelette);
+            Secrets goldenGun = new Secrets("Desert Eagle Doré mk.XII", "Tout bon jeu en a un, alors pourquoi ne pas le faire tirer dans toutes les directions ?", revolver, coeurOr);
+            Secrets robot = new Secrets("Humain Augmenté Ultime", "Vos nano-Machine ont atteint la motion perpétuelle. Existe-t-il encore quelque-chose capable de vous tuer ?", carburant, nanoMachine);
             listeArmes[0] = epee;
             listeArmes[1] = lance;
             listeArmes[2] = fouet;
@@ -1199,37 +1213,56 @@ namespace MaelKiller
             listeArmes[5] = fusilSnip;
             listeArmes[6] = fusilAssaut;
             listeArmes[7] = canon;
+            listeSupports[0] = jambes;
+            listeSupports[1] = exosquelette;
+            listeSupports[2] = nanoMachine;
+            listeSupports[3] = coeurOr;
+            listeSupports[4] = forgeage;
+            listeSupports[5] = revetement;
+            listeAmélioration[0] = deferlement;
+            listeAmélioration[1] = moteur;
+            listeAmélioration[2] = carburant;
         }
         public void NiveauSupérieur()
         {
             Random random = new Random();
-            int bonusArmes, bonusAug, bonus;
+            int bonusArmes, bonusAug,typeBonus, bonus;
             if (Armes.IsNullOrEmpty(arme1))
             {
-                bonusArmes = random.Next(0,3);
-                bonusAug = random.Next(0,3);
+                bonusArmes = random.Next(0,7);
+                bonusAug = random.Next(0,7);
                 while (bonusAug == bonusArmes)
                 {
-                    bonusAug = random.Next(0, 3);
+                    bonusAug = random.Next(0, 5);
                 }
-                bonus = random.Next(0, 3);
+                bonus = random.Next(0, 7);
                 while(bonus == bonusArmes || bonus == bonusAug)
                 {
-                    bonus = random.Next(0, 3);
+                    bonus = random.Next(0, 7);
                 }
             }
             else if (!Armes.IsNullOrEmpty(arme1) && Armes.IsNullOrEmpty(arme2))
             {
-                bonusArmes = random.Next(0, 3);
+                bonusArmes = random.Next(0, 7);
                 while (listeArmes[bonusArmes].Nom == arme1.Nom)
                 {
                     bonusArmes = random.Next(0, 3);
                 }
-                bonusAug = random.Next(3, listeArmes.Length);
-                bonus = random.Next(0, listeArmes.Length);
-                while (bonus == bonusAug || listeArmes[bonus].Nom == arme1.Nom)
+                bonusAug = random.Next(0, 5);
+                typeBonus = random.Next(0, 2);
+                if (typeBonus == 0)
+                    do
+                    {
+                        bonus = random.Next(0, 7);
+                    } while (bonus == bonusArmes);
+                else if (typeBonus == 1)
+                    do
+                    {
+                        bonus = random.Next(0, 5);
+                    }while (bonus == bonusAug);
+                else
                 {
-                    bonus = random.Next(0, listeArmes.Length);
+                    bonus = random.Next(0,2);
                 }
             }
             else

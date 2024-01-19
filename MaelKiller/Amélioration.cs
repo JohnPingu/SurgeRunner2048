@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +65,9 @@ namespace MaelKiller
         {
             return HashCode.Combine(Type, Nom, Description);
         }
-
+        public static bool IsNullOrEmpty([NotNullWhen(false)] Amélioration? value)
+        {
+            return (value == null || value.Nom == "") ? true : false;
+        }
     }
 }
