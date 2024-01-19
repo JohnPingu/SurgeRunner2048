@@ -74,6 +74,7 @@ namespace MaelKiller
 
         private Random random = new Random();
         private int bonusArmes, bonusAug, typeBonus, bonus;
+        private int niveauArme1 = 0, niveauArme2 = 0, niveauSupport1 = 0, niveauSupport2 = 0;
 
         //-----------------------------------//
         //ARMES//
@@ -122,6 +123,15 @@ namespace MaelKiller
         private Amélioration carburant = new Amélioration("Support","Carburant Quantique", "Votre ruée est plus efficiente, vous pouvez l'effectuer plus souvent");
         private Amélioration[] listeAmélioration = new Amélioration[3];
 
+        //-----------------------------------//
+        //SECRETS//
+        //-----------------------------------//
+        private Secrets surgeRunner;
+        private Secrets fouetAdamantin;
+        private Secrets lanceTachyon;
+        private Secrets paladin;
+        private Secrets goldenGun;
+        private Secrets mechaHuman;
         private Secrets[] listeSecrets = new Secrets[3];
 
         private Monstres robot = new Monstres("robot", 5, 20, 6, "bleu", 20);
@@ -512,10 +522,10 @@ namespace MaelKiller
             Armes[] tabArme;
             tabArme = new Armes[10];
             tabArme[0] = arme;
-            for (int i = 1; i < tabArme.Length; i++)
+            for (int i = 0; i < tabArme.Length; i++)
             {
                 tabArme[i] = arme;
-                tabArme[i].Niveau = arme.Niveau + i;
+                tabArme[i].Niveau = i;
                 tabArme[i].Degats = arme.Degats * EVODEGATS * tabArme[i].Niveau;
                 tabArme[i].VitesseAttaque = arme.VitesseAttaque * EVOVITESSEATTAQUE * tabArme[i].Niveau;
             }
@@ -1154,6 +1164,45 @@ namespace MaelKiller
         }
         private void Bonus1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            //---------------------------------------------------//
+            //ASSIGNATION DE L'ARME//
+            //---------------------------------------------------//
+            if (Armes.IsNullOrEmpty(arme1))
+            {
+                arme1 = listeArmes[bonusArmes];
+                listeArmes[bonusArmes].Niveau++;
+            }
+            else if (!Armes.IsNullOrEmpty(arme1) && Armes.IsNullOrEmpty(arme2)) 
+            {
+                arme2 = listeArmes[bonusArmes];
+                listeArmes[bonusArmes].Niveau++;
+            }
+            else if (!Armes.IsNullOrEmpty(arme1) && !Armes.IsNullOrEmpty(arme2))
+                if (bonusArmes == 1) 
+                {
+                    for (int i = 0; i<listeArmes.Length; i++)
+                    {
+                        if (arme1.Nom == listeArmes[i].Nom)
+                        {
+                            arme1 = listeArmes[i];
+                            listeArmes[i].Niveau++;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < listeArmes.Length; i++)
+                    {
+                        if (arme2.Nom == listeArmes[i].Nom)
+                        {
+                            arme2 = listeArmes[i];
+                            listeArmes[i].Niveau++;
+                        }
+                    }
+                }
+            //---------------------------------------------------//
+            //DISPARITION DU MENU//
+            //---------------------------------------------------//
             foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
             {
                 if ((string)x.Tag == "NVSUP" && x is Rectangle)
@@ -1174,6 +1223,14 @@ namespace MaelKiller
         }
         private void Bonus2_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            //---------------------------------------------------//
+            //ASSIGNATION DE L'ARME//
+            //---------------------------------------------------//
+            if (Armes.IsNullOrEmpty(arme1))
+            {
+                arme1 = listeArmes[bonusAug];
+                listeArmes[bonusAug].Niveau++;
+            }
             foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
             {
                 if ((string)x.Tag == "NVSUP" && x is Rectangle)
@@ -1215,12 +1272,12 @@ namespace MaelKiller
         }
         private void InitialisationAmelioration()
         {
-            Secrets surgeRunner = new Secrets("Surge Runner", "Le jeu n'a plus de secrets pour vous", epee, deferlement, jambes);
-            Secrets fouetAdamantin = new Secrets("Orage Adamantin", "Votre fouet dépasse la solidité des matériaux connus et inflige des dégâts irréparables", fouet, forgeage);
-            Secrets lanceTachyon = new Secrets("Frappes Tachyon", "Votre vitesse d'exécution surpasse même la lumière", lance, revetement);
-            Secrets paladin = new Secrets("Paladin de l'annihilation", "Votre esprit a été corrompu par la puissance et vous ne cherchez plus que la destruction de toute chose", hache, exosquelette);
-            Secrets goldenGun = new Secrets("Desert Eagle Doré mk.XII", "Tout bon jeu en a un, alors pourquoi ne pas le faire tirer dans toutes les directions ?", revolver, coeurOr);
-            Secrets robot = new Secrets("Humain Augmenté Ultime", "Vos nano-Machine ont atteint la motion perpétuelle. Existe-t-il encore quelque-chose capable de vous tuer ?", carburant, nanoMachine);
+            surgeRunner = new Secrets("Surge Runner", "Le jeu n'a plus de secrets pour vous", epee, deferlement, jambes);
+            fouetAdamantin = new Secrets("Orage Adamantin", "Votre fouet dépasse la solidité des matériaux connus et inflige des dégâts irréparables", fouet, forgeage);
+            lanceTachyon = new Secrets("Frappes Tachyon", "Votre vitesse d'exécution surpasse même la lumière", lance, revetement);
+            paladin = new Secrets("Paladin de l'annihilation", "Votre esprit a été corrompu par la puissance et vous ne cherchez plus que la destruction de toute chose", hache, exosquelette);
+            goldenGun = new Secrets("Desert Eagle Doré mk.XII", "Tout bon jeu en a un, alors pourquoi ne pas le faire tirer dans toutes les directions ?", revolver, coeurOr);
+            mechaHuman = new Secrets("Humain Augmenté Ultime", "Vos nano-Machines ont atteint la motion perpétuelle. Existe-t-il encore quelque-chose capable de vous tuer ?", carburant, nanoMachine);
             tabEpee = InitialisationArmes(epee);
             tabLance = InitialisationArmes(lance);
             tabFouet = InitialisationArmes(fouet);
@@ -1256,10 +1313,39 @@ namespace MaelKiller
         }
         public void NiveauSupérieur()
         {
+            listeArmes[0] = tabEpee[listeArmes[0].Niveau];
+            listeArmes[1] = tabLance[listeArmes[1].Niveau];
+            listeArmes[2] = tabFouet[listeArmes[2].Niveau];
+            listeArmes[3] = tabHache[listeArmes[3].Niveau];
+            listeArmes[4] = tabRevolver[listeArmes[4].Niveau];
+            listeArmes[5] = tabFusilSnip[listeArmes[5].Niveau];
+            listeArmes[6] = tabFusilAssaut[listeArmes[6].Niveau];
+            listeArmes[7] = tabCanon[listeArmes[7].Niveau];
+            listeSupports[0] = tabJambes[0];
+            listeSupports[1] = tabExosquelette[0];
+            listeSupports[2] = tabNanoMachine[0];
+            listeSupports[3] = tabCoeurOr[0];
+            listeSupports[4] = tabForgeage[0];
+            listeSupports[5] = tabRevêtement[0];
             //----------------------------------//
-            //ROLL SUPPORTS//
+            //ROLL AMELIORATIONS//
             //----------------------------------//
-            if (Supports.IsNullOrEmpty(support1))
+            if (Amélioration.IsNullOrEmpty(amélioration1))
+            {
+                bonus = random.Next(0, 2);
+                TitreBonus3.Text = listeAmélioration[bonus].Nom;
+            }
+            else if (!Amélioration.IsNullOrEmpty(amélioration1) && Amélioration.IsNullOrEmpty(amélioration2))
+            {
+                do
+                {
+                    bonus = random.Next(0, 2);
+                } while (listeAmélioration[bonus] == amélioration1);
+            }
+                //----------------------------------//
+                //ROLL SUPPORTS//
+                //----------------------------------//
+                if (Supports.IsNullOrEmpty(support1))
             {
                 bonusAug = random.Next(0, 5);
                 do
@@ -1339,6 +1425,33 @@ namespace MaelKiller
             {
                 bonusArmes = 1;
                 TitreBonus1.Text = arme1.Nom;
+            }
+            //----------------------------------//
+            //ROLL Secrets//
+            //----------------------------------//
+            if (listeArmes[0].Niveau == 10 && listeSupports[0].Niveau == 10 && (amélioration1 == deferlement || amélioration2 == deferlement) && Secrets.IsNullOrEmpty(secret)) 
+            {
+                TitreBonus3.Text = surgeRunner.Nom;
+            }
+            if (listeArmes[2].Niveau == 10 && listeSupports[4].Niveau == 10 && Secrets.IsNullOrEmpty(secret))
+            {
+                TitreBonus3.Text = fouetAdamantin.Nom;
+            }
+            if (listeArmes[1].Niveau == 10 && listeSupports[5].Niveau == 10 && Secrets.IsNullOrEmpty(secret))
+            {
+                TitreBonus3.Text = lanceTachyon.Nom;
+            }
+            if (listeArmes[3].Niveau == 10 && listeSupports[1].Niveau == 10 && Secrets.IsNullOrEmpty(secret))
+            {
+                TitreBonus3.Text = paladin.Nom;
+            }
+            if (listeArmes[4].Niveau == 10 && listeSupports[3].Niveau == 10 && Secrets.IsNullOrEmpty(secret))
+            {
+                TitreBonus3.Text = goldenGun.Nom;
+            }
+            if (listeSupports[2].Niveau == 10 && (amélioration1 == carburant || amélioration2 == carburant) && Secrets.IsNullOrEmpty(secret))
+            {
+                TitreBonus3.Text = mechaHuman.Nom;
             }
         }
     }
