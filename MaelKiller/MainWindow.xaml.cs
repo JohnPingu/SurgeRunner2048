@@ -1330,6 +1330,7 @@ namespace MaelKiller
             //----------------------------------//
             //ROLL AMELIORATIONS//
             //----------------------------------//
+
             if (Amélioration.IsNullOrEmpty(amélioration1))
             {
                 bonus = random.Next(0, 2);
@@ -1341,11 +1342,12 @@ namespace MaelKiller
                 {
                     bonus = random.Next(0, 2);
                 } while (listeAmélioration[bonus] == amélioration1);
+                TitreBonus3.Text = listeAmélioration[bonus].Nom;
             }
-                //----------------------------------//
-                //ROLL SUPPORTS//
-                //----------------------------------//
-                if (Supports.IsNullOrEmpty(support1))
+            //----------------------------------//
+            //ROLL SUPPORTS//
+            //----------------------------------//
+            if (Supports.IsNullOrEmpty(support1))
             {
                 bonusAug = random.Next(0, 5);
                 do
@@ -1427,7 +1429,7 @@ namespace MaelKiller
                 TitreBonus1.Text = arme1.Nom;
             }
             //----------------------------------//
-            //ROLL Secrets//
+            //ROLL SECRETS//
             //----------------------------------//
             if (listeArmes[0].Niveau == 10 && listeSupports[0].Niveau == 10 && (amélioration1 == deferlement || amélioration2 == deferlement) && Secrets.IsNullOrEmpty(secret)) 
             {

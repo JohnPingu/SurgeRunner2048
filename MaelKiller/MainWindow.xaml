@@ -71,18 +71,140 @@
             Background="#4C000000"
             Foreground="#FF1F00FF"
             ValueChanged="ProgressBar_ValueChanged" />
-        <Rectangle x:Name="FondNvSup" Tag="NVSUP" Width="1200" Height="800" Fill="Black" Opacity="0.4" Stroke="Transparent" Visibility="Hidden"/>
-        <Rectangle x:Name="Bonus1" Tag="NVSUP" Width="240" Height="400" Fill="Aqua" Canvas.Left="120" Canvas.Top="200" Visibility="Hidden" MouseLeftButtonDown="Bonus1_MouseLeftButtonDown"/>
-        <Rectangle x:Name="Bonus2" Tag="NVSUP" Width="240" Height="400" Fill="yellow" Canvas.Left="480" Canvas.Top="200" Visibility="Hidden" MouseLeftButtonDown="Bonus2_MouseLeftButtonDown"/>
-        <Rectangle x:Name="Bonus3" Tag="NVSUP" Width="240" Height="400" Fill="red" Canvas.Left="840" Canvas.Top="200" Visibility="Hidden" MouseLeftButtonDown="Bonus3_MouseLeftButtonDown"/>
-        <TextBlock Canvas.Left="372" Tag="NVSUP" TextWrapping="Wrap" Text="Niveau Supérieur !" Canvas.Top="54" Foreground="#FF5A00FF" FontSize="56" Visibility="Hidden"/>
-        <TextBlock x:Name="TitreBonus1" Canvas.Left="120" Tag="NVSUP" TextWrapping="Wrap" Text="Hache Laser" Canvas.Top="200" Foreground="#FF5A00FF" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Top" Width="240" Height="40" TextAlignment="Center" Background="Black" Visibility="Hidden"/>
-        <TextBlock x:Name="TitreBonus2" Canvas.Left="480" Tag="NVSUP" TextWrapping="Wrap" Text="Epee Ionique" Canvas.Top="200" Foreground="#FF5A00FF" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Top" Width="240" Height="40" TextAlignment="Center" Background="Black" Visibility="Hidden"/>
-        <TextBlock x:Name="TitreBonus3" Canvas.Left="840" Tag="NVSUP" TextWrapping="Wrap" Text="Yeux Revolver" Canvas.Top="200" Foreground="#FF5A00FF" FontSize="28" HorizontalAlignment="Center" VerticalAlignment="Top" Width="240" Height="40" TextAlignment="Center" Background="Black" Visibility="Hidden"/>
-        <TextBlock Canvas.Left="372" Tag="Pause" TextWrapping="Wrap" Text="PAUSE" Canvas.Top="54" Foreground="#FF5A00FF" FontSize="56" Visibility="Hidden"/>
-        <Rectangle x:Name="FondPause" Tag="Pause" Width="1200" Height="800" Fill="Black" Opacity="0.4" Stroke="Transparent" Visibility="Hidden"/>
-        <Rectangle x:Name="Reprendre" Tag="Pause" Width="250" Height="105" Fill="Green" Canvas.Left="475" Canvas.Top="300" Visibility="Hidden" MouseLeftButtonDown="Reprendre_MouseLeftButtonDown"/>
-        <Rectangle x:Name="Quitter" Tag="Pause" Width="250" Height="105" Fill="Red" Canvas.Left="475" Canvas.Top="500" Visibility="Hidden" MouseLeftButtonDown="Quitter_MouseLeftButtonDown"/>
+        <Rectangle
+            x:Name="FondNvSup"
+            Width="1200"
+            Height="800"
+            Fill="Black"
+            Opacity="0.4"
+            Stroke="Transparent"
+            Tag="NVSUP"
+            Visibility="Hidden" />
+        <Rectangle
+            x:Name="Bonus1"
+            Canvas.Left="120"
+            Canvas.Top="200"
+            Width="240"
+            Height="400"
+            Fill="Aqua"
+            MouseLeftButtonDown="Bonus1_MouseLeftButtonDown"
+            Tag="NVSUP"
+            Visibility="Hidden" />
+        <Rectangle
+            x:Name="Bonus2"
+            Canvas.Left="480"
+            Canvas.Top="200"
+            Width="240"
+            Height="400"
+            Fill="yellow"
+            MouseLeftButtonDown="Bonus2_MouseLeftButtonDown"
+            Tag="NVSUP"
+            Visibility="Hidden" />
+        <Rectangle
+            x:Name="Bonus3"
+            Canvas.Left="840"
+            Canvas.Top="200"
+            Width="240"
+            Height="400"
+            Fill="red"
+            MouseLeftButtonDown="Bonus3_MouseLeftButtonDown"
+            Tag="NVSUP"
+            Visibility="Hidden" />
+        <TextBlock
+            Canvas.Left="372"
+            Canvas.Top="54"
+            FontSize="56"
+            Foreground="#FF5A00FF"
+            Tag="NVSUP"
+            Text="Niveau Supérieur !"
+            TextWrapping="Wrap"
+            Visibility="Hidden" />
+        <TextBlock
+            x:Name="TitreBonus1"
+            Canvas.Left="120"
+            Canvas.Top="200"
+            Width="240"
+            Height="40"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Background="Black"
+            FontSize="28"
+            Foreground="#FF5A00FF"
+            Tag="NVSUP"
+            Text="Armes"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Visibility="Hidden" />
+        <TextBlock
+            x:Name="TitreBonus2"
+            Canvas.Left="480"
+            Canvas.Top="200"
+            Width="240"
+            Height="40"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Background="Black"
+            FontSize="28"
+            Foreground="#FF5A00FF"
+            Tag="NVSUP"
+            Text="Support"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Visibility="Hidden" />
+        <TextBlock
+            x:Name="TitreBonus3"
+            Canvas.Left="840"
+            Canvas.Top="200"
+            Width="240"
+            Height="40"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Background="Black"
+            FontSize="28"
+            Foreground="#FF5A00FF"
+            Tag="NVSUP"
+            Text="Spécial"
+            TextAlignment="Center"
+            TextWrapping="Wrap"
+            Visibility="Hidden" />
+        <TextBlock
+            Canvas.Left="372"
+            Canvas.Top="54"
+            FontSize="56"
+            Foreground="#FF5A00FF"
+            Tag="Pause"
+            Text="PAUSE"
+            TextWrapping="Wrap"
+            Visibility="Hidden" />
+        <Rectangle
+            x:Name="FondPause"
+            Width="1200"
+            Height="800"
+            Fill="Black"
+            Opacity="0.4"
+            Stroke="Transparent"
+            Tag="Pause"
+            Visibility="Hidden" />
+        <Rectangle
+            x:Name="Reprendre"
+            Canvas.Left="475"
+            Canvas.Top="300"
+            Width="250"
+            Height="105"
+            Fill="Green"
+            MouseLeftButtonDown="Reprendre_MouseLeftButtonDown"
+            Tag="Pause"
+            Visibility="Hidden" />
+        <Rectangle
+            x:Name="Quitter"
+            Canvas.Left="475"
+            Canvas.Top="500"
+            Width="250"
+            Height="105"
+            Fill="Red"
+            MouseLeftButtonDown="Quitter_MouseLeftButtonDown"
+            Tag="Pause"
+            Visibility="Hidden" />
 
 
     </Canvas>

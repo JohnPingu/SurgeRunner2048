@@ -173,9 +173,9 @@ namespace MaelKiller
             }
             set 
             {
-                if (value < 1)
+                if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException("Le niveau doit être d'au moins 1");
+                    throw new ArgumentOutOfRangeException("Le niveau doit être d'au moins 0");
                 }
                 else
                     this.niveau = value; 
