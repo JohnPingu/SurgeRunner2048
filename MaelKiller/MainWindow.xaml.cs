@@ -311,7 +311,6 @@ namespace MaelKiller
                 if (dispoRuee = true)
                 {
                     ruee = true;
-                    dispoRuee = false;
                 }
             }
             if (e.Key == Key.Escape)
@@ -384,6 +383,9 @@ namespace MaelKiller
             if (dispoRuee == false)
             {
                 cdRuee -= 1;
+                ruee = false;
+                joueur.Vitesse = baseJoueur.Vitesse;
+                joueur.PeutPrendreDegats = true;
                 if (cdRuee == 0)
                 {
                     dispoRuee = true;
@@ -395,12 +397,9 @@ namespace MaelKiller
                 if (ruee == true)
                 {
                     joueur.Vitesse = joueur.PorteeRuee;
-                    compteRuee++;
-                    if (compteRuee == 3)
-                    {
-                        ruee = false;
-                        joueur.Vitesse = baseJoueur.Vitesse;
-                    }
+                    
+                    joueur.PeutPrendreDegats = false;
+                    dispoRuee = false;
                 }
             }
 
@@ -503,6 +502,31 @@ namespace MaelKiller
                 if (support2.Nom == revetement.Nom)
                 {
                     cdrArme1 = (int)(1000 / INTERVALLETICK / (arme1.VitesseAttaque * support2.Niveau));
+                }
+            }
+            //------------------------------------------------//
+            //EFFETS AMELIORATION//
+            //------------------------------------------------//
+            if (!Amélioration.IsNullOrEmpty(amélioration1))
+            {
+                if (amélioration1.Nom == moteur.Nom)
+                {
+                    joueur.PorteeRuee = baseJoueur.PorteeRuee*2;
+                }
+                else
+                {
+                    cdrRuee = cdrRuee / 2;
+                }
+            }
+            if (!Amélioration.IsNullOrEmpty(amélioration2))
+            {
+                if (amélioration2.Nom == moteur.Nom)
+                {
+                    joueur.PorteeRuee = baseJoueur.PorteeRuee * 2;
+                }
+                else
+                {
+                    cdrRuee = cdrRuee / 2;
                 }
             }
 #if DEBUG
@@ -1564,6 +1588,7 @@ namespace MaelKiller
             {
                 bonus = random.Next(0, 1);
                 TitreBonus3.Text = listeAmélioration[bonus].Nom;
+                DescriptionBonus3.Text = listeAmélioration[bonus].Description;
             }
             else if (!Amélioration.IsNullOrEmpty(amélioration1) && Amélioration.IsNullOrEmpty(amélioration2))
             {
@@ -1572,6 +1597,7 @@ namespace MaelKiller
                     bonus = random.Next(0, 1);
                 } while (listeAmélioration[bonus] == amélioration1);
                 TitreBonus3.Text = listeAmélioration[bonus].Nom;
+                DescriptionBonus3.Text = listeAmélioration[bonus].Description;
             }
             //----------------------------------//
             //ROLL SUPPORTS//
@@ -1580,11 +1606,13 @@ namespace MaelKiller
             {
                 bonusAug = random.Next(0, 5);
                 TitreBonus2.Text = listeSupports[bonusAug].Nom;
+                DescriptionBonus2.Text = listeSupports[bonusAug].Description;
             }
             else if (!Supports.IsNullOrEmpty(support1) && Supports.IsNullOrEmpty(support2))
             {
                 bonusAug = random.Next(0, 5);
                 TitreBonus2.Text = listeSupports[bonusAug].Nom;
+                DescriptionBonus2.Text = listeSupports[bonusAug].Description;
             }
             else if (!Supports.IsNullOrEmpty(support1) && !Supports.IsNullOrEmpty(support2))
             {
@@ -1592,13 +1620,19 @@ namespace MaelKiller
                 if (bonusAug == 1)
                 {
                     TitreBonus2.Text = support1.Nom;
+                    DescriptionBonus2.Text = support1.Description;
                 }
-                else TitreBonus2.Text = support2.Nom;
+                else
+                {
+                    TitreBonus2.Text = support2.Nom;
+                    DescriptionBonus2.Text = support1.Description;
+                }
             }
             //----------------------------------//
             //ROLL ARMES//
             //----------------------------------//
                 TitreBonus1.Text = arme1.Nom;
+            DescriptionBonus1.Text = arme1.Description;
         }
         private void VerificationNiveauSupp()
         {
