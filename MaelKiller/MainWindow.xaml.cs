@@ -435,9 +435,31 @@ namespace MaelKiller
                 }
                 cdArme1 = cdrArme1;
             }
-
         }
 
+        private void VerifCollisionAtk()
+        {
+            foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+            {
+                if (x.Tag == "attaque")
+                {
+                    foreach (Rectangle monstrerectangle in listeMonstreRect)
+                    {
+                        int xAtk = (int)Canvas.GetLeft(x);
+                        int yAtk = (int)Canvas.GetTop(x);
+                        int Xmonstre = (int)Canvas.GetLeft(monstrerectangle);
+                        int Ymonstre = (int)Canvas.GetTop(monstrerectangle);
+                        Rect rectMonstre = new Rect(Xmonstre, Ymonstre, monstrerectangle.Width, monstrerectangle.Height);
+                        Rect atk = new Rect(xAtk, yAtk, x.Width, x.Height);
+                        if (atk.IntersectsWith(rectMonstre))
+                        {
+
+                        }
+                    }
+                }
+            }
+            
+        }
         private int InitialisationVitesseAttaque(double vitesseAttaque)
         {
             int cdrArme =(int)( 1000 / INTERVALLETICK / vitesseAttaque);
