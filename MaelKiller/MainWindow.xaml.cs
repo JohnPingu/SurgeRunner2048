@@ -96,7 +96,7 @@ namespace MaelKiller
         private Armes canon = new Armes("Canon à main", 150, 800, 0.25, 100, 1, "On ne fait plus dans la dentelle. Préparez vos propre frappes d'artiellerie directement depuis le front", false, 2);
         private Armes[]tabCanon = new Armes[10];
         private Armes[] listeArmes = new Armes[8];
-        private string couleurGlobal = "bleu";
+        private string couleurGlobal = "bleu";0
 
         //-----------------------------------//
         //SUPPORTS//
