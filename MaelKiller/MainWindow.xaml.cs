@@ -43,18 +43,21 @@ namespace MaelKiller
         private const int INTERVALLETICK = 15;
         private const double EVODEGATS = 25, EVOVITESSEATTAQUE = 1.1;
         private const int PERSOIDLE = 4, PERSORUN = 6;
+        private const int MONSTRERUN = 4;
+        private const int PERSOHURT = 2;
         
         private List<Rectangle> listeMonstreRect = new List<Rectangle>();
         private List<Monstres> listMonstre = new List<Monstres>();
 
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false, estAttaquant = false;
-        private bool niveauSupp = true;
+        private bool niveauSupp = false;
         private bool estEnHaut = false, estEnBas = false, estAGauche = false, estADroite = false;
         private double directionProjectile = 0;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
-        private int cdrRuee = 250, cdRuee;
+        private int cdrRuee = 250, cdRuee, compteRuee = 0;
         private Joueur joueur = new Joueur(25, 4, 30, 1);
+        private Joueur baseJoueur = new Joueur(25, 4, 30, 1);
         private Armes arme1, arme2;
         private Supports support1, support2;
         private Amélioration amélioration1, amélioration2;
@@ -75,11 +78,13 @@ namespace MaelKiller
         private Random random = new Random();
         private int bonusArmes, bonusAug, typeBonus, bonus;
         private int niveauArme1 = 0, niveauArme2 = 0, niveauSupport1 = 0, niveauSupport2 = 0;
+        private int cdInvincibilite;
+        private bool joueurTouche = false;
 
         //-----------------------------------//
         //ARMES//
         //-----------------------------------//
-        private Armes epee = new Armes("Épée", 25, 100, 1.5, 100, 1, "Une épée classique, solide et mortelle", true);
+        private Armes epee = new Armes("Epee", 25, 100, 1.5, 100, 1, "Une épée classique, solide et mortelle", true);
         private Armes[] tabEpee = new Armes[10];
         private Armes lance = new Armes("Lance", 30, 200, 1.2, 50, 1, "Une lance de soldat, utile pour tenir les adversaires à distance", true);
         private Armes[] tabLance = new Armes[10];
@@ -107,7 +112,7 @@ namespace MaelKiller
         private Supports[] tabExosquelette = new Supports[10];
         private Supports nanoMachine = new Supports("Nano-Machine", 1, "regen", "De nanoscopiques automates remplacent vos globules rouges pour une capacité de guérison maximale");
         private Supports[] tabNanoMachine = new Supports[10];
-        private Supports coeurOr = new Supports("Coeur en or", 1, "attraction", "Votre coeur métallique crée un champmagnétique permettant d'attirer l'expérience de plus loin");
+        private Supports coeurOr = new Supports("Coeur en or", 1, "attraction", "Votre coeur métallique augmente l'efficacité avec laquelle vous gagnez de l'expérience");
         private Supports[] tabCoeurOr = new Supports[10];
         private Supports forgeage = new Supports("Forgeage adamantin", 1, "degats", "Votre maîtrise de la forge adamantine vous offre des armes de qualité supérieure aux dégats soutenus");
         private Supports[] tabForgeage = new Supports[10];
@@ -133,9 +138,7 @@ namespace MaelKiller
         private Secrets goldenGun;
         private Secrets mechaHuman;
         private Secrets[] listeSecrets = new Secrets[3];
-
-        private Monstres robot = new Monstres("robot", 5, 20, 6, "bleu", 20);
-
+       
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
 
@@ -150,12 +153,48 @@ namespace MaelKiller
             InitializeComponent();
             Menu menu = new Menu();
             menu.ShowDialog();
+            if(menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Epee")
+            {
+                arme1 = epee;
+            }
+            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Lance")
+            {
+                arme1 = lance;
+            }
+            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Fouet")
+            {
+                arme1 = fouet;
+            }
+            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Hache")
+            {
+                arme1 = hache;
+            }
+            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Revolver")
+            {
+                arme1 = revolver;
+            }
+            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Fusil de Sniper")
+            {
+                arme1 = fusilSnip;
+            }
+            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Fusil d'Assaut")
+            {
+                arme1 = fusilAssaut;
+            }
+            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Canon")
+            {
+                arme1 = canon;
+            }
+            cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
+            cdArme1 = cdrArme1;
+            Console.WriteLine(menu.cbChoixArme.SelectedItem.ToString());
             if (menu.DialogResult == false) Application.Current.Shutdown();
             ChargementJeu();
             InitialisationAmelioration();
             intervalle.Tick += MoteurJeu;
             intervalle.Interval = TimeSpan.FromMilliseconds(INTERVALLETICK);
             intervalle.Start();
+            directionFleche[0] = 'N';
             directionFleche[1] = 'D';
             directionSkin[1] = 'D';
 
@@ -315,6 +354,11 @@ namespace MaelKiller
         {
             skinFrameCompte++;
             SkinPersonnage();
+            SkinMonstre();
+            
+            VerificationCollisionMonstreJoueur();
+            CollisionAvecJoueur();
+            
             MiseAJourBarXp();
             vitesseCam = (int)Math.Round(joueur.Vitesse / 2);
             VerifPosition();
@@ -347,6 +391,19 @@ namespace MaelKiller
                     cdRuee = cdrRuee;
                 }
             }
+            else
+            {
+                if (ruee == true)
+                {
+                    joueur.Vitesse = joueur.PorteeRuee;
+                    compteRuee++;
+                    if (compteRuee == 3)
+                    {
+                        ruee == false;
+                        joueur.Vitesse = baseJoueur.Vitesse;
+                    }
+                }
+            }
 
             //------------------------------------------------//
             //DEPLACEMENT//
@@ -373,10 +430,11 @@ namespace MaelKiller
             if (cdArme1 <= 0)
             {
                 checkFrame = cdArme1;
-                frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/Lance/Lance_G" + checkFrame + ".png"));
-                Attaque(lance, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
+                Attaque(arme1, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
+                frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/" + arme1.Nom + "/" + arme1.Nom + "_" + directionAtk[0] + directionAtk[1] + checkFrame + ".png"));
+                
             }
-            if (cdArme1 == -9) 
+            if (cdArme1 == -9)
             {
                 foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
                 {
@@ -391,9 +449,96 @@ namespace MaelKiller
                 }
                 cdArme1 = cdrArme1;
             }
+            if (!Armes.IsNullOrEmpty(arme2))
+            {
+                cdArme2 -= 1;
+                if (cdArme2 == 0)
+                {
+                    estAttaquant = true;
+                }
+                if (cdArme2 <= 0)
+                {
+                    checkFrame = cdArme2;
+                    Attaque(arme2, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
+                    frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/" + arme2.Nom + "/" + arme2.Nom + "_" + directionAtk[0] + directionAtk[1] + checkFrame + ".png"));
 
+                }
+                if (cdArme2 == -9)
+                {
+                    foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+                    {
+                        if (x is Rectangle && (string)x.Tag == "attaque")
+                        {
+                            objetsSuppr.Add(x);
+                        }
+                    }
+                    foreach (Rectangle y in objetsSuppr)
+                    {
+                        monCanvas.Children.Remove(y);
+                    }
+                    cdArme2 = cdrArme2;
+                }
+            }
+            //------------------------------------------------//
+            //EFFETS SUPPORTS//
+            //------------------------------------------------//
+            if (support1 == jambes)
+            {
+                joueur.Vitesse = baseJoueur.Vitesse + support1.Niveau;
+            }
+            else if (support2 == jambes)
+            {
+                joueur.Vitesse = baseJoueur.Vitesse + support2.Niveau;
+            }
+            if (support1 = exosquelette)
+            {
+                joueur.PvMax = baseJoueur.PvMax + 5 * support1.Niveau;
+            }
+            else if (support2 = exosquelette)
+            {
+                joueur.PvMax = baseJoueur.PvMax + 5 * support2.Niveau;
+            }
+            if (support1 == nanoMachine)
+            {
+                if (joueur.Pv + support1.Niveau < joueur.PvMax)
+                {
+                    joueur.Pv += support1.Niveau;
+                }
+                else joueur.Pv = joueur.PvMax;
+            }
+            else if (support2 == nanoMachine)
+            {
+                if (joueur.Pv + support2.Niveau < joueur.PvMax)
+                {
+                    joueur.Pv += support2.Niveau;
+                }
+                else joueur.Pv = joueur.PvMax;
+            }
         }
 
+        private void VerifCollisionAtk(Armes arme)
+        {
+            foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+            {
+                if (x.Tag == "attaque")
+                {
+                    foreach (Rectangle monstrerectangle in listeMonstreRect)
+                    {
+                        int xAtk = (int)Canvas.GetLeft(x);
+                        int yAtk = (int)Canvas.GetTop(x);
+                        int Xmonstre = (int)Canvas.GetLeft(monstrerectangle);
+                        int Ymonstre = (int)Canvas.GetTop(monstrerectangle);
+                        Rect rectMonstre = new Rect(Xmonstre, Ymonstre, monstrerectangle.Width, monstrerectangle.Height);
+                        Rect atk = new Rect(xAtk, yAtk, x.Width, x.Height);
+                        if (atk.IntersectsWith(rectMonstre))
+                        {
+
+                        }
+                    }
+                }
+            }
+            
+        }
         private int InitialisationVitesseAttaque(double vitesseAttaque)
         {
             int cdrArme =(int)( 1000 / INTERVALLETICK / vitesseAttaque);
@@ -519,22 +664,18 @@ namespace MaelKiller
         private void InitialisationArmes(Armes[] tabArmes, Armes arme)
         {
             tabArmes[0] = arme;
-            for (int i = 1; i<tabNanoMachine.Length; i++)
+            for (int i = 1; i<tabArmes.Length; i++)
             {
                 tabArmes[i] = new Armes(tabArmes[i - 1].Nom, tabArmes[i - 1].Degats + EVODEGATS, tabArmes[i - 1].Portee, tabArmes[i - 1].VitesseAttaque * EVOVITESSEATTAQUE, tabArmes[i - 1].Taille, tabArmes[i - 1].Niveau +1, tabArmes[i - 1].Description, tabArmes[i - 1].EstMelee, tabArmes[i - 1].VitesseProjectile, tabArmes[i - 1].Amplitude);
             }
         }
-        private Supports[] InitialisationSupports(Supports supports) 
+        private void InitialisationSupports(Supports[] tabSupports,Supports supports) 
         {
-            Supports[] tabSupports;
-            tabSupports = new Supports[11];
             tabSupports[0] = supports;
             for (int i = 1;i < tabSupports.Length;i++) 
             {
-                tabSupports[i] = supports;
-                tabSupports[i].Niveau = i;
+                tabSupports[i] = new Supports(tabSupports[i - 1].Nom, tabSupports[i - 1].Niveau + 1, tabSupports[i - 1].Multiplieur, tabSupports[i - 1].Description);
             }
-            return tabSupports;
         }
         private void Deplacements()
         {
@@ -727,14 +868,16 @@ namespace MaelKiller
             {
                 int Xmonstre = (int)Canvas.GetLeft(monstrerectangle);
                 int Ymonstre = (int)Canvas.GetTop(monstrerectangle);
-                int Xjoueur = (int)Canvas.GetTop(rect_Joueur);
+                int Xjoueur = (int)Canvas.GetLeft(rect_Joueur);
                 int Yjoueur = (int)Canvas.GetTop(rect_Joueur);
                 Rect monstrerect = new Rect(Xmonstre,Ymonstre,monstrerectangle.Width, monstrerectangle.Height);
                 Rect joueurrect = new Rect(Xjoueur, Yjoueur, rect_Joueur.Width, rect_Joueur.Height);
-                bool collision = monstrerect.IntersectsWith(joueurrect);
-                if (collision)
+                if (monstrerect.IntersectsWith(joueurrect) && joueurTouche == false)
                 {
-                    CollisionAvecJoueur();
+                    joueurTouche = true;
+                } else
+                {
+                    joueurTouche = false;
                 }
             }
         }
@@ -990,22 +1133,22 @@ namespace MaelKiller
         private void GenerationMonstreHasard()
         {
             Random random = new Random();
-            double nbHasard = random.Next(1, 3);
+            double nbHasard = random.Next(1, 4);
             switch (nbHasard) {
                 case 1:
-                    Monstres robot = new Monstres("robot", 5, 20, 2, "bleu", 20);
-                    robot.Couleur = couleurGlobal;
-                    ApparitionMonstre(robot);
+                    Monstres robotDrone1 = new Monstres("drone1", 5, 20, 1, "bleu", 20);
+                    robotDrone1.Couleur = couleurGlobal;
+                    ApparitionMonstre(robotDrone1);
                     break;
                 case 2:
-                    Monstres nouveauMonstre2 = new Monstres("robot", 5, 20, 2, "bleu", 20);
-                    nouveauMonstre2.Couleur = couleurGlobal;
-                    ApparitionMonstre(nouveauMonstre2);
+                    Monstres robotDrone2 = new Monstres("drone2", 5, 20, 1, "bleu", 20);
+                    robotDrone2.Couleur = couleurGlobal;
+                    ApparitionMonstre(robotDrone2);
                     break;
                 case 3:
-                    Monstres nouveauMonstre3 = new Monstres("robot", 5, 20, 2, "bleu", 20);
-                    nouveauMonstre3.Couleur = couleurGlobal;
-                    ApparitionMonstre(nouveauMonstre3);
+                    Monstres robotDrone3 = new Monstres("drone3", 5, 20, 1, "bleu", 20);
+                    robotDrone3.Couleur = couleurGlobal;
+                    ApparitionMonstre(robotDrone3);
                     break;
             }
             
@@ -1020,13 +1163,19 @@ namespace MaelKiller
                 Width = 60,
             };
 
-            if (monstre.Nom == "robot") 
+            if (monstre.Nom == "drone1") 
             {
                 nouveauMonstreRect.Height = 96;
                 nouveauMonstreRect.Width = 96;
-                drone.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Monstre/Drone/Idle/1.png"));
-                nouveauMonstreRect.Fill = drone;
-            };
+            } else if (monstre.Nom == "drone2")
+            {
+                nouveauMonstreRect.Height = 96;
+                nouveauMonstreRect.Width = 96;
+            } else if (monstre.Nom == "drone3")
+            {
+                nouveauMonstreRect.Height = 72;
+                nouveauMonstreRect.Width = 72;
+            }
 
             if (monstre.Couleur == "rouge")
             {
@@ -1052,7 +1201,7 @@ namespace MaelKiller
             int coorX = 0;
             int coorY = 0;
 
-            rdm = random.Next(1,4);
+            rdm = random.Next(1,3);
 
             switch (rdm)
             {
@@ -1085,11 +1234,51 @@ namespace MaelKiller
         {
             if (!gauche && !droite && !haut && !bas)
             {
-                skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoIdle_" + directionSkin[1] + "_" + (skinFrameCompte / INTERVALLETICK % PERSOIDLE) + ".png")); 
+                if (joueurTouche == false)
+                {
+                    skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoIdle_" + directionSkin[1] + "_" + (skinFrameCompte / INTERVALLETICK % PERSOIDLE) + ".png"));
+                } else
+                {
+                    skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoHurt_" + directionSkin[1] + "_" + (skinFrameCompte / INTERVALLETICK % PERSOHURT) + ".png"));
+                }
             }
             else
             {
-                skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoRun_" + directionSkin[1] + "_" + (skinFrameCompte / 10 % PERSORUN) + ".png"));
+                if (joueurTouche == false)
+                {
+                    skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoRun_" + directionSkin[1] + "_" + (skinFrameCompte / 10 % PERSORUN) + ".png"));
+                } else
+                {
+                    skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoHurt_" + directionSkin[1] + "_" + (skinFrameCompte / INTERVALLETICK % PERSOHURT) + ".png"));
+                }
+            }
+        }
+
+        private void SkinMonstre()
+        {
+            foreach(Monstres monstre in listMonstre)
+            {
+                ImageBrush skinrobot = new ImageBrush();
+                int index = monstre.Index - 1;
+                int nombreSkin = 0;
+                if (monstre.Nom == "drone1")
+                {
+                    nombreSkin = 1;
+                } else if (monstre.Nom == "drone2")
+                {
+                    nombreSkin = 2;
+                } else if (monstre.Nom == "drone3")
+                {
+                    nombreSkin = 3;
+                }
+                if (Canvas.GetLeft(listeMonstreRect[index]) >= Canvas.GetLeft(rect_Joueur))
+                {
+                    skinrobot.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/monstre/drone" + nombreSkin +"/walk/walk_g_" + ((skinFrameCompte / INTERVALLETICK % MONSTRERUN) + 1) + ".png"));
+                } else
+                {
+                    skinrobot.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/monstre/drone" + nombreSkin +"/walk/walk_d_" + ((skinFrameCompte / INTERVALLETICK % MONSTRERUN) + 1) + ".png"));
+                }
+                listeMonstreRect[index].Fill = skinrobot;
             }
         }
         private void MiseEnPause()
@@ -1316,12 +1505,12 @@ namespace MaelKiller
             InitialisationArmes(tabFusilSnip, fusilSnip);
             InitialisationArmes(tabFusilAssaut, fusilAssaut);
             InitialisationArmes(tabCanon, canon);
-            tabJambes = InitialisationSupports(jambes);
-            tabExosquelette = InitialisationSupports(exosquelette);
-            tabNanoMachine = InitialisationSupports(nanoMachine);
-            tabCoeurOr = InitialisationSupports(coeurOr);
-            tabForgeage = InitialisationSupports(forgeage);
-            tabRevêtement = InitialisationSupports(revetement);
+            InitialisationSupports(tabJambes, jambes);
+            InitialisationSupports(tabExosquelette, exosquelette);
+            InitialisationSupports(tabNanoMachine, nanoMachine);
+            InitialisationSupports(tabCoeurOr, coeurOr);
+            InitialisationSupports(tabForgeage, forgeage);
+            InitialisationSupports(tabRevêtement, revetement);
             listeArmes[0] = tabEpee[1];
             listeArmes[1] = tabLance[1];
             listeArmes[2] = tabFouet[1];

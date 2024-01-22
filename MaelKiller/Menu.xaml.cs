@@ -37,10 +37,9 @@ namespace MaelKiller
             DialogResult = true;
             if (cbiDiffExtreme.IsSelected = true)
             {
-                extremeDiff = true; 
+                extremeDiff = true;
             }
             this.Close();
         }
-                
     }
 }

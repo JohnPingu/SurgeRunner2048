@@ -13,6 +13,16 @@
             <ComboBoxItem x:Name="cbiDiffNormale" IsSelected="True" Content="Normale"/>
             <ComboBoxItem x:Name="cbiDiffExtreme" Content="Extrême"/>
         </ComboBox>
+        <ComboBox x:Name="cbChoixArme" Height="30" Width="150" Canvas.Left="525" Canvas.Top="670" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <ComboBoxItem x:Name="cbiEpee" IsSelected="True" Content="Epee"/>
+            <ComboBoxItem x:Name="cbiLance" Content="Lance"/>
+            <ComboBoxItem x:Name="cbiFouet" Content="Fouet"/>
+            <ComboBoxItem x:Name="cbiHache" Content="Hache"/>
+            <ComboBoxItem x:Name="cbiRevolver" Content="Revolver"/>
+            <ComboBoxItem x:Name="cbiFusilSnip" Content="Fusil de Sniper"/>
+            <ComboBoxItem x:Name="cbiFusilAssaut" Content="Fusil d'Assaut"/>
+            <ComboBoxItem x:Name="cbiCanon" Content="Canon"/>
+        </ComboBox>
         <Button x:Name="butPlay" Content="" Height="106" Canvas.Left="473" Canvas.Top="462" Width="251" BorderBrush="{x:Null}" Click="Button_Click" Background="White" Foreground="{x:Null}"/>
     </Canvas>
 </Window>
