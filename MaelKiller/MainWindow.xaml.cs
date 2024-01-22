@@ -516,6 +516,7 @@ namespace MaelKiller
                                                 VerificationNiveauSupp();
                                                 rectMonstre.Offset(-2000, -2000);
                                                 monstre.Pv = 1000000000000;
+                                                monstre.Degats = 0;
                                             }
                                             monstre.DegatsPossible = false;
                                         }
@@ -1496,16 +1497,6 @@ namespace MaelKiller
         }
         public void NiveauSupérieur()
         {
-            listeArmes[0] = new Armes(tabEpee[listeArmes[0].Niveau].Nom, tabEpee[listeArmes[0].Niveau].Degats, tabEpee[listeArmes[0].Niveau].Portee, tabEpee[listeArmes[0].Niveau].VitesseAttaque, tabEpee[listeArmes[0].Niveau].Taille, tabEpee[listeArmes[0].Niveau].Niveau, tabEpee[listeArmes[0].Niveau].Description, tabEpee[listeArmes[0].Niveau].EstMelee, tabEpee[listeArmes[0].Niveau].VitesseProjectile, tabEpee[listeArmes[0].Niveau].Amplitude);
-            listeArmes[1] = new Armes(tabLance[listeArmes[1].Niveau].Nom, tabLance[listeArmes[1].Niveau].Degats, tabLance[listeArmes[1].Niveau].Portee, tabLance[listeArmes[1].Niveau].VitesseAttaque, tabLance[listeArmes[1].Niveau].Taille, tabLance[listeArmes[1].Niveau].Niveau, tabLance[listeArmes[1].Niveau].Description, tabLance[listeArmes[1].Niveau].EstMelee, tabLance[listeArmes[1].Niveau].VitesseProjectile, tabLance[listeArmes[1].Niveau].Amplitude);
-            listeArmes[2] = new Armes(tabFouet[listeArmes[2].Niveau].Nom, tabFouet[listeArmes[2].Niveau].Degats, tabFouet[listeArmes[2].Niveau].Portee, tabFouet[listeArmes[2].Niveau].VitesseAttaque, tabFouet[listeArmes[2].Niveau].Taille, tabFouet[listeArmes[2].Niveau].Niveau, tabFouet[listeArmes[2].Niveau].Description, tabFouet[listeArmes[2].Niveau].EstMelee, tabFouet[listeArmes[2].Niveau].VitesseProjectile, tabFouet[listeArmes[2].Niveau].Amplitude);
-            listeArmes[3] = new Armes(tabHache[listeArmes[3].Niveau].Nom, tabHache[listeArmes[3].Niveau].Degats, tabHache[listeArmes[3].Niveau].Portee, tabHache[listeArmes[3].Niveau].VitesseAttaque, tabHache[listeArmes[3].Niveau].Taille, tabHache[listeArmes[3].Niveau].Niveau, tabHache[listeArmes[3].Niveau].Description, tabHache[listeArmes[3].Niveau].EstMelee, tabHache[listeArmes[3].Niveau].VitesseProjectile, tabHache[listeArmes[3].Niveau].Amplitude);
-            listeSupports[0] = tabJambes[0];
-            listeSupports[1] = tabExosquelette[0];
-            listeSupports[2] = tabNanoMachine[0];
-            listeSupports[3] = tabCoeurOr[0];
-            listeSupports[4] = tabForgeage[0];
-            listeSupports[5] = tabRevêtement[0];
             //----------------------------------//
             //ROLL AMELIORATIONS//
             //----------------------------------//
@@ -1557,6 +1548,7 @@ namespace MaelKiller
                 NiveauSupérieur();
                 niveauSupp = true;
                 MiseEnPause();
+                xpPourNvSup = joueur.XpPourNiveauSuivant;
             }
         }
     }

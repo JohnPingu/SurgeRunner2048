@@ -86,7 +86,7 @@ namespace MaelKiller
             get { return degats; }
             set 
             {
-                if (value <= 0) throw new ArgumentOutOfRangeException("Les dégats doit être supérieur à 0");
+                if (value < 0) throw new ArgumentOutOfRangeException("Les dégats doit être supérieur à 0");
                 degats = value; 
             }
         }
