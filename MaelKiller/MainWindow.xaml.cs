@@ -465,6 +465,7 @@ namespace MaelKiller
                     Attaque(arme2, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
                     frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/" + arme2.Nom + "/" + arme2.Nom + "_" + directionAtk[0] + directionAtk[1] + checkFrame + ".png"));
                     VerifCollisionAtk(arme2);
+                    
                 }
                 if (cdArme2 == -9)
                 {
@@ -517,6 +518,7 @@ namespace MaelKiller
                 }
                 else joueur.Pv = joueur.PvMax;
             }
+            Console.WriteLine(arme1);
         }
 
         private void VerifCollisionAtk(Armes arme)
@@ -553,6 +555,7 @@ namespace MaelKiller
                                             joueur.GainExperience(monstre.Degats);
                                             VerificationNiveauSupp();
                                             rectMonstre.Offset(-2000,-2000);
+                                            monstre.Pv = 1000000000000;
                                         }
                                         monstre.DegatsPossible = false;
                                     }
