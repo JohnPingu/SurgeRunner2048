@@ -77,6 +77,7 @@ namespace MaelKiller
         private Random random = new Random();
         private int bonusArmes, bonusAug, typeBonus, bonus;
         private int niveauArme1 = 0, niveauArme2 = 0, niveauSupport1 = 0, niveauSupport2 = 0;
+        private int cdInvincibilite;
         private bool joueurTouche = false;
 
         //-----------------------------------//
@@ -771,24 +772,18 @@ namespace MaelKiller
                 int Yjoueur = (int)Canvas.GetTop(rect_Joueur);
                 Rect monstrerect = new Rect(Xmonstre,Ymonstre,monstrerectangle.Width, monstrerectangle.Height);
                 Rect joueurrect = new Rect(Xjoueur, Yjoueur, rect_Joueur.Width, rect_Joueur.Height);
-                if (monstrerect.IntersectsWith(joueurrect))
+                if (monstrerect.IntersectsWith(joueurrect) && joueurTouche == false)
                 {
                     joueurTouche = true;
+                } else
+                {
+                    joueurTouche = false;
                 }
             }
         }
         private void CollisionAvecJoueur()
         {
-            if(joueurTouche == false)
-            {
-                joueurTouche = true;
-                int cdInvincibilite = increment + 2;
-                if(cdInvincibilite <= increment)
-                {
-                    Console.WriteLine("JOUEUR TOUCHE EST EGAL FALSE");
-                    joueurTouche = false;
-                }
-            } 
+
         }
         
         private void DeplacementMonstre()
@@ -1041,17 +1036,17 @@ namespace MaelKiller
             double nbHasard = random.Next(1, 4);
             switch (nbHasard) {
                 case 1:
-                    Monstres robotDrone1 = new Monstres("drone1", 5, 20, 2, "bleu", 20);
+                    Monstres robotDrone1 = new Monstres("drone1", 5, 20, 1, "bleu", 20);
                     robotDrone1.Couleur = couleurGlobal;
                     ApparitionMonstre(robotDrone1);
                     break;
                 case 2:
-                    Monstres robotDrone2 = new Monstres("drone2", 5, 20, 2, "bleu", 20);
+                    Monstres robotDrone2 = new Monstres("drone2", 5, 20, 1, "bleu", 20);
                     robotDrone2.Couleur = couleurGlobal;
                     ApparitionMonstre(robotDrone2);
                     break;
                 case 3:
-                    Monstres robotDrone3 = new Monstres("drone3", 5, 20, 2, "bleu", 20);
+                    Monstres robotDrone3 = new Monstres("drone3", 5, 20, 1, "bleu", 20);
                     robotDrone3.Couleur = couleurGlobal;
                     ApparitionMonstre(robotDrone3);
                     break;
