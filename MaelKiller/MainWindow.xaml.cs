@@ -72,6 +72,7 @@ namespace MaelKiller
         private int skinFrameCompte = 0;
         private double xpPourNvSup;
 
+
         private bool CameraEstEnMouvement = false;
         private double CameraMouvement = 0;
 
@@ -222,6 +223,16 @@ namespace MaelKiller
         private void ChargementJeu()
         {
             rejouer_rect.Visibility = Visibility.Hidden;
+            rejouer_rect.IsEnabled = false;
+            rejouertBut.Visibility = Visibility.Hidden;
+            rejouertBut.IsEnabled = false;
+            quitterbut.Visibility = Visibility.Hidden;
+            quitterbut.IsEnabled = false;
+
+            listMonstre.Clear();
+            listeMonstreRect.Clear();
+            joueur.PeutPrendreDegats = true;
+            joueur.Pv = joueur.PvMax;
 
             DebutChrono = DateTime.Now;
             ImageBrush brush1 = new ImageBrush();
@@ -280,6 +291,28 @@ namespace MaelKiller
             intervalle.Stop();
             rejouer_rect.IsEnabled = true;
             rejouer_rect.Visibility = Visibility.Visible;
+            rejouertBut.Visibility = Visibility.Visible;
+            rejouertBut.IsEnabled = true;
+            quitterbut.Visibility = Visibility.Visible;
+            quitterbut.IsEnabled = true;
+            foreach (Rectangle y in listeMonstreRect)
+            {
+                objetsSuppr.Add(y);
+            }
+            foreach (Rectangle y in monCanvas.Children.OfType<Rectangle>())
+            {
+                if((string)y.Tag == "flecheAtk" || (string)y.Tag == "attaque")
+                {
+                    objetsSuppr.Add(y);
+                }
+            }
+            foreach (Rectangle y in objetsSuppr)
+            {
+                monCanvas.Children.Remove(y);
+            }
+            listeMonstreRect.Clear();
+            listMonstre.Clear();
+            
         }
 
         private void FenetrePrincipale_KeyDown(object sender, KeyEventArgs e)
@@ -687,6 +720,21 @@ namespace MaelKiller
             Console.WriteLine("Atk : " + directionAtk[0] + " " + directionAtk[1]);
             Console.WriteLine("Haut : " + haut + "\nBas : " + bas + "\nGauche : " + gauche + "\nDroite : " + droite);
 #endif
+        }
+
+        private void rejouertBut_Click(object sender, RoutedEventArgs e)
+        {
+            ChargementJeu();
+        }
+
+        private void quitterbut_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void TirArmeDistance()
+        {
+
         }
         private void InitialisationArmes(Armes[] tabArmes, Armes arme)
         {
@@ -1320,6 +1368,7 @@ namespace MaelKiller
                 {
                     nombreSkin = 3;
                 }
+
                 if (Canvas.GetLeft(listeMonstreRect[index]) >= Canvas.GetLeft(rect_Joueur))
                 {
                     skinrobot.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/monstre/drone" + nombreSkin + "/walk/walk_g_" + ((skinFrameCompte / INTERVALLETICK % MONSTRERUN) + 1) + ".png"));
@@ -1330,6 +1379,7 @@ namespace MaelKiller
                 }
                 listeMonstreRect[index].Fill = skinrobot;
             }
+            
         }
         private void MiseEnPause()
         {
