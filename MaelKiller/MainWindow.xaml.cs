@@ -444,23 +444,23 @@ namespace MaelKiller
             //------------------------------------------------//
             //EFFETS SUPPORTS//
             //------------------------------------------------//
-            if (support1 == jambes)
+            if (support1.Nom == jambes.Nom)
             {
                 joueur.Vitesse = baseJoueur.Vitesse + support1.Niveau;
             }
-            else if (support2 == jambes)
+            else if (support2.Nom == jambes.Nom)
             {
                 joueur.Vitesse = baseJoueur.Vitesse + support2.Niveau;
             }
-            if (support1 == exosquelette)
+            if (support1.Nom == exosquelette.Nom)
             {
                 joueur.PvMax = baseJoueur.PvMax + 5 * support1.Niveau;
             }
-            else if (support2 == exosquelette)
+            else if (support2.Nom == exosquelette.Nom)
             {
                 joueur.PvMax = baseJoueur.PvMax + 5 * support2.Niveau;
             }
-            if (support1 == nanoMachine)
+            if (support1.Nom == nanoMachine.Nom)
             {
                 if (joueur.Pv + support1.Niveau < joueur.PvMax)
                 {
@@ -468,7 +468,7 @@ namespace MaelKiller
                 }
                 else joueur.Pv = joueur.PvMax;
             }
-            else if (support2 == nanoMachine)
+            else if (support2.Nom == nanoMachine.Nom)
             {
                 if (joueur.Pv + support2.Niveau < joueur.PvMax)
                 {
@@ -476,7 +476,22 @@ namespace MaelKiller
                 }
                 else joueur.Pv = joueur.PvMax;
             }
-            Console.WriteLine(arme1);
+            if (support1.Nom == coeurOr.Nom)
+            {
+                joueur.Xp += joueur.Xp / 5 * support1.Niveau / 100;
+            }
+            else if (support2.Nom == coeurOr.Nom)
+            {
+                joueur.Xp = joueur.Xp / support2.Niveau / 100;
+            }
+            if (support1.Nom == revetement.Nom)
+            {
+                cdrArme1 = (int)(1000 / INTERVALLETICK / (arme1.VitesseAttaque * support1.Niveau));
+            }
+            else if (support2.Nom == revetement.Nom)
+            {
+                cdrArme1 = (int)(1000 / INTERVALLETICK / (arme1.VitesseAttaque * support2.Niveau));
+            }
         }
 
         private void VerifCollisionAtk(Armes arme)
@@ -508,7 +523,15 @@ namespace MaelKiller
                                     {
                                         if (monstre.DegatsPossible == true)
                                         {
-                                            monstre.Pv -= arme.Degats;
+                                            if (support1.Nom == forgeage.Nom)
+                                            {
+                                                monstre.Pv -= arme.Degats + (arme.Degats / 5 * support1.Niveau / 100);
+                                            }
+                                            else if (support2.Nom == forgeage.Nom)
+                                            {
+                                                monstre.Pv -= arme.Degats + (arme.Degats / 5 * support2.Niveau / 100);
+                                            }
+                                            else monstre.Pv -= arme.Degats;
                                             if (monstre.Pv <= 0)
                                             {
                                                 objetsSuppr.Add(listeMonstreRect[i]);
