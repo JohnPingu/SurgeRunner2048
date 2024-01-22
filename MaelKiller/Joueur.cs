@@ -27,7 +27,7 @@ namespace MaelKiller
             Niveau = niveau;
             Pv = pvMax;
             Xp = xp;
-            XpPourNiveauSuivant = 100;
+            XpPourNiveauSuivant = 200;
             estMort = false;
             peutPrendreDegats = true;
         }
