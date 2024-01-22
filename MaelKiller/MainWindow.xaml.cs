@@ -30,7 +30,6 @@ namespace MaelKiller
         private bool pause = false;
         private int seconde = 0;
         private int minute = 0;
-        private int tempsSeconde = 0;
         DispatcherTimer timer = new DispatcherTimer();
         TimeSpan tempsEcoule = new TimeSpan();
         private DateTime DebutChrono = new DateTime();
@@ -164,6 +163,7 @@ namespace MaelKiller
             directionFleche[1] = 'D';
             directionSkin[1] = 'D';
 
+
             Rectangle fleche = new Rectangle
             {
                 Tag = "flecheAtk",
@@ -221,6 +221,8 @@ namespace MaelKiller
 
         private void ChargementJeu()
         {
+            rejouer_rect.Visibility = Visibility.Hidden;
+
             DebutChrono = DateTime.Now;
             ImageBrush brush1 = new ImageBrush();
             brush1.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/map.png"));
@@ -228,6 +230,17 @@ namespace MaelKiller
             timer.Tick += MinuterieTick;
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
+            InitialisationAmelioration();
+            intervalle.Tick += MoteurJeu;
+            intervalle.Interval = TimeSpan.FromMilliseconds(INTERVALLETICK);
+            intervalle.Start();
+            directionFleche[0] = 'N';
+            directionFleche[1] = 'D';
+            directionSkin[1] = 'D';
+            CameraMouvement = 0;
+            CameraEstEnMouvement = false;
+            seconde = 0;
+            minute = 0;
         }
 
         private void MiseAJourBarXp()
@@ -235,6 +248,12 @@ namespace MaelKiller
             barXP.Minimum = 0;
             barXP.Maximum = joueur.XpPourNiveauSuivant;
             barXP.Value = joueur.Xp;
+        }
+        private void MiseAJourBarHp()
+        {
+            barHp.Minimum = 0;
+            barHp.Maximum = joueur.PvMax;
+            barHp.Value = joueur.Pv;
         }
 
 
@@ -255,7 +274,13 @@ namespace MaelKiller
             }
         }
 
-
+        private void GameOver()
+        {
+            timer.Stop();
+            intervalle.Stop();
+            rejouer_rect.IsEnabled = true;
+            rejouer_rect.Visibility = Visibility.Visible;
+        }
 
         private void FenetrePrincipale_KeyDown(object sender, KeyEventArgs e)
         {
@@ -327,6 +352,7 @@ namespace MaelKiller
             VerificationCollisionMonstreJoueur();
             CollisionAvecJoueur();
 
+            MiseAJourBarHp();
             MiseAJourBarXp();
             vitesseCam = (int)Math.Round(joueur.Vitesse / 2);
             VerifPosition();
@@ -459,9 +485,9 @@ namespace MaelKiller
         {
             for (int i = 0; i < listeMonstreRect.Count; i++)
             {
-                foreach (Rectangle atk in monCanvas.Children.OfType<Rectangle>())
+                if (x.Tag == "attaque")
                 {
-                    if (atk.Tag == "attaque")
+                    foreach (Rectangle monstrerectangle in listeMonstreRect)
                     {
                         int xMonstre = (int)Canvas.GetLeft(listeMonstreRect[i]);
                         int yMonstre = (int)Canvas.GetTop(listeMonstreRect[i]);
@@ -561,11 +587,6 @@ namespace MaelKiller
                         }
                     }
                 }
-                else
-                {
-                    TirArmeDistance();
-                }
-
             }
             else
             {
@@ -845,17 +866,26 @@ namespace MaelKiller
                 Rect joueurrect = new Rect(Xjoueur, Yjoueur, rect_Joueur.Width, rect_Joueur.Height);
                 if (monstrerect.IntersectsWith(joueurrect) && joueurTouche == false)
                 {
-                    joueurTouche = true;
+                    if (joueur.PeutPrendreDegats == true)
+                    {
+                        joueur.PeutPrendreDegats = false;
+                        joueur.PrendreDegats(monstre.Degats);
+                        Console.Write("Joueur perd des HP :" + joueur.Pv);
+                        if (joueur.EstMort)
+                        {
+                            GameOver();
+                            Console.Write("GAMEOVER");
+                        }
+                        break;
+                    }
                 }
-                else
+                decompteDegatsJoueur--;
+                if (decompteDegatsJoueur <= 0)
                 {
-                    joueurTouche = false;
+                    joueur.PeutPrendreDegats = true;
+                    decompteDegatsJoueur = 175;
                 }
             }
-        }
-        private void CollisionAvecJoueur()
-        {
-
         }
 
         private void DeplacementMonstre()
@@ -1109,17 +1139,17 @@ namespace MaelKiller
             switch (nbHasard)
             {
                 case 1:
-                    Monstres robotDrone1 = new Monstres("drone1", 5, 50, 1, "bleu", 20);
+                    Monstres robotDrone1 = new Monstres("drone1", 5, 20, 1, "bleu", 20);
                     robotDrone1.Couleur = couleurGlobal;
                     ApparitionMonstre(robotDrone1);
                     break;
                 case 2:
-                    Monstres robotDrone2 = new Monstres("drone2", 5, 50, 1, "bleu", 20);
+                    Monstres robotDrone2 = new Monstres("drone2", 5, 20, 1, "bleu", 20);
                     robotDrone2.Couleur = couleurGlobal;
                     ApparitionMonstre(robotDrone2);
                     break;
                 case 3:
-                    Monstres robotDrone3 = new Monstres("drone3", 5, 50, 1, "bleu", 20);
+                    Monstres robotDrone3 = new Monstres("drone3", 5, 20, 1, "bleu", 20);
                     robotDrone3.Couleur = couleurGlobal;
                     ApparitionMonstre(robotDrone3);
                     break;
@@ -1167,7 +1197,6 @@ namespace MaelKiller
             monCanvas.Children.Add(nouveauMonstreRect);
             listMonstre.Add(monstre);
             numMonstre++;
-            monstre.CompteDegats = FRAMEATK;
         }
 
         private void PlacerNouveauMonstre(Rectangle monstre)
@@ -1365,7 +1394,7 @@ namespace MaelKiller
             //---------------------------------------------------//
             if (Armes.IsNullOrEmpty(arme1))
             {
-                arme1 = new Armes(listeArmes[bonusAug].Nom, listeArmes[bonusAug].Degats, listeArmes[bonusAug].Portee, listeArmes[bonusAug].VitesseAttaque, listeArmes[bonusAug].Taille, listeArmes[bonusAug].Niveau, listeArmes[bonusAug].Description, listeArmes[bonusAug].EstMelee, listeArmes[bonusAug].VitesseProjectile, listeArmes[bonusAug].Amplitude);
+                arme1 = listeArmes[bonusAug];
                 listeArmes[bonusAug].Niveau++;
             }
             cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
@@ -1399,7 +1428,7 @@ namespace MaelKiller
             //---------------------------------------------------//
             if (Armes.IsNullOrEmpty(arme1))
             {
-                arme1 = new Armes(listeArmes[bonus].Nom, listeArmes[bonus].Degats, listeArmes[bonus].Portee, listeArmes[bonus].VitesseAttaque, listeArmes[bonus].Taille, listeArmes[bonus].Niveau, listeArmes[bonus].Description, listeArmes[bonus].EstMelee, listeArmes[bonus].VitesseProjectile, listeArmes[bonus].Amplitude);
+                arme1 = listeArmes[bonus];
                 listeArmes[bonus].Niveau++;
             }
             cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
@@ -1438,7 +1467,7 @@ namespace MaelKiller
             InitialisationSupports(tabCoeurOr, coeurOr);
             InitialisationSupports(tabForgeage, forgeage);
             InitialisationSupports(tabRevêtement, revetement);
-            listeArmes[0] = new Armes(tabEpee[1].Nom, tabEpee[1].Degats, tabEpee[1].Portee, tabEpee[1].VitesseAttaque, tabEpee[1].Taille, tabEpee[1].Niveau, tabEpee[1].Description, tabEpee[1].EstMelee, tabEpee[1].VitesseProjectile, tabEpee[1].Amplitude);
+            listeArmes[0] = tabEpee[1];
             listeArmes[1] = tabLance[1];
             listeArmes[2] = tabFouet[1];
             listeArmes[3] = tabHache[1];
@@ -1540,17 +1569,6 @@ namespace MaelKiller
                 TitreBonus1.Text = listeArmes[bonusArmes].Nom;
                 TitreBonus2.Text = listeArmes[bonusAug].Nom;
                 TitreBonus3.Text = listeArmes[bonus].Nom;
-            }
-        }
-        private void VerificationNiveauSupp()
-        {
-            if (joueur.XpPourNiveauSuivant != xpPourNvSup)
-            {
-                NiveauSupérieur();
-                niveauSupp = true;
-                MiseEnPause();
-                niveauSupp = false;
-                xpPourNvSup = joueur.XpPourNiveauSuivant;
             }
         }
     }

@@ -57,7 +57,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Center"
-            Content="chrono1"
+            Content="00:00"
             FontFamily="Nachlieli CLM LightOblique"
             FontSize="48"
             Foreground="White" Background="{x:Null}" />
@@ -206,5 +206,8 @@
             Tag="Pause"
             Visibility="Hidden" />
         <ProgressBar x:Name="barHp" Height="40" Canvas.Left="960" Canvas.Top="70" Width="200" HorizontalAlignment="Center" RenderTransformOrigin="0.39,0.201" VerticalAlignment="Top" BorderBrush="White"/>
+        <Rectangle x:Name="rejouer_rect" Height="789" Stroke="Black" Width="1200" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top" IsEnabled="False" Visibility="Hidden"/>
+        <Button x:Name="rejouertBut" Content="REJOUER" Height="100" Canvas.Left="491" Canvas.Top="498" Width="218" HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False" Visibility="Hidden"/>
+        <Button x:Name="quitterbut" Content="QUITTER" Height="89" Canvas.Left="491" Canvas.Top="637" Width="218" HorizontalAlignment="Center" VerticalAlignment="Top" IsEnabled="False" Visibility="Hidden"/>
     </Canvas>
 </Window>
