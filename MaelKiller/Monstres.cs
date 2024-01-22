@@ -19,6 +19,7 @@ namespace MaelKiller
         private int index;
         private int compteDegats;
         private bool degatsPossible;
+        private bool peutAttaquer;
 
         public Monstres(string nom, double degats, double pvMax, double vitesse, string couleur, int mutation, int experience)
         {
@@ -29,6 +30,7 @@ namespace MaelKiller
             Couleur = couleur;
             Mutation = mutation;
             Experience = experience;
+            PeutAttaquer = true;
         }
         public Monstres(string nom, double degats, double pvMax, double vitesse, string couleur, int experience)
         {
@@ -39,6 +41,7 @@ namespace MaelKiller
             Couleur = couleur;
             Mutation = 0;
             Experience = experience;
+            PeutAttaquer = true;
         }
 
         public Monstres()
@@ -139,6 +142,8 @@ namespace MaelKiller
 
         public int CompteDegats { get => compteDegats; set => compteDegats = value; }
         public bool DegatsPossible { get => degatsPossible; set => degatsPossible = value; }
+
+        public bool PeutAttaquer { get => peutAttaquer; set => peutAttaquer = value; }
 
         public override bool Equals(object? obj)
         {
