@@ -350,6 +350,13 @@
     <None Update="ressources\img\Game\Armes\Lance\Lance_BN0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Compile Remove="ressources\img\Game\monstre\drone\**" />
+    <EmbeddedResource Remove="ressources\img\Game\monstre\drone\**" />
+    <None Remove="ressources\img\Game\monstre\drone\**" />
+    <Page Remove="ressources\img\Game\monstre\drone\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="ressources\img\Game\Armes\Lance\Lance_G-1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -596,7 +603,124 @@
     <None Update="ressources\img\Game\map.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="ressources\img\Game\Monstre\Drone\Idle\1.png">
+    <None Update="ressources\img\Game\Monstre\drone1\walk\walk_d_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone1\walk\walk_d_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone1\walk\walk_d_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone1\walk\walk_d_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone1\walk\walk_g_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone1\walk\walk_g_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone1\walk\walk_g_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone1\walk\walk_g_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone2\walk\walk_d_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone2\walk\walk_d_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone2\walk\walk_d_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone2\walk\walk_d_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone2\walk\walk_g_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone2\walk\walk_g_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone2\walk\walk_g_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone2\walk\walk_g_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone3\walk\walk_d_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone3\walk\walk_d_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone3\walk\walk_d_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone3\walk\walk_d_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone3\walk\walk_g_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone3\walk\walk_g_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone3\walk\walk_g_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Monstre\drone3\walk\walk_g_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_D_0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_D_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_D_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_D_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_D_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_D_5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_D_6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_D_7.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_G_0.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_G_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_G_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_G_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_G_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_G_5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_G_6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Personnage\Perso\PersoHurt_G_7.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="ressources\img\Game\Personnage\Perso\PersoIdle_D_0.png">
@@ -680,7 +804,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ressources\img\Game\monstre\drone\idle\" />
+    <Folder Include="ressources\img\Game\monstre\drone1\walk\" />
     <Folder Include="ressources\img\Menu\" />
   </ItemGroup>
 
