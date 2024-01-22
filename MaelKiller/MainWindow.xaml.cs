@@ -45,6 +45,7 @@ namespace MaelKiller
         private const int PERSOIDLE = 4, PERSORUN = 6;
         private const int MONSTRERUN = 4;
         private const int PERSOHURT = 2;
+        private const int FRAMEATK = 50;
         
         private List<Rectangle> listeMonstreRect = new List<Rectangle>();
         private List<Monstres> listMonstre = new List<Monstres>();
@@ -101,7 +102,7 @@ namespace MaelKiller
         private Armes canon = new Armes("Canon à main", 150, 800, 0.25, 100, 1, "On ne fait plus dans la dentelle. Préparez vos propre frappes d'artiellerie directement depuis le front", false, 2);
         private Armes[]tabCanon = new Armes[10];
         private Armes[] listeArmes = new Armes[8];
-        private string couleurGlobal = "bleu";0
+        private string couleurGlobal = "bleu";
 
         //-----------------------------------//
         //SUPPORTS//
@@ -399,7 +400,7 @@ namespace MaelKiller
                     compteRuee++;
                     if (compteRuee == 3)
                     {
-                        ruee == false;
+                        ruee = false;
                         joueur.Vitesse = baseJoueur.Vitesse;
                     }
                 }
@@ -432,7 +433,7 @@ namespace MaelKiller
                 checkFrame = cdArme1;
                 Attaque(arme1, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
                 frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/" + arme1.Nom + "/" + arme1.Nom + "_" + directionAtk[0] + directionAtk[1] + checkFrame + ".png"));
-                
+                VerifCollisionAtk(arme1);
             }
             if (cdArme1 == -9)
             {
@@ -461,7 +462,7 @@ namespace MaelKiller
                     checkFrame = cdArme2;
                     Attaque(arme2, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
                     frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/" + arme2.Nom + "/" + arme2.Nom + "_" + directionAtk[0] + directionAtk[1] + checkFrame + ".png"));
-
+                    VerifCollisionAtk(arme2);
                 }
                 if (cdArme2 == -9)
                 {
@@ -490,11 +491,11 @@ namespace MaelKiller
             {
                 joueur.Vitesse = baseJoueur.Vitesse + support2.Niveau;
             }
-            if (support1 = exosquelette)
+            if (support1 == exosquelette)
             {
                 joueur.PvMax = baseJoueur.PvMax + 5 * support1.Niveau;
             }
-            else if (support2 = exosquelette)
+            else if (support2 == exosquelette)
             {
                 joueur.PvMax = baseJoueur.PvMax + 5 * support2.Niveau;
             }
@@ -518,26 +519,53 @@ namespace MaelKiller
 
         private void VerifCollisionAtk(Armes arme)
         {
-            foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+            for (int i = 0;i < listeMonstreRect.Count; i++)
             {
-                if (x.Tag == "attaque")
+                foreach (Rectangle atk in monCanvas.Children.OfType<Rectangle>())
                 {
-                    foreach (Rectangle monstrerectangle in listeMonstreRect)
+                    if (atk.Tag == "attaque")
                     {
-                        int xAtk = (int)Canvas.GetLeft(x);
-                        int yAtk = (int)Canvas.GetTop(x);
-                        int Xmonstre = (int)Canvas.GetLeft(monstrerectangle);
-                        int Ymonstre = (int)Canvas.GetTop(monstrerectangle);
-                        Rect rectMonstre = new Rect(Xmonstre, Ymonstre, monstrerectangle.Width, monstrerectangle.Height);
-                        Rect atk = new Rect(xAtk, yAtk, x.Width, x.Height);
-                        if (atk.IntersectsWith(rectMonstre))
+                        int xMonstre = (int)Canvas.GetLeft(listeMonstreRect[i]);
+                        int yMonstre = (int)Canvas.GetTop(listeMonstreRect[i]);
+                        int xAtk = (int)Canvas.GetLeft(atk);
+                        int yAtk = (int)Canvas.GetTop(atk);
+                        Rect rectMonstre = new Rect(xMonstre, yMonstre, listeMonstreRect[i].Width, listeMonstreRect[i].Height);
+                        Rect rectAtk = new Rect(xAtk, yAtk, atk.Width, atk.Height);
+                        if (rectAtk.IntersectsWith(rectMonstre))
                         {
-
+                            foreach (Monstres monstre in listMonstre)
+                            {
+                                if (monstre.DegatsPossible == false)
+                                {
+                                    monstre.CompteDegats--;
+                                }
+                                else monstre.CompteDegats = FRAMEATK;
+                                if (monstre.Index -1 == i)
+                                {
+                                    if (monstre.DegatsPossible == true)
+                                    {
+                                        monstre.Pv -= arme.Degats;
+                                        if (monstre.Pv <= 0)
+                                        {
+                                            objetsSuppr.Add(listeMonstreRect[i]);
+                                        }
+                                        monstre.DegatsPossible = false;
+                                    }
+                                }
+                                if (monstre.CompteDegats <= 0)
+                                {
+                                    monstre.DegatsPossible = true;
+                                }
+                                Console.WriteLine(monstre.Pv);
+                            }
                         }
                     }
                 }
             }
-            
+            foreach (Rectangle y in objetsSuppr)
+            {
+                monCanvas.Children.Remove(y);
+            }
         }
         private int InitialisationVitesseAttaque(double vitesseAttaque)
         {
@@ -1136,17 +1164,17 @@ namespace MaelKiller
             double nbHasard = random.Next(1, 4);
             switch (nbHasard) {
                 case 1:
-                    Monstres robotDrone1 = new Monstres("drone1", 5, 20, 1, "bleu", 20);
+                    Monstres robotDrone1 = new Monstres("drone1", 5, 50, 1, "bleu", 20);
                     robotDrone1.Couleur = couleurGlobal;
                     ApparitionMonstre(robotDrone1);
                     break;
                 case 2:
-                    Monstres robotDrone2 = new Monstres("drone2", 5, 20, 1, "bleu", 20);
+                    Monstres robotDrone2 = new Monstres("drone2", 5, 50, 1, "bleu", 20);
                     robotDrone2.Couleur = couleurGlobal;
                     ApparitionMonstre(robotDrone2);
                     break;
                 case 3:
-                    Monstres robotDrone3 = new Monstres("drone3", 5, 20, 1, "bleu", 20);
+                    Monstres robotDrone3 = new Monstres("drone3", 5, 50, 1, "bleu", 20);
                     robotDrone3.Couleur = couleurGlobal;
                     ApparitionMonstre(robotDrone3);
                     break;
@@ -1192,6 +1220,7 @@ namespace MaelKiller
             monCanvas.Children.Add(nouveauMonstreRect);
             listMonstre.Add(monstre);
             numMonstre++;
+            monstre.CompteDegats = FRAMEATK;
         }
 
         private void PlacerNouveauMonstre(Rectangle monstre)
