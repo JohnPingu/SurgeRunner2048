@@ -521,66 +521,45 @@ namespace MaelKiller
                     {
                         foreach (Rectangle monstrerectangle in listeMonstreRect)
                         {
-                            if (monstrerectangle is Rectangle && (string)monstrerectangle.Tag == "Monstre")
+                            int xMonstre = (int)Canvas.GetLeft(listeMonstreRect[i]);
+                            int yMonstre = (int)Canvas.GetTop(listeMonstreRect[i]);
+                            int xAtk = (int)Canvas.GetLeft(x);
+                            int yAtk = (int)Canvas.GetTop(x);
+                            Rect rectMonstre = new Rect(xMonstre, yMonstre, listeMonstreRect[i].Width, listeMonstreRect[i].Height);
+                            Rect rectAtk = new Rect(xAtk, yAtk, x.Width, x.Height);
+                            if (rectAtk.IntersectsWith(rectMonstre))
                             {
-                                int xMonstre = (int)Canvas.GetLeft(listeMonstreRect[i]);
-                                int yMonstre = (int)Canvas.GetTop(listeMonstreRect[i]);
-                                int xAtk = (int)Canvas.GetLeft(x);
-                                int yAtk = (int)Canvas.GetTop(x);
-                                Rect rectMonstre = new Rect(xMonstre, yMonstre, listeMonstreRect[i].Width, listeMonstreRect[i].Height);
-                                Rect rectAtk = new Rect(xAtk, yAtk, x.Width, x.Height);
-                                if (rectAtk.IntersectsWith(rectMonstre))
+                                foreach (Monstres monstre in listMonstre)
                                 {
-                                    foreach (Monstres monstre in listMonstre)
+                                    if (monstre.DegatsPossible == false)
                                     {
-                                        if (monstre.DegatsPossible == false)
-                                        {
-                                            monstre.CompteDegats--;
-                                        }
-                                        else monstre.CompteDegats = FRAMEATK;
-                                        if (monstre.Index - 1 == i)
-                                        {
-                                            if (monstre.DegatsPossible == true)
-                                            {
-                                                if (!Supports.IsNullOrEmpty(support1))
-                                                {
-                                                    if (support1.Nom == forgeage.Nom)
-                                                    {
-                                                        monstre.Pv -= arme.Degats + (arme.Degats / 5 * support1.Niveau / 100);
-                                                    }
-                                                    else monstre.Pv -= arme.Degats;
-                                                    if (!Supports.IsNullOrEmpty(support2))
-                                                    {
-                                                        if (support2.Nom == forgeage.Nom)
-                                                        {
-                                                            monstre.Pv -= arme.Degats + (arme.Degats / 5 * support2.Niveau / 100);
-                                                        }
-                                                        else monstre.Pv -= arme.Degats;
-                                                    }
-                                                }
-                                                else monstre.Pv -= arme.Degats;
-                                                if (monstre.Pv <= 0)
-                                                {
-                                                    monstresSuppr.Add(monstre);
-                                                    objetsSuppr.Add(listeMonstreRect[i]);
-                                                    joueur.GainExperience(monstre.Degats);
-                                                    VerificationNiveauSupp();
-                                                    rectMonstre.Offset(-2000, -2000);
-                                                    monstre.Pv = 1000000000000;
-                                                    monstre.Degats = 0;
-                                                }
-                                                monstre.DegatsPossible = false;
-                                            }
-                                        }
-                                        if (monstre.CompteDegats <= 0)
-                                        {
-                                            monstre.DegatsPossible = true;
-                                        }
-                                        Console.WriteLine(monstre.Pv);
+                                        monstre.CompteDegats--;
                                     }
+                                    else monstre.CompteDegats = FRAMEATK;
+                                    if (monstre.Index - 1 == i)
+                                    {
+                                        if (monstre.DegatsPossible == true)
+                                        {
+                                            monstre.Pv -= arme.Degats;
+                                            if (monstre.Pv <= 0)
+                                            {
+                                                monstre.PeutAttaquer = false;
+                                                objetsSuppr.Add(listeMonstreRect[i]);
+                                                joueur.GainExperience(monstre.Degats);
+                                                VerificationNiveauSupp();
+                                                rectMonstre.Offset(-2000, -2000);
+                                                monstre.Pv = 1000000000000;
+                                            }
+                                            monstre.DegatsPossible = false;
+                                        }
+                                    }
+                                    if (monstre.CompteDegats <= 0)
+                                    {
+                                        monstre.DegatsPossible = true;
+                                    }
+                                    Console.WriteLine(monstre.Pv);
                                 }
                             }
- 
                         }
                     }
                 }
@@ -922,19 +901,22 @@ namespace MaelKiller
                 int Yjoueur = (int)Canvas.GetTop(rect_Joueur);
                 Rect monstrerect = new Rect(Xmonstre, Ymonstre, listeMonstreRect[index].Width, listeMonstreRect[index].Height);
                 Rect joueurrect = new Rect(Xjoueur, Yjoueur, rect_Joueur.Width, rect_Joueur.Height);
-                if (monstrerect.IntersectsWith(joueurrect))
+                if (monstre.PeutAttaquer == true)
                 {
-                    if (joueur.PeutPrendreDegats == true)
+                    if (monstrerect.IntersectsWith(joueurrect))
                     {
-                        joueur.PeutPrendreDegats = false;
-                        joueur.Pv -= monstre.Degats;
-                        Console.Write("Joueur perd des HP :" + joueur.Pv);
-                        if (joueur.Pv <= 0)
+                        if (joueur.PeutPrendreDegats == true)
                         {
-                            GameOver();
-                            Console.Write("GAMEOVER");
+                            joueur.PeutPrendreDegats = false;
+                            joueur.PrendreDegats(monstre.Degats);
+                            Console.Write("Joueur perd des HP :" + joueur.Pv);
+                            if (joueur.EstMort)
+                            {
+                                GameOver();
+                                Console.Write("GAMEOVER");
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
                 decompteDegatsJoueur--;
@@ -1297,7 +1279,7 @@ namespace MaelKiller
         {
             if (!gauche && !droite && !haut && !bas)
             {
-                if (joueurTouche == false)
+                if (joueur.PeutPrendreDegats == true)
                 {
                     skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoIdle_" + directionSkin[1] + "_" + (skinFrameCompte / INTERVALLETICK % PERSOIDLE) + ".png"));
                 }
@@ -1308,7 +1290,7 @@ namespace MaelKiller
             }
             else
             {
-                if (joueurTouche == false)
+                if (joueur.PeutPrendreDegats == true)
                 {
                     skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoRun_" + directionSkin[1] + "_" + (skinFrameCompte / 10 % PERSORUN) + ".png"));
                 }
