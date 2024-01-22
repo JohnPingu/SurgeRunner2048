@@ -72,6 +72,7 @@ namespace MaelKiller
         private int numMonstre = 1;
         private ImageBrush skinPerso = new ImageBrush();
         private int skinFrameCompte = 0;
+        private double xpPourNvSup;
 
         private bool CameraEstEnMouvement = false;
         private double CameraMouvement = 0;
@@ -188,7 +189,6 @@ namespace MaelKiller
             }
             cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
             cdArme1 = cdrArme1;
-            Console.WriteLine(menu.cbChoixArme.SelectedItem.ToString());
             if (menu.DialogResult == false) Application.Current.Shutdown();
             ChargementJeu();
             InitialisationAmelioration();
@@ -213,6 +213,8 @@ namespace MaelKiller
             skinFleche.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flechedroite.png"));
             skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoIdle_D_1.png"));
             rect_Joueur.Fill = skinPerso;
+
+            xpPourNvSup = joueur.XpPourNiveauSuivant;
         }
 
         private void CalculTemps()
@@ -548,6 +550,9 @@ namespace MaelKiller
                                         if (monstre.Pv <= 0)
                                         {
                                             objetsSuppr.Add(listeMonstreRect[i]);
+                                            joueur.GainExperience(monstre.Degats);
+                                            VerificationNiveauSupp();
+                                            rectMonstre.Offset(-2000,-2000);
                                         }
                                         monstre.DegatsPossible = false;
                                     }
@@ -1380,12 +1385,12 @@ namespace MaelKiller
             //---------------------------------------------------//
             if (Armes.IsNullOrEmpty(arme1))
             {
-                arme1 = listeArmes[bonusArmes];
+                arme1 = new Armes(listeArmes[bonusArmes].Nom, listeArmes[bonusArmes].Degats, listeArmes[bonusArmes].Portee, listeArmes[bonusArmes].VitesseAttaque, listeArmes[bonusArmes].Taille, listeArmes[bonusArmes].Niveau, listeArmes[bonusArmes].Description, listeArmes[bonusArmes].EstMelee, listeArmes[bonusArmes].VitesseProjectile, listeArmes[bonusArmes].Amplitude);
                 listeArmes[bonusArmes].Niveau++;
             }
             else if (!Armes.IsNullOrEmpty(arme1) && Armes.IsNullOrEmpty(arme2)) 
             {
-                arme2 = listeArmes[bonusArmes];
+                arme2 = new Armes(listeArmes[bonusArmes].Nom, listeArmes[bonusArmes].Degats, listeArmes[bonusArmes].Portee, listeArmes[bonusArmes].VitesseAttaque, listeArmes[bonusArmes].Taille, listeArmes[bonusArmes].Niveau, listeArmes[bonusArmes].Description, listeArmes[bonusArmes].EstMelee, listeArmes[bonusArmes].VitesseProjectile, listeArmes[bonusArmes].Amplitude);
                 listeArmes[bonusArmes].Niveau++;
             }
             else if (!Armes.IsNullOrEmpty(arme1) && !Armes.IsNullOrEmpty(arme2))
@@ -1395,7 +1400,7 @@ namespace MaelKiller
                     {
                         if (arme1.Nom == listeArmes[i].Nom)
                         {
-                            arme1 = listeArmes[i];
+                            arme1 = new Armes(listeArmes[i].Nom, listeArmes[i].Degats, listeArmes[i].Portee, listeArmes[i].VitesseAttaque, listeArmes[i].Taille, listeArmes[i].Niveau, listeArmes[i].Description, listeArmes[i].EstMelee, listeArmes[i].VitesseProjectile, listeArmes[i].Amplitude);
                             listeArmes[i].Niveau++;
                         }
                     }
@@ -1406,7 +1411,7 @@ namespace MaelKiller
                     {
                         if (arme2.Nom == listeArmes[i].Nom)
                         {
-                            arme2 = listeArmes[i];
+                            arme2 = new Armes(listeArmes[i].Nom, listeArmes[i].Degats, listeArmes[i].Portee, listeArmes[i].VitesseAttaque, listeArmes[i].Taille, listeArmes[i].Niveau, listeArmes[i].Description, listeArmes[i].EstMelee, listeArmes[i].VitesseProjectile, listeArmes[i].Amplitude);
                             listeArmes[i].Niveau++;
                         }
                     }
@@ -1446,7 +1451,7 @@ namespace MaelKiller
             //---------------------------------------------------//
             if (Armes.IsNullOrEmpty(arme1))
             {
-                arme1 = listeArmes[bonusAug];
+                arme1 = new Armes(listeArmes[bonusAug].Nom, listeArmes[bonusAug].Degats, listeArmes[bonusAug].Portee, listeArmes[bonusAug].VitesseAttaque, listeArmes[bonusAug].Taille, listeArmes[bonusAug].Niveau, listeArmes[bonusAug].Description, listeArmes[bonusAug].EstMelee, listeArmes[bonusAug].VitesseProjectile, listeArmes[bonusAug].Amplitude);
                 listeArmes[bonusAug].Niveau++;
             }
             cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
@@ -1485,7 +1490,7 @@ namespace MaelKiller
             //---------------------------------------------------//
             if (Armes.IsNullOrEmpty(arme1))
             {
-                arme1 = listeArmes[bonus];
+                arme1 = new Armes(listeArmes[bonus].Nom, listeArmes[bonus].Degats, listeArmes[bonus].Portee, listeArmes[bonus].VitesseAttaque, listeArmes[bonus].Taille, listeArmes[bonus].Niveau, listeArmes[bonus].Description, listeArmes[bonus].EstMelee, listeArmes[bonus].VitesseProjectile, listeArmes[bonus].Amplitude);
                 listeArmes[bonus].Niveau++;
             }
             cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
@@ -1525,7 +1530,6 @@ namespace MaelKiller
             paladin = new Secrets("Paladin de l'annihilation", "Votre esprit a été corrompu par la puissance et vous ne cherchez plus que la destruction de toute chose", hache, exosquelette);
             goldenGun = new Secrets("Desert Eagle Doré mk.XII", "Tout bon jeu en a un, alors pourquoi ne pas le faire tirer dans toutes les directions ?", revolver, coeurOr);
             mechaHuman = new Secrets("Humain Augmenté Ultime", "Vos nano-Machines ont atteint la motion perpétuelle. Existe-t-il encore quelque-chose capable de vous tuer ?", carburant, nanoMachine);
-            tabEpee[0] = epee;
             InitialisationArmes(tabEpee, epee); 
             InitialisationArmes(tabLance , lance);
             InitialisationArmes(tabFouet, fouet);
@@ -1540,7 +1544,7 @@ namespace MaelKiller
             InitialisationSupports(tabCoeurOr, coeurOr);
             InitialisationSupports(tabForgeage, forgeage);
             InitialisationSupports(tabRevêtement, revetement);
-            listeArmes[0] = tabEpee[1];
+            listeArmes[0] = new Armes(tabEpee[1].Nom, tabEpee[1].Degats, tabEpee[1].Portee, tabEpee[1].VitesseAttaque, tabEpee[1].Taille, tabEpee[1].Niveau, tabEpee[1].Description, tabEpee[1].EstMelee, tabEpee[1].VitesseProjectile, tabEpee[1].Amplitude);
             listeArmes[1] = tabLance[1];
             listeArmes[2] = tabFouet[1];
             listeArmes[3] = tabHache[1];
@@ -1560,14 +1564,14 @@ namespace MaelKiller
         }
         public void NiveauSupérieur()
         {
-            listeArmes[0] = tabEpee[listeArmes[0].Niveau];
-            listeArmes[1] = tabLance[listeArmes[1].Niveau];
-            listeArmes[2] = tabFouet[listeArmes[2].Niveau];
-            listeArmes[3] = tabHache[listeArmes[3].Niveau];
-            listeArmes[4] = tabRevolver[listeArmes[4].Niveau];
-            listeArmes[5] = tabFusilSnip[listeArmes[5].Niveau];
-            listeArmes[6] = tabFusilAssaut[listeArmes[6].Niveau];
-            listeArmes[7] = tabCanon[listeArmes[7].Niveau];
+            listeArmes[0] = new Armes (tabEpee[listeArmes[0].Niveau].Nom, tabEpee[listeArmes[0].Niveau].Degats, tabEpee[listeArmes[0].Niveau].Portee, tabEpee[listeArmes[0].Niveau].VitesseAttaque, tabEpee[listeArmes[0].Niveau].Taille, tabEpee[listeArmes[0].Niveau].Niveau, tabEpee[listeArmes[0].Niveau].Description, tabEpee[listeArmes[0].Niveau].EstMelee, tabEpee[listeArmes[0].Niveau].VitesseProjectile, tabEpee[listeArmes[0].Niveau].Amplitude);
+            listeArmes[1] = new Armes (tabLance[listeArmes[1].Niveau].Nom, tabLance[listeArmes[1].Niveau].Degats, tabLance[listeArmes[1].Niveau].Portee, tabLance[listeArmes[1].Niveau].VitesseAttaque, tabLance[listeArmes[1].Niveau].Taille, tabLance[listeArmes[1].Niveau].Niveau, tabLance[listeArmes[1].Niveau].Description, tabLance[listeArmes[1].Niveau].EstMelee, tabLance[listeArmes[1].Niveau].VitesseProjectile, tabLance[listeArmes[1].Niveau].Amplitude);
+            listeArmes[2] = new Armes (tabFouet[listeArmes[2].Niveau].Nom, tabFouet[listeArmes[2].Niveau].Degats, tabFouet[listeArmes[2].Niveau].Portee, tabFouet[listeArmes[2].Niveau].VitesseAttaque, tabFouet[listeArmes[2].Niveau].Taille, tabFouet[listeArmes[2].Niveau].Niveau, tabFouet[listeArmes[2].Niveau].Description, tabFouet[listeArmes[2].Niveau].EstMelee, tabFouet[listeArmes[2].Niveau].VitesseProjectile, tabFouet[listeArmes[2].Niveau].Amplitude);
+            listeArmes[3] = new Armes (tabHache[listeArmes[3].Niveau].Nom, tabHache[listeArmes[3].Niveau].Degats, tabHache[listeArmes[3].Niveau].Portee, tabHache[listeArmes[3].Niveau].VitesseAttaque, tabHache[listeArmes[3].Niveau].Taille, tabHache[listeArmes[3].Niveau].Niveau, tabHache[listeArmes[3].Niveau].Description, tabHache[listeArmes[3].Niveau].EstMelee, tabHache[listeArmes[3].Niveau].VitesseProjectile, tabHache[listeArmes[3].Niveau].Amplitude);
+            listeArmes[4] = new Armes (tabRevolver[listeArmes[4].Niveau].Nom, tabRevolver[listeArmes[4].Niveau].Degats, tabRevolver[listeArmes[4].Niveau].Portee, tabRevolver[listeArmes[4].Niveau].VitesseAttaque, tabRevolver[listeArmes[4].Niveau].Taille, tabRevolver[listeArmes[4].Niveau].Niveau, tabRevolver[listeArmes[4].Niveau].Description, tabRevolver[listeArmes[4].Niveau].EstMelee, tabRevolver[listeArmes[4].Niveau].VitesseProjectile, tabRevolver[listeArmes[4].Niveau].Amplitude);
+            listeArmes[5] = new Armes (tabFusilSnip[listeArmes[5].Niveau].Nom, tabFusilSnip[listeArmes[5].Niveau].Degats, tabFusilSnip[listeArmes[5].Niveau].Portee, tabFusilSnip[listeArmes[5].Niveau].VitesseAttaque, tabFusilSnip[listeArmes[5].Niveau].Taille, tabFusilSnip[listeArmes[5].Niveau].Niveau, tabFusilSnip[listeArmes[5].Niveau].Description, tabFusilSnip[listeArmes[5].Niveau].EstMelee, tabFusilSnip[listeArmes[5].Niveau].VitesseProjectile, tabFusilSnip[listeArmes[5].Niveau].Amplitude);
+            listeArmes[6] = new Armes (tabFusilAssaut[listeArmes[6].Niveau].Nom, tabFusilAssaut[listeArmes[6].Niveau].Degats, tabFusilAssaut[listeArmes[6].Niveau].Portee, tabFusilAssaut[listeArmes[6].Niveau].VitesseAttaque, tabFusilAssaut[listeArmes[6].Niveau].Taille, tabFusilAssaut[listeArmes[6].Niveau].Niveau, tabFusilAssaut[listeArmes[6].Niveau].Description, tabFusilAssaut[listeArmes[6].Niveau].EstMelee, tabFusilAssaut[listeArmes[6].Niveau].VitesseProjectile, tabFusilAssaut[listeArmes[6].Niveau].Amplitude);
+            listeArmes[7] = new Armes (tabCanon[listeArmes[7].Niveau].Nom, tabCanon[listeArmes[7].Niveau].Degats, tabCanon[listeArmes[7].Niveau].Portee, tabCanon[listeArmes[7].Niveau].VitesseAttaque, tabCanon[listeArmes[7].Niveau].Taille, tabCanon[listeArmes[7].Niveau].Niveau, tabCanon[listeArmes[7].Niveau].Description, tabCanon[listeArmes[7].Niveau].EstMelee, tabCanon[listeArmes[7].Niveau].VitesseProjectile, tabCanon[listeArmes[7].Niveau].Amplitude);
             listeSupports[0] = tabJambes[0];
             listeSupports[1] = tabExosquelette[0];
             listeSupports[2] = tabNanoMachine[0];
@@ -1701,6 +1705,17 @@ namespace MaelKiller
             if (listeSupports[2].Niveau == 10 && (amélioration1 == carburant || amélioration2 == carburant) && Secrets.IsNullOrEmpty(secret))
             {
                 TitreBonus3.Text = mechaHuman.Nom;
+            }
+        }
+        private void VerificationNiveauSupp()
+        {
+            if (joueur.XpPourNiveauSuivant != xpPourNvSup)
+            {
+                NiveauSupérieur();
+                niveauSupp = true;
+                MiseEnPause();
+                niveauSupp = false;
+                xpPourNvSup = joueur.XpPourNiveauSuivant;
             }
         }
     }
