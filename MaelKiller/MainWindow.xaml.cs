@@ -53,6 +53,7 @@ namespace MaelKiller
         private bool niveauSupp = false;
         private bool estEnHaut = false, estEnBas = false, estAGauche = false, estADroite = false;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
+        private List<Monstres> monstresSuppr = new List<Monstres>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee, compteRuee = 0;
         private Joueur joueur = new Joueur(25, 4, 30, 1);
@@ -318,6 +319,12 @@ namespace MaelKiller
                 pause = true;
                 MiseEnPause();
             }
+            if (e.Key == Key.C)
+            {
+                joueur.PvMax = 100000000;
+                joueur.Pv = 100000000;
+                arme1.Degats = 100000000;
+            }
         }
         private void FenetrePrincipale_KeyUp(object sender, KeyEventArgs e)
         {
@@ -444,54 +451,64 @@ namespace MaelKiller
             //------------------------------------------------//
             //EFFETS SUPPORTS//
             //------------------------------------------------//
-            if (support1.Nom == jambes.Nom)
+            if (!Supports.IsNullOrEmpty(support1)) 
             {
-                joueur.Vitesse = baseJoueur.Vitesse + support1.Niveau;
-            }
-            else if (support2.Nom == jambes.Nom)
-            {
-                joueur.Vitesse = baseJoueur.Vitesse + support2.Niveau;
-            }
-            if (support1.Nom == exosquelette.Nom)
-            {
-                joueur.PvMax = baseJoueur.PvMax + 5 * support1.Niveau;
-            }
-            else if (support2.Nom == exosquelette.Nom)
-            {
-                joueur.PvMax = baseJoueur.PvMax + 5 * support2.Niveau;
-            }
-            if (support1.Nom == nanoMachine.Nom)
-            {
-                if (joueur.Pv + support1.Niveau < joueur.PvMax)
+                if (support1.Nom == jambes.Nom)
                 {
-                    joueur.Pv += support1.Niveau;
+                    joueur.Vitesse = baseJoueur.Vitesse + support1.Niveau;
                 }
-                else joueur.Pv = joueur.PvMax;
-            }
-            else if (support2.Nom == nanoMachine.Nom)
-            {
-                if (joueur.Pv + support2.Niveau < joueur.PvMax)
+                if (support1.Nom == exosquelette.Nom)
                 {
-                    joueur.Pv += support2.Niveau;
+                    joueur.PvMax = baseJoueur.PvMax + 5 * support1.Niveau;
                 }
-                else joueur.Pv = joueur.PvMax;
+                if (support1.Nom == nanoMachine.Nom)
+                {
+                    if (joueur.Pv + support1.Niveau < joueur.PvMax)
+                    {
+                        joueur.Pv += support1.Niveau;
+                    }
+                    else joueur.Pv = joueur.PvMax;
+                }
+                if (support1.Nom == coeurOr.Nom)
+                {
+                    joueur.Xp += joueur.Xp / 5 * support1.Niveau / 100;
+                }
+                if (support1.Nom == revetement.Nom)
+                {
+                    cdrArme1 = (int)(1000 / INTERVALLETICK / (arme1.VitesseAttaque * support1.Niveau));
+                }
             }
-            if (support1.Nom == coeurOr.Nom)
+            if (!Supports.IsNullOrEmpty(support2))
             {
-                joueur.Xp += joueur.Xp / 5 * support1.Niveau / 100;
+                if (support2.Nom == jambes.Nom)
+                {
+                    joueur.Vitesse = baseJoueur.Vitesse + support2.Niveau;
+                }
+                if (support2.Nom == exosquelette.Nom)
+                {
+                    joueur.PvMax = baseJoueur.PvMax + 5 * support2.Niveau;
+                }
+                if (support2.Nom == nanoMachine.Nom)
+                {
+                    if (joueur.Pv + support2.Niveau < joueur.PvMax)
+                    {
+                        joueur.Pv += support2.Niveau;
+                    }
+                    else joueur.Pv = joueur.PvMax;
+                }
+                if (support2.Nom == coeurOr.Nom)
+                {
+                    joueur.Xp = joueur.Xp / support2.Niveau / 100;
+                }
+                if (support2.Nom == revetement.Nom)
+                {
+                    cdrArme1 = (int)(1000 / INTERVALLETICK / (arme1.VitesseAttaque * support2.Niveau));
+                }
             }
-            else if (support2.Nom == coeurOr.Nom)
-            {
-                joueur.Xp = joueur.Xp / support2.Niveau / 100;
-            }
-            if (support1.Nom == revetement.Nom)
-            {
-                cdrArme1 = (int)(1000 / INTERVALLETICK / (arme1.VitesseAttaque * support1.Niveau));
-            }
-            else if (support2.Nom == revetement.Nom)
-            {
-                cdrArme1 = (int)(1000 / INTERVALLETICK / (arme1.VitesseAttaque * support2.Niveau));
-            }
+#if DEBUG
+            Console.WriteLine(arme1);
+#endif
+
         }
 
         private void VerifCollisionAtk(Armes arme)
@@ -500,57 +517,70 @@ namespace MaelKiller
             {
                 foreach(Rectangle x in monCanvas.Children.OfType<Rectangle>())
                 {
-                    if (x.Tag == "attaque")
+                    if (x is Rectangle && (string)x.Tag == "attaque")
                     {
                         foreach (Rectangle monstrerectangle in listeMonstreRect)
                         {
-                            int xMonstre = (int)Canvas.GetLeft(listeMonstreRect[i]);
-                            int yMonstre = (int)Canvas.GetTop(listeMonstreRect[i]);
-                            int xAtk = (int)Canvas.GetLeft(x);
-                            int yAtk = (int)Canvas.GetTop(x);
-                            Rect rectMonstre = new Rect(xMonstre, yMonstre, listeMonstreRect[i].Width, listeMonstreRect[i].Height);
-                            Rect rectAtk = new Rect(xAtk, yAtk, x.Width, x.Height);
-                            if (rectAtk.IntersectsWith(rectMonstre))
+                            if (monstrerectangle is Rectangle && (string)monstrerectangle.Tag == "Monstre")
                             {
-                                foreach (Monstres monstre in listMonstre)
+                                int xMonstre = (int)Canvas.GetLeft(listeMonstreRect[i]);
+                                int yMonstre = (int)Canvas.GetTop(listeMonstreRect[i]);
+                                int xAtk = (int)Canvas.GetLeft(x);
+                                int yAtk = (int)Canvas.GetTop(x);
+                                Rect rectMonstre = new Rect(xMonstre, yMonstre, listeMonstreRect[i].Width, listeMonstreRect[i].Height);
+                                Rect rectAtk = new Rect(xAtk, yAtk, x.Width, x.Height);
+                                if (rectAtk.IntersectsWith(rectMonstre))
                                 {
-                                    if (monstre.DegatsPossible == false)
+                                    foreach (Monstres monstre in listMonstre)
                                     {
-                                        monstre.CompteDegats--;
-                                    }
-                                    else monstre.CompteDegats = FRAMEATK;
-                                    if (monstre.Index - 1 == i)
-                                    {
-                                        if (monstre.DegatsPossible == true)
+                                        if (monstre.DegatsPossible == false)
                                         {
-                                            if (support1.Nom == forgeage.Nom)
-                                            {
-                                                monstre.Pv -= arme.Degats + (arme.Degats / 5 * support1.Niveau / 100);
-                                            }
-                                            else if (support2.Nom == forgeage.Nom)
-                                            {
-                                                monstre.Pv -= arme.Degats + (arme.Degats / 5 * support2.Niveau / 100);
-                                            }
-                                            else monstre.Pv -= arme.Degats;
-                                            if (monstre.Pv <= 0)
-                                            {
-                                                objetsSuppr.Add(listeMonstreRect[i]);
-                                                joueur.GainExperience(monstre.Degats);
-                                                VerificationNiveauSupp();
-                                                rectMonstre.Offset(-2000, -2000);
-                                                monstre.Pv = 1000000000000;
-                                                monstre.Degats = 0;
-                                            }
-                                            monstre.DegatsPossible = false;
+                                            monstre.CompteDegats--;
                                         }
+                                        else monstre.CompteDegats = FRAMEATK;
+                                        if (monstre.Index - 1 == i)
+                                        {
+                                            if (monstre.DegatsPossible == true)
+                                            {
+                                                if (!Supports.IsNullOrEmpty(support1))
+                                                {
+                                                    if (support1.Nom == forgeage.Nom)
+                                                    {
+                                                        monstre.Pv -= arme.Degats + (arme.Degats / 5 * support1.Niveau / 100);
+                                                    }
+                                                    else monstre.Pv -= arme.Degats;
+                                                    if (!Supports.IsNullOrEmpty(support2))
+                                                    {
+                                                        if (support2.Nom == forgeage.Nom)
+                                                        {
+                                                            monstre.Pv -= arme.Degats + (arme.Degats / 5 * support2.Niveau / 100);
+                                                        }
+                                                        else monstre.Pv -= arme.Degats;
+                                                    }
+                                                }
+                                                else monstre.Pv -= arme.Degats;
+                                                if (monstre.Pv <= 0)
+                                                {
+                                                    monstresSuppr.Add(monstre);
+                                                    objetsSuppr.Add(listeMonstreRect[i]);
+                                                    joueur.GainExperience(monstre.Degats);
+                                                    VerificationNiveauSupp();
+                                                    rectMonstre.Offset(-2000, -2000);
+                                                    monstre.Pv = 1000000000000;
+                                                    monstre.Degats = 0;
+                                                }
+                                                monstre.DegatsPossible = false;
+                                            }
+                                        }
+                                        if (monstre.CompteDegats <= 0)
+                                        {
+                                            monstre.DegatsPossible = true;
+                                        }
+                                        Console.WriteLine(monstre.Pv);
                                     }
-                                    if (monstre.CompteDegats <= 0)
-                                    {
-                                        monstre.DegatsPossible = true;
-                                    }
-                                    Console.WriteLine(monstre.Pv);
                                 }
                             }
+ 
                         }
                     }
                 }
@@ -559,6 +589,12 @@ namespace MaelKiller
             {
                 monCanvas.Children.Remove(y);
             }
+            objetsSuppr.Clear();
+            foreach (Monstres w in monstresSuppr)
+            {
+                listMonstre.Remove(w);
+            }
+            monstresSuppr.Clear();
         }
         private int InitialisationVitesseAttaque(double vitesseAttaque)
         {
