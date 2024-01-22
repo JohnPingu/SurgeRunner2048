@@ -81,6 +81,7 @@ namespace MaelKiller
         private int niveauArme1 = 0, niveauSupport1 = 0, niveauSupport2 = 0;
         private int cdInvincibilite;
         private bool joueurTouche = false;
+        private int decompteDegatsJoueur = 0;
 
         //-----------------------------------//
         //ARMES//
@@ -350,7 +351,6 @@ namespace MaelKiller
             SkinMonstre();
 
             VerificationCollisionMonstreJoueur();
-            CollisionAvecJoueur();
 
             MiseAJourBarHp();
             MiseAJourBarXp();
@@ -485,46 +485,49 @@ namespace MaelKiller
         {
             for (int i = 0; i < listeMonstreRect.Count; i++)
             {
-                if (x.Tag == "attaque")
+                foreach(Rectangle x in monCanvas.Children.OfType<Rectangle>())
                 {
-                    foreach (Rectangle monstrerectangle in listeMonstreRect)
+                    if (x.Tag == "attaque")
                     {
-                        int xMonstre = (int)Canvas.GetLeft(listeMonstreRect[i]);
-                        int yMonstre = (int)Canvas.GetTop(listeMonstreRect[i]);
-                        int xAtk = (int)Canvas.GetLeft(atk);
-                        int yAtk = (int)Canvas.GetTop(atk);
-                        Rect rectMonstre = new Rect(xMonstre, yMonstre, listeMonstreRect[i].Width, listeMonstreRect[i].Height);
-                        Rect rectAtk = new Rect(xAtk, yAtk, atk.Width, atk.Height);
-                        if (rectAtk.IntersectsWith(rectMonstre))
+                        foreach (Rectangle monstrerectangle in listeMonstreRect)
                         {
-                            foreach (Monstres monstre in listMonstre)
+                            int xMonstre = (int)Canvas.GetLeft(listeMonstreRect[i]);
+                            int yMonstre = (int)Canvas.GetTop(listeMonstreRect[i]);
+                            int xAtk = (int)Canvas.GetLeft(x);
+                            int yAtk = (int)Canvas.GetTop(x);
+                            Rect rectMonstre = new Rect(xMonstre, yMonstre, listeMonstreRect[i].Width, listeMonstreRect[i].Height);
+                            Rect rectAtk = new Rect(xAtk, yAtk, x.Width, x.Height);
+                            if (rectAtk.IntersectsWith(rectMonstre))
                             {
-                                if (monstre.DegatsPossible == false)
+                                foreach (Monstres monstre in listMonstre)
                                 {
-                                    monstre.CompteDegats--;
-                                }
-                                else monstre.CompteDegats = FRAMEATK;
-                                if (monstre.Index - 1 == i)
-                                {
-                                    if (monstre.DegatsPossible == true)
+                                    if (monstre.DegatsPossible == false)
                                     {
-                                        monstre.Pv -= arme.Degats;
-                                        if (monstre.Pv <= 0)
-                                        {
-                                            objetsSuppr.Add(listeMonstreRect[i]);
-                                            joueur.GainExperience(monstre.Degats);
-                                            VerificationNiveauSupp();
-                                            rectMonstre.Offset(-2000, -2000);
-                                            monstre.Pv = 1000000000000;
-                                        }
-                                        monstre.DegatsPossible = false;
+                                        monstre.CompteDegats--;
                                     }
+                                    else monstre.CompteDegats = FRAMEATK;
+                                    if (monstre.Index - 1 == i)
+                                    {
+                                        if (monstre.DegatsPossible == true)
+                                        {
+                                            monstre.Pv -= arme.Degats;
+                                            if (monstre.Pv <= 0)
+                                            {
+                                                objetsSuppr.Add(listeMonstreRect[i]);
+                                                joueur.GainExperience(monstre.Degats);
+                                                VerificationNiveauSupp();
+                                                rectMonstre.Offset(-2000, -2000);
+                                                monstre.Pv = 1000000000000;
+                                            }
+                                            monstre.DegatsPossible = false;
+                                        }
+                                    }
+                                    if (monstre.CompteDegats <= 0)
+                                    {
+                                        monstre.DegatsPossible = true;
+                                    }
+                                    Console.WriteLine(monstre.Pv);
                                 }
-                                if (monstre.CompteDegats <= 0)
-                                {
-                                    monstre.DegatsPossible = true;
-                                }
-                                Console.WriteLine(monstre.Pv);
                             }
                         }
                     }
@@ -856,22 +859,23 @@ namespace MaelKiller
 
         private void VerificationCollisionMonstreJoueur()
         {
-            foreach (Rectangle monstrerectangle in listeMonstreRect)
+            foreach (Monstres monstre in listMonstre)
             {
-                int Xmonstre = (int)Canvas.GetLeft(monstrerectangle);
-                int Ymonstre = (int)Canvas.GetTop(monstrerectangle);
+                int index = monstre.Index - 1;
+                int Xmonstre = (int)Canvas.GetLeft(listeMonstreRect[index]);
+                int Ymonstre = (int)Canvas.GetTop(listeMonstreRect[index]);
                 int Xjoueur = (int)Canvas.GetLeft(rect_Joueur);
                 int Yjoueur = (int)Canvas.GetTop(rect_Joueur);
-                Rect monstrerect = new Rect(Xmonstre, Ymonstre, monstrerectangle.Width, monstrerectangle.Height);
+                Rect monstrerect = new Rect(Xmonstre, Ymonstre, listeMonstreRect[index].Width, listeMonstreRect[index].Height);
                 Rect joueurrect = new Rect(Xjoueur, Yjoueur, rect_Joueur.Width, rect_Joueur.Height);
-                if (monstrerect.IntersectsWith(joueurrect) && joueurTouche == false)
+                if (monstrerect.IntersectsWith(joueurrect))
                 {
                     if (joueur.PeutPrendreDegats == true)
                     {
                         joueur.PeutPrendreDegats = false;
-                        joueur.PrendreDegats(monstre.Degats);
+                        joueur.Pv -= monstre.Degats;
                         Console.Write("Joueur perd des HP :" + joueur.Pv);
-                        if (joueur.EstMort)
+                        if (joueur.Pv <= 0)
                         {
                             GameOver();
                             Console.Write("GAMEOVER");
@@ -1569,6 +1573,15 @@ namespace MaelKiller
                 TitreBonus1.Text = listeArmes[bonusArmes].Nom;
                 TitreBonus2.Text = listeArmes[bonusAug].Nom;
                 TitreBonus3.Text = listeArmes[bonus].Nom;
+            }
+        }
+        private void VerificationNiveauSupp()
+        {
+            if (xpPourNvSup != joueur.XpPourNiveauSuivant)
+            {
+                NiveauSupérieur();
+                niveauSupp = true;
+                MiseEnPause();
             }
         }
     }
