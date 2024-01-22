@@ -79,7 +79,7 @@ namespace MaelKiller
         //-----------------------------------//
         //ARMES//
         //-----------------------------------//
-        private Armes epee = new Armes("Épée", 25, 100, 1.5, 100, 1, "Une épée classique, solide et mortelle", true);
+        private Armes epee = new Armes("Epee", 25, 100, 1.5, 100, 1, "Une épée classique, solide et mortelle", true);
         private Armes[] tabEpee = new Armes[10];
         private Armes lance = new Armes("Lance", 30, 200, 1.2, 50, 1, "Une lance de soldat, utile pour tenir les adversaires à distance", true);
         private Armes[] tabLance = new Armes[10];
