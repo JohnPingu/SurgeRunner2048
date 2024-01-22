@@ -52,7 +52,6 @@ namespace MaelKiller
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false, estAttaquant = false;
         private bool niveauSupp = false;
         private bool estEnHaut = false, estEnBas = false, estAGauche = false, estADroite = false;
-        private double directionProjectile = 0;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
         private int cdrRuee = 250, cdRuee, compteRuee = 0;
@@ -61,7 +60,6 @@ namespace MaelKiller
         private Armes arme1;
         private Supports support1, support2;
         private Amélioration amélioration1, amélioration2;
-        private Secrets secret;
         private int cdArme1, cdrArme1;
         private double xfleche, yfleche, lfleche, hfleche;
         private ImageBrush skinFleche = new ImageBrush();
@@ -650,10 +648,6 @@ namespace MaelKiller
             Console.WriteLine("Atk : " + directionAtk[0] + " " + directionAtk[1]);
             Console.WriteLine("Haut : " + haut + "\nBas : " + bas + "\nGauche : " + gauche + "\nDroite : " + droite);
 #endif
-        }
-        private void TirArmeDistance()
-        {
-
         }
         private void InitialisationArmes(Armes[] tabArmes, Armes arme)
         {
@@ -1363,11 +1357,7 @@ namespace MaelKiller
             //---------------------------------------------------//
             //ASSIGNATION DE L'ARME//
             //---------------------------------------------------//
-            if (Armes.IsNullOrEmpty(arme1))
-            {
-                arme1 = new Armes(listeArmes[bonusArmes].Nom, listeArmes[bonusArmes].Degats, listeArmes[bonusArmes].Portee, listeArmes[bonusArmes].VitesseAttaque, listeArmes[bonusArmes].Taille, listeArmes[bonusArmes].Niveau, listeArmes[bonusArmes].Description, listeArmes[bonusArmes].EstMelee, listeArmes[bonusArmes].VitesseProjectile, listeArmes[bonusArmes].Amplitude);
-                listeArmes[bonusArmes].Niveau++;
-            }
+            arme1 = new Armes(arme1.Nom, arme1.Degats + EVODEGATS, arme1.Portee, arme1.VitesseAttaque * EVOVITESSEATTAQUE, arme1.Taille, arme1.Niveau + 1, arme1.Description, arme1.EstMelee, arme1.VitesseProjectile, arme1.Amplitude);
             cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
             cdArme1 = cdrArme1;
             //---------------------------------------------------//
@@ -1394,15 +1384,34 @@ namespace MaelKiller
         private void Bonus2_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //---------------------------------------------------//
-            //ASSIGNATION DE L'ARME//
+            //ASSIGNATION DU SUPPORT//
             //---------------------------------------------------//
-            if (Armes.IsNullOrEmpty(arme1))
+            if (Supports.IsNullOrEmpty(support1))
             {
-                arme1 = listeArmes[bonusAug];
-                listeArmes[bonusAug].Niveau++;
+                support1 = listeSupports[bonusAug];
             }
-            cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
-            cdArme1 = cdrArme1;
+            else if (!Supports.IsNullOrEmpty(support1) && Supports.IsNullOrEmpty(support2))
+            {
+                if (listeSupports[bonusAug].Nom == support1.Nom) 
+                {
+                    support1 = new Supports(support1.Nom, support1.Niveau + 1, support1.Multiplieur, support1.Description);
+                }
+                else
+                {
+                    support2 = listeSupports[bonusAug];
+                }
+            }
+            else if (!Supports.IsNullOrEmpty(support1) && !Supports.IsNullOrEmpty(support2))
+            {
+                if (listeSupports[bonusAug].Nom == support1.Nom)
+                {
+                    support1 = new Supports(support1.Nom, support1.Niveau + 1, support1.Multiplieur, support1.Description);
+                }
+                else
+                {
+                    support2 = new Supports(support2.Nom, support2.Niveau + 1, support2.Multiplieur, support2.Description);
+                }
+            }
             //---------------------------------------------------//
             //DISPARITION DU MENU//
             //---------------------------------------------------//
@@ -1428,15 +1437,16 @@ namespace MaelKiller
         private void Bonus3_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //---------------------------------------------------//
-            //ASSIGNATION DE L'ARME//
+            //ASSIGNATION DE L'AMELIORATION//
             //---------------------------------------------------//
-            if (Armes.IsNullOrEmpty(arme1))
+            if (Amélioration.IsNullOrEmpty(amélioration1))
             {
-                arme1 = listeArmes[bonus];
-                listeArmes[bonus].Niveau++;
+                amélioration1 = listeAmélioration[bonus];
             }
-            cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
-            cdArme1 = cdrArme1;
+            else if (!Amélioration.IsNullOrEmpty(amélioration1) && !Amélioration.IsNullOrEmpty(amélioration2))
+            {
+                amélioration2 = listeAmélioration[bonus];
+            }
 
             //---------------------------------------------------//
             //DISPARITION DU MENU//
@@ -1481,9 +1491,8 @@ namespace MaelKiller
             listeSupports[3] = tabCoeurOr[1];
             listeSupports[4] = tabForgeage[1];
             listeSupports[5] = tabRevêtement[1];
-            listeAmélioration[0] = deferlement;
-            listeAmélioration[1] = moteur;
-            listeAmélioration[2] = carburant;
+            listeAmélioration[0] = moteur;
+            listeAmélioration[1] = carburant;
         }
         public void NiveauSupérieur()
         {
@@ -1503,14 +1512,14 @@ namespace MaelKiller
 
             if (Amélioration.IsNullOrEmpty(amélioration1))
             {
-                bonus = random.Next(0, 2);
+                bonus = random.Next(0, 1);
                 TitreBonus3.Text = listeAmélioration[bonus].Nom;
             }
             else if (!Amélioration.IsNullOrEmpty(amélioration1) && Amélioration.IsNullOrEmpty(amélioration2))
             {
                 do
                 {
-                    bonus = random.Next(0, 2);
+                    bonus = random.Next(0, 1);
                 } while (listeAmélioration[bonus] == amélioration1);
                 TitreBonus3.Text = listeAmélioration[bonus].Nom;
             }
@@ -1520,17 +1529,7 @@ namespace MaelKiller
             if (Supports.IsNullOrEmpty(support1))
             {
                 bonusAug = random.Next(0, 5);
-                do
-                {
-                    bonusArmes = random.Next(0, 5);
-                } while (bonusArmes == bonusAug);
-                do
-                {
-                    bonus = random.Next(0, 5);
-                } while (bonus == bonusAug || bonus == bonusArmes);
-                TitreBonus1.Text = listeSupports[bonusArmes].Nom;
                 TitreBonus2.Text = listeSupports[bonusAug].Nom;
-                TitreBonus3.Text = listeSupports[bonus].Nom;
             }
             else if (!Supports.IsNullOrEmpty(support1) && Supports.IsNullOrEmpty(support2))
             {
@@ -1546,34 +1545,10 @@ namespace MaelKiller
                 }
                 else TitreBonus2.Text = support2.Nom;
             }
-            else if (support1.Niveau == 10)
-            {
-                bonusAug = 2;
-                TitreBonus2.Text = support2.Nom;
-            }
-            else if (support2.Niveau == 10)
-            {
-                bonusAug = 1;
-                TitreBonus2.Text = support1.Nom;
-            }
             //----------------------------------//
             //ROLL ARMES//
             //----------------------------------//
-            if (Armes.IsNullOrEmpty(arme1))
-            {
-                bonusArmes = random.Next(0, 7);
-                do
-                {
-                    bonusAug = random.Next(0, 7);
-                } while (bonusAug == bonusArmes);
-                do
-                {
-                    bonus = random.Next(0, 7);
-                } while (bonus == bonusArmes || bonus == bonusAug);
-                TitreBonus1.Text = listeArmes[bonusArmes].Nom;
-                TitreBonus2.Text = listeArmes[bonusAug].Nom;
-                TitreBonus3.Text = listeArmes[bonus].Nom;
-            }
+                TitreBonus1.Text = arme1.Nom;
         }
         private void VerificationNiveauSupp()
         {
