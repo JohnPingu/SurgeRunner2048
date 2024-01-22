@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MaelKiller"
         mc:Ignorable="d"
-        Title="Menu" Height="800" Width="1200" ResizeMode="NoResize">
+        Title="Menu" Height="800" Width="1200" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Canvas>
         <Rectangle x:Name="rectFond" Height="784" Stroke="Black" Width="1200" HorizontalAlignment="Center" VerticalAlignment="Top">
         </Rectangle>

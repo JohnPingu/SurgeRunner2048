@@ -12,7 +12,7 @@
     KeyDown="FenetrePrincipale_KeyDown"
     KeyUp="FenetrePrincipale_KeyUp"
     WindowStartupLocation="CenterScreen"
-    mc:Ignorable="d">
+    mc:Ignorable="d" ResizeMode="NoResize">
     <Canvas x:Name="monCanvas">
         <Rectangle
             x:Name="Carte"
@@ -58,19 +58,19 @@
             VerticalAlignment="Top"
             HorizontalContentAlignment="Center"
             Content="chrono1"
-            FontFamily="72"
+            FontFamily="Nachlieli CLM LightOblique"
             FontSize="48"
-            Foreground="Black" />
+            Foreground="White" Background="{x:Null}" />
         <ProgressBar
             x:Name="barXP"
-            Canvas.Left="-2"
+            Canvas.Left="-4"
             Width="1202"
             Height="49"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Background="#4C000000"
             Foreground="#FF1F00FF"
-            ValueChanged="ProgressBar_ValueChanged" />
+            ValueChanged="ProgressBar_ValueChanged" BorderBrush="White" />
         <Rectangle
             x:Name="FondNvSup"
             Width="1200"
@@ -205,7 +205,6 @@
             MouseLeftButtonDown="Quitter_MouseLeftButtonDown"
             Tag="Pause"
             Visibility="Hidden" />
-
-
+        <ProgressBar x:Name="barHp" Height="40" Canvas.Left="960" Canvas.Top="70" Width="200" HorizontalAlignment="Center" RenderTransformOrigin="0.39,0.201" VerticalAlignment="Top" BorderBrush="White"/>
     </Canvas>
 </Window>
