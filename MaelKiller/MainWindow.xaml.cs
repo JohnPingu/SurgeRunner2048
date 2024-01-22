@@ -63,11 +63,11 @@ namespace MaelKiller
         private int cdrRuee = 250, cdRuee, compteRuee = 0;
         private Joueur joueur = new Joueur(25, 4, 30, 1);
         private Joueur baseJoueur = new Joueur(25, 4, 30, 1);
-        private Armes arme1, arme2;
+        private Armes arme1;
         private Supports support1, support2;
         private Amélioration amélioration1, amélioration2;
         private Secrets secret;
-        private int cdArme1, cdArme2, cdrArme1, cdrArme2;
+        private int cdArme1, cdrArme1;
         private double xfleche, yfleche, lfleche, hfleche;
         private ImageBrush skinFleche = new ImageBrush();
         private ImageBrush drone = new ImageBrush();
@@ -83,7 +83,7 @@ namespace MaelKiller
 
         private Random random = new Random();
         private int bonusArmes, bonusAug, typeBonus, bonus;
-        private int niveauArme1 = 0, niveauArme2 = 0, niveauSupport1 = 0, niveauSupport2 = 0;
+        private int niveauArme1 = 0, niveauSupport1 = 0, niveauSupport2 = 0;
         private int cdInvincibilite;
         private bool joueurTouche = false;
 
@@ -98,15 +98,7 @@ namespace MaelKiller
         private Armes[] tabFouet = new Armes[10];
         private Armes hache = new Armes("Hache", 50, 50, 1, 100, 1, "Une hache avec peu de portée, mais des dégâts conséquents au corps-à-coprs", true);
         private Armes[] tabHache = new Armes[10];
-        private Armes revolver = new Armes("Revolver", 50, 750, 0.75, 20, 1, "Une puissance de feu bienvenue pour se battre de loin, mais lente à l'utilisation", false, 10);
-        private Armes[] tabRevolver = new Armes[10];
-        private Armes fusilSnip = new Armes("Fusil de précision", 75, 900, 0.5, 20, 1, "Une arme de très longue portée, qui en paie le prix. A metre entre les mains d'experts", false, 10);
-        private Armes[] tabFusilSnip = new Armes[10];
-        private Armes fusilAssaut = new Armes("Fusil d'Assaut", 5, 700, 2, 20, 1, "L'arme de prédilection des soldats faisant face à de grands groupes d'ennemis", false, 10);
-        private Armes[] tabFusilAssaut = new Armes[10];
-        private Armes canon = new Armes("Canon à main", 150, 800, 0.25, 100, 1, "On ne fait plus dans la dentelle. Préparez vos propre frappes d'artiellerie directement depuis le front", false, 2);
-        private Armes[]tabCanon = new Armes[10];
-        private Armes[] listeArmes = new Armes[8];
+        private Armes[] listeArmes = new Armes[4];
         private string couleurGlobal = "bleu";
 
         //-----------------------------------//
@@ -133,17 +125,6 @@ namespace MaelKiller
         private Amélioration moteur = new Amélioration("Support", "Moteur Quantique", "La portée de vitre ruée est grandement améliorée");
         private Amélioration carburant = new Amélioration("Support","Carburant Quantique", "Votre ruée est plus efficiente, vous pouvez l'effectuer plus souvent");
         private Amélioration[] listeAmélioration = new Amélioration[3];
-
-        //-----------------------------------//
-        //SECRETS//
-        //-----------------------------------//
-        private Secrets surgeRunner;
-        private Secrets fouetAdamantin;
-        private Secrets lanceTachyon;
-        private Secrets paladin;
-        private Secrets goldenGun;
-        private Secrets mechaHuman;
-        private Secrets[] listeSecrets = new Secrets[3];
        
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
@@ -174,22 +155,6 @@ namespace MaelKiller
             else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Hache")
             {
                 arme1 = hache;
-            }
-            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Revolver")
-            {
-                arme1 = revolver;
-            }
-            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Fusil de Sniper")
-            {
-                arme1 = fusilSnip;
-            }
-            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Fusil d'Assaut")
-            {
-                arme1 = fusilAssaut;
-            }
-            else if (menu.cbChoixArme.SelectedItem.ToString() == "System.Windows.Controls.ComboBoxItem : Canon")
-            {
-                arme1 = canon;
             }
             cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
             cdArme1 = cdrArme1;
@@ -469,35 +434,7 @@ namespace MaelKiller
                 }
                 cdArme1 = cdrArme1;
             }
-            if (!Armes.IsNullOrEmpty(arme2))
-            {
-                cdArme2 -= 1;
-                if (cdArme2 == 0)
-                {
-                    estAttaquant = true;
-                }
-                if (cdArme2 <= 0)
-                {
-                    checkFrame = cdArme2;
-                    Attaque(arme2, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
-                    frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/" + arme2.Nom + "/" + arme2.Nom + "_" + directionAtk[0] + directionAtk[1] + checkFrame + ".png"));
-                    VerifCollisionAtk(arme2);
-                }
-                if (cdArme2 == -9)
-                {
-                    foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
-                    {
-                        if (x is Rectangle && (string)x.Tag == "attaque")
-                        {
-                            objetsSuppr.Add(x);
-                        }
-                    }
-                    foreach (Rectangle y in objetsSuppr)
-                    {
-                        monCanvas.Children.Remove(y);
-                    }
-                    cdArme2 = cdrArme2;
-                }
+            }
             }
             //------------------------------------------------//
             //EFFETS SUPPORTS//
@@ -1480,41 +1417,8 @@ namespace MaelKiller
                 arme1 = new Armes(listeArmes[bonusArmes].Nom, listeArmes[bonusArmes].Degats, listeArmes[bonusArmes].Portee, listeArmes[bonusArmes].VitesseAttaque, listeArmes[bonusArmes].Taille, listeArmes[bonusArmes].Niveau, listeArmes[bonusArmes].Description, listeArmes[bonusArmes].EstMelee, listeArmes[bonusArmes].VitesseProjectile, listeArmes[bonusArmes].Amplitude);
                 listeArmes[bonusArmes].Niveau++;
             }
-            else if (!Armes.IsNullOrEmpty(arme1) && Armes.IsNullOrEmpty(arme2)) 
-            {
-                arme2 = new Armes(listeArmes[bonusArmes].Nom, listeArmes[bonusArmes].Degats, listeArmes[bonusArmes].Portee, listeArmes[bonusArmes].VitesseAttaque, listeArmes[bonusArmes].Taille, listeArmes[bonusArmes].Niveau, listeArmes[bonusArmes].Description, listeArmes[bonusArmes].EstMelee, listeArmes[bonusArmes].VitesseProjectile, listeArmes[bonusArmes].Amplitude);
-                listeArmes[bonusArmes].Niveau++;
-            }
-            else if (!Armes.IsNullOrEmpty(arme1) && !Armes.IsNullOrEmpty(arme2))
-                if (bonusArmes == 1) 
-                {
-                    for (int i = 0; i<listeArmes.Length; i++)
-                    {
-                        if (arme1.Nom == listeArmes[i].Nom)
-                        {
-                            arme1 = new Armes(listeArmes[i].Nom, listeArmes[i].Degats, listeArmes[i].Portee, listeArmes[i].VitesseAttaque, listeArmes[i].Taille, listeArmes[i].Niveau, listeArmes[i].Description, listeArmes[i].EstMelee, listeArmes[i].VitesseProjectile, listeArmes[i].Amplitude);
-                            listeArmes[i].Niveau++;
-                        }
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < listeArmes.Length; i++)
-                    {
-                        if (arme2.Nom == listeArmes[i].Nom)
-                        {
-                            arme2 = new Armes(listeArmes[i].Nom, listeArmes[i].Degats, listeArmes[i].Portee, listeArmes[i].VitesseAttaque, listeArmes[i].Taille, listeArmes[i].Niveau, listeArmes[i].Description, listeArmes[i].EstMelee, listeArmes[i].VitesseProjectile, listeArmes[i].Amplitude);
-                            listeArmes[i].Niveau++;
-                        }
-                    }
-                }
             cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
             cdArme1 = cdrArme1;
-            if (!Armes.IsNullOrEmpty(arme2))
-            {
-                cdrArme2 = InitialisationVitesseAttaque(arme2.VitesseAttaque);
-                cdArme2 = cdrArme2;
-            }
             //---------------------------------------------------//
             //DISPARITION DU MENU//
             //---------------------------------------------------//
@@ -1548,11 +1452,6 @@ namespace MaelKiller
             }
             cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
             cdArme1 = cdrArme1;
-            if (!Armes.IsNullOrEmpty(arme2))
-            {
-                cdrArme2 = InitialisationVitesseAttaque(arme2.VitesseAttaque);
-                cdArme2 = cdrArme2;
-            }
             //---------------------------------------------------//
             //DISPARITION DU MENU//
             //---------------------------------------------------//
@@ -1587,11 +1486,6 @@ namespace MaelKiller
             }
             cdrArme1 = InitialisationVitesseAttaque(arme1.VitesseAttaque);
             cdArme1 = cdrArme1;
-            if (!Armes.IsNullOrEmpty(arme2))
-            {
-                cdrArme2 = InitialisationVitesseAttaque(arme2.VitesseAttaque);
-                cdArme2 = cdrArme2;
-            }
             
             //---------------------------------------------------//
             //DISPARITION DU MENU//
@@ -1616,20 +1510,10 @@ namespace MaelKiller
         }
         private void InitialisationAmelioration()
         {
-            surgeRunner = new Secrets("Surge Runner", "Le jeu n'a plus de secrets pour vous", epee, deferlement, jambes);
-            fouetAdamantin = new Secrets("Orage Adamantin", "Votre fouet dépasse la solidité des matériaux connus et inflige des dégâts irréparables", fouet, forgeage);
-            lanceTachyon = new Secrets("Frappes Tachyon", "Votre vitesse d'exécution surpasse même la lumière", lance, revetement);
-            paladin = new Secrets("Paladin de l'annihilation", "Votre esprit a été corrompu par la puissance et vous ne cherchez plus que la destruction de toute chose", hache, exosquelette);
-            goldenGun = new Secrets("Desert Eagle Doré mk.XII", "Tout bon jeu en a un, alors pourquoi ne pas le faire tirer dans toutes les directions ?", revolver, coeurOr);
-            mechaHuman = new Secrets("Humain Augmenté Ultime", "Vos nano-Machines ont atteint la motion perpétuelle. Existe-t-il encore quelque-chose capable de vous tuer ?", carburant, nanoMachine);
             InitialisationArmes(tabEpee, epee); 
             InitialisationArmes(tabLance , lance);
             InitialisationArmes(tabFouet, fouet);
             InitialisationArmes(tabHache, hache);
-            InitialisationArmes(tabRevolver, revolver);
-            InitialisationArmes(tabFusilSnip, fusilSnip);
-            InitialisationArmes(tabFusilAssaut, fusilAssaut);
-            InitialisationArmes(tabCanon, canon);
             InitialisationSupports(tabJambes, jambes);
             InitialisationSupports(tabExosquelette, exosquelette);
             InitialisationSupports(tabNanoMachine, nanoMachine);
@@ -1640,10 +1524,6 @@ namespace MaelKiller
             listeArmes[1] = tabLance[1];
             listeArmes[2] = tabFouet[1];
             listeArmes[3] = tabHache[1];
-            listeArmes[4] = tabRevolver[1];
-            listeArmes[5] = tabFusilSnip[1];
-            listeArmes[6] = tabFusilAssaut[1];
-            listeArmes[7] = tabCanon[1];
             listeSupports[0] = tabJambes[1];
             listeSupports[1] = tabExosquelette[1];
             listeSupports[2] = tabNanoMachine[1];
@@ -1660,10 +1540,6 @@ namespace MaelKiller
             listeArmes[1] = new Armes (tabLance[listeArmes[1].Niveau].Nom, tabLance[listeArmes[1].Niveau].Degats, tabLance[listeArmes[1].Niveau].Portee, tabLance[listeArmes[1].Niveau].VitesseAttaque, tabLance[listeArmes[1].Niveau].Taille, tabLance[listeArmes[1].Niveau].Niveau, tabLance[listeArmes[1].Niveau].Description, tabLance[listeArmes[1].Niveau].EstMelee, tabLance[listeArmes[1].Niveau].VitesseProjectile, tabLance[listeArmes[1].Niveau].Amplitude);
             listeArmes[2] = new Armes (tabFouet[listeArmes[2].Niveau].Nom, tabFouet[listeArmes[2].Niveau].Degats, tabFouet[listeArmes[2].Niveau].Portee, tabFouet[listeArmes[2].Niveau].VitesseAttaque, tabFouet[listeArmes[2].Niveau].Taille, tabFouet[listeArmes[2].Niveau].Niveau, tabFouet[listeArmes[2].Niveau].Description, tabFouet[listeArmes[2].Niveau].EstMelee, tabFouet[listeArmes[2].Niveau].VitesseProjectile, tabFouet[listeArmes[2].Niveau].Amplitude);
             listeArmes[3] = new Armes (tabHache[listeArmes[3].Niveau].Nom, tabHache[listeArmes[3].Niveau].Degats, tabHache[listeArmes[3].Niveau].Portee, tabHache[listeArmes[3].Niveau].VitesseAttaque, tabHache[listeArmes[3].Niveau].Taille, tabHache[listeArmes[3].Niveau].Niveau, tabHache[listeArmes[3].Niveau].Description, tabHache[listeArmes[3].Niveau].EstMelee, tabHache[listeArmes[3].Niveau].VitesseProjectile, tabHache[listeArmes[3].Niveau].Amplitude);
-            listeArmes[4] = new Armes (tabRevolver[listeArmes[4].Niveau].Nom, tabRevolver[listeArmes[4].Niveau].Degats, tabRevolver[listeArmes[4].Niveau].Portee, tabRevolver[listeArmes[4].Niveau].VitesseAttaque, tabRevolver[listeArmes[4].Niveau].Taille, tabRevolver[listeArmes[4].Niveau].Niveau, tabRevolver[listeArmes[4].Niveau].Description, tabRevolver[listeArmes[4].Niveau].EstMelee, tabRevolver[listeArmes[4].Niveau].VitesseProjectile, tabRevolver[listeArmes[4].Niveau].Amplitude);
-            listeArmes[5] = new Armes (tabFusilSnip[listeArmes[5].Niveau].Nom, tabFusilSnip[listeArmes[5].Niveau].Degats, tabFusilSnip[listeArmes[5].Niveau].Portee, tabFusilSnip[listeArmes[5].Niveau].VitesseAttaque, tabFusilSnip[listeArmes[5].Niveau].Taille, tabFusilSnip[listeArmes[5].Niveau].Niveau, tabFusilSnip[listeArmes[5].Niveau].Description, tabFusilSnip[listeArmes[5].Niveau].EstMelee, tabFusilSnip[listeArmes[5].Niveau].VitesseProjectile, tabFusilSnip[listeArmes[5].Niveau].Amplitude);
-            listeArmes[6] = new Armes (tabFusilAssaut[listeArmes[6].Niveau].Nom, tabFusilAssaut[listeArmes[6].Niveau].Degats, tabFusilAssaut[listeArmes[6].Niveau].Portee, tabFusilAssaut[listeArmes[6].Niveau].VitesseAttaque, tabFusilAssaut[listeArmes[6].Niveau].Taille, tabFusilAssaut[listeArmes[6].Niveau].Niveau, tabFusilAssaut[listeArmes[6].Niveau].Description, tabFusilAssaut[listeArmes[6].Niveau].EstMelee, tabFusilAssaut[listeArmes[6].Niveau].VitesseProjectile, tabFusilAssaut[listeArmes[6].Niveau].Amplitude);
-            listeArmes[7] = new Armes (tabCanon[listeArmes[7].Niveau].Nom, tabCanon[listeArmes[7].Niveau].Degats, tabCanon[listeArmes[7].Niveau].Portee, tabCanon[listeArmes[7].Niveau].VitesseAttaque, tabCanon[listeArmes[7].Niveau].Taille, tabCanon[listeArmes[7].Niveau].Niveau, tabCanon[listeArmes[7].Niveau].Description, tabCanon[listeArmes[7].Niveau].EstMelee, tabCanon[listeArmes[7].Niveau].VitesseProjectile, tabCanon[listeArmes[7].Niveau].Amplitude);
             listeSupports[0] = tabJambes[0];
             listeSupports[1] = tabExosquelette[0];
             listeSupports[2] = tabNanoMachine[0];
@@ -1746,57 +1622,6 @@ namespace MaelKiller
                 TitreBonus1.Text = listeArmes[bonusArmes].Nom;
                 TitreBonus2.Text = listeArmes[bonusAug].Nom;
                 TitreBonus3.Text = listeArmes[bonus].Nom;
-            }
-            else if (!Armes.IsNullOrEmpty(arme1) && Armes.IsNullOrEmpty(arme2)) 
-            {
-                bonusArmes = random.Next(0, 7);
-                TitreBonus1.Text = listeArmes[bonusArmes].Nom;
-            }
-            else if (!Armes.IsNullOrEmpty(arme1) && !Armes.IsNullOrEmpty(arme2))
-            {
-                bonusArmes = random.Next(1, 2);
-                if (bonusArmes == 1)
-                {
-                    TitreBonus1.Text = arme1.Nom;
-                }
-                else TitreBonus1.Text = arme2.Nom;
-            }
-            else if (arme1.Niveau == 10)
-            {
-                bonusArmes = 2;
-                TitreBonus1.Text = arme2.Nom;
-            }
-            else if (arme2.Niveau == 10)
-            {
-                bonusArmes = 1;
-                TitreBonus1.Text = arme1.Nom;
-            }
-            //----------------------------------//
-            //ROLL SECRETS//
-            //----------------------------------//
-            if (listeArmes[0].Niveau == 10 && listeSupports[0].Niveau == 10 && (amélioration1 == deferlement || amélioration2 == deferlement) && Secrets.IsNullOrEmpty(secret)) 
-            {
-                TitreBonus3.Text = surgeRunner.Nom;
-            }
-            if (listeArmes[2].Niveau == 10 && listeSupports[4].Niveau == 10 && Secrets.IsNullOrEmpty(secret))
-            {
-                TitreBonus3.Text = fouetAdamantin.Nom;
-            }
-            if (listeArmes[1].Niveau == 10 && listeSupports[5].Niveau == 10 && Secrets.IsNullOrEmpty(secret))
-            {
-                TitreBonus3.Text = lanceTachyon.Nom;
-            }
-            if (listeArmes[3].Niveau == 10 && listeSupports[1].Niveau == 10 && Secrets.IsNullOrEmpty(secret))
-            {
-                TitreBonus3.Text = paladin.Nom;
-            }
-            if (listeArmes[4].Niveau == 10 && listeSupports[3].Niveau == 10 && Secrets.IsNullOrEmpty(secret))
-            {
-                TitreBonus3.Text = goldenGun.Nom;
-            }
-            if (listeSupports[2].Niveau == 10 && (amélioration1 == carburant || amélioration2 == carburant) && Secrets.IsNullOrEmpty(secret))
-            {
-                TitreBonus3.Text = mechaHuman.Nom;
             }
         }
         private void VerificationNiveauSupp()
