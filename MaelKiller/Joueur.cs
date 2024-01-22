@@ -135,7 +135,7 @@ namespace MaelKiller
         {
             get
             {
-                return EstMort;
+                return estMort;
             }
             set
             {

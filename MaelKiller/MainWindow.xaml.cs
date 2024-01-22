@@ -30,7 +30,6 @@ namespace MaelKiller
         private bool pause = false;
         private int seconde = 0;
         private int minute = 0;
-        private int tempsSeconde = 0;
         DispatcherTimer timer = new DispatcherTimer();
         TimeSpan tempsEcoule = new TimeSpan();
         private DateTime DebutChrono = new DateTime();
@@ -49,10 +48,6 @@ namespace MaelKiller
         private List<Rectangle> listeMonstreRect = new List<Rectangle>();
         private List<Monstres> listMonstre = new List<Monstres>();
 
-        private List<Rectangle> listeProjectileRect = new List<Rectangle>();
-        private List<Projectile> listeProjectile = new List<Projectile>();
-
-        private int projectileINDEX = 0;
 
         private bool gauche, droite, haut, bas, ruee, dispoRuee = false, estAttaquant = false;
         private bool niveauSupp = false;
@@ -76,8 +71,8 @@ namespace MaelKiller
         private ImageBrush skinPerso = new ImageBrush();
         private int skinFrameCompte = 0;
 
-        private bool CameraEstEnMouvement = false;
-        private double CameraMouvement = 0;
+        private bool CameraEstEnMouvement;
+        private double CameraMouvement;
 
         private Random random = new Random();
         private int bonusArmes, bonusAug, typeBonus, bonus;
@@ -193,13 +188,7 @@ namespace MaelKiller
             Console.WriteLine(menu.cbChoixArme.SelectedItem.ToString());
             if (menu.DialogResult == false) Application.Current.Shutdown();
             ChargementJeu();
-            InitialisationAmelioration();
-            intervalle.Tick += MoteurJeu;
-            intervalle.Interval = TimeSpan.FromMilliseconds(INTERVALLETICK);
-            intervalle.Start();
-            directionFleche[0] = 'N';
-            directionFleche[1] = 'D';
-            directionSkin[1] = 'D';
+
 
             Rectangle fleche = new Rectangle
             {
@@ -255,6 +244,8 @@ namespace MaelKiller
 
         private void ChargementJeu()
         {
+            rejouer_rect.Visibility = Visibility.Hidden;
+
             DebutChrono = DateTime.Now;
             ImageBrush brush1 = new ImageBrush();
             brush1.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/map.png"));
@@ -262,6 +253,17 @@ namespace MaelKiller
             timer.Tick += MinuterieTick;
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Start();
+            InitialisationAmelioration();
+            intervalle.Tick += MoteurJeu;
+            intervalle.Interval = TimeSpan.FromMilliseconds(INTERVALLETICK);
+            intervalle.Start();
+            directionFleche[0] = 'N';
+            directionFleche[1] = 'D';
+            directionSkin[1] = 'D';
+            CameraMouvement = 0;
+            CameraEstEnMouvement = false;
+            seconde = 0;
+            minute = 0;
         }
 
         private void MiseAJourBarXp()
@@ -295,7 +297,10 @@ namespace MaelKiller
 
         private void GameOver()
         {
-
+            timer.Stop();
+            intervalle.Stop();
+            rejouer_rect.IsEnabled = true;
+            rejouer_rect.Visibility = Visibility.Visible;
         }
 
         private void FenetrePrincipale_KeyDown(object sender, KeyEventArgs e)
@@ -420,7 +425,6 @@ namespace MaelKiller
             Deplacements();
             cameraEstEnMouvement();
             DeplacementMonstre();
-            DeplacementProjectiles();
 
             //------------------------------------------------//
             //FLÊCHE//
@@ -606,28 +610,6 @@ namespace MaelKiller
                             yAtk = Canvas.GetTop(rect_Joueur) + (rect_Joueur.Height / 2) - (hauteur / 2);
                         }
                     }
-                }
-                else
-                {
-                    Projectile projectile = new Projectile(10, arme.Degats);
-                    projectile.DirectionBalleHB = directionFleche[0];
-                    projectile.DirectionBalleGD = directionFleche[1];
-
-                    ImageBrush skinBalle = new ImageBrush();
-                    skinBalle.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Fleche/flecheBG.png"));
-                    Rectangle projectileRect = new Rectangle
-                    {
-                        Width = 50,
-                        Height = 50,
-                        Fill = skinBalle
-                    };
-                    Canvas.SetTop(projectileRect, Canvas.GetTop(rect_Joueur) + rect_Joueur.Height/2);
-                    Canvas.SetLeft(projectileRect, Canvas.GetLeft(rect_Joueur) + rect_Joueur.Width/2);
-                    projectile.Index = projectileINDEX;
-                    projectileINDEX++;
-                    listeProjectile.Add(projectile);
-                    listeProjectileRect.Add(projectileRect);
-                    monCanvas.Children.Add(projectileRect);
                 }
             }
             else
@@ -911,9 +893,9 @@ namespace MaelKiller
                     if (joueur.PeutPrendreDegats == true)
                     {
                         joueur.PeutPrendreDegats = false;
-                        joueur.Pv -= monstre.Degats;
+                        joueur.PrendreDegats(monstre.Degats);
                         Console.Write("Joueur perd des HP :" + joueur.Pv);
-                        if (joueur.Pv <= 0)
+                        if (joueur.EstMort)
                         {
                             GameOver();
                             Console.Write("GAMEOVER");
@@ -930,53 +912,6 @@ namespace MaelKiller
             }
         }
 
-        private void DeplacementProjectiles()
-        {
-            foreach (Projectile projectile in listeProjectile)
-            {
-                int index = projectile.Index;
-                double vitesseX = projectile.Vitesse;
-                double vitesseY = projectile.Vitesse;
-                if (projectile.DirectionBalleHB == 'H')
-                {
-                    vitesseY = projectile.Vitesse;
-                    if (projectile.DirectionBalleGD == 'G')
-                    {
-                        vitesseX = -projectile.Vitesse;
-                    } 
-                    else if (projectile.DirectionBalleGD == 'D')
-                    {
-                        vitesseX = projectile.Vitesse;
-                    } else
-                    {
-                        vitesseX = 0;
-                    }
-                
-                } 
-                else if (projectile.DirectionBalleHB == 'B')
-                {
-                    vitesseY = -projectile.Vitesse;
-                    if (projectile.DirectionBalleGD == 'G')
-                    {
-                        vitesseX = -projectile.Vitesse;
-                    }
-                    else if (projectile.DirectionBalleGD == 'D')
-                    {
-                        vitesseX = projectile.Vitesse;
-                    }
-                    else
-                    {
-                        vitesseX = 0;
-                    }
-                } else
-                {
-                    vitesseY = 0;
-                }
-
-                Canvas.SetLeft(listeProjectileRect[index], Canvas.GetTop(listeProjectileRect[index]) + vitesseX);
-                Canvas.SetTop(listeProjectileRect[index], Canvas.GetTop(listeProjectileRect[index]) + vitesseY);
-            }
-        }
         private void DeplacementMonstre()
         {
             foreach (Monstres monstre in listMonstre)
