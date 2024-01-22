@@ -417,7 +417,6 @@ namespace MaelKiller
             {
                 checkFrame = cdArme1;
                 Attaque(arme1, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
-                Console.WriteLine("ressources/img/Game/Armes/" + arme1.Nom + "/" + arme1.Nom + "_" + directionAtk[0] + directionAtk[1] + checkFrame + ".png");
                 frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/" + arme1.Nom + "/" + arme1.Nom + "_" + directionAtk[0] + directionAtk[1] + checkFrame + ".png"));
                 
             }

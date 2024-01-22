@@ -260,6 +260,246 @@
     <None Update="ressources\img\Game\Armes\Epee\Epee_NG0.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BD-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BD-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BD-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BD-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BD-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BD-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BD-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BD-8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BD-9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BD0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BG-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BG-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BG-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BG-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BG-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BG-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BG-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BG-8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BG-9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BG0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BN-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BN-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BN-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BN-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BN-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BN-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BN-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BN-8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BN-9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_BN0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HD-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HD-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HD-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HD-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HD-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HD-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HD-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HD-8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HD-9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HD0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HG-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HG-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HG-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HG-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HG-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HG-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HG-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HG-8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HG-9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HG0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HN-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HN-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HN-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HN-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HN-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HN-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HN-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HN-8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HN-9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_HN0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_ND-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_ND-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_ND-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_ND-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_ND-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_ND-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_ND-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_ND-8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_ND-9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_ND0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_NG-1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_NG-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_NG-3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_NG-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_NG-5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_NG-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_NG-7.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_NG-8.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_NG-9.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="ressources\img\Game\Armes\Fouet\Fouet_NG0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="ressources\img\Game\Armes\Hache\Hache_BD-1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
