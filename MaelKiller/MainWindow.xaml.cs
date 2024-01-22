@@ -43,6 +43,8 @@ namespace MaelKiller
         private const int INTERVALLETICK = 15;
         private const double EVODEGATS = 25, EVOVITESSEATTAQUE = 1.1;
         private const int PERSOIDLE = 4, PERSORUN = 6;
+        private const int MONSTRERUN = 4;
+        private const int PERSOHURT = 2;
         
         private List<Rectangle> listeMonstreRect = new List<Rectangle>();
         private List<Monstres> listMonstre = new List<Monstres>();
@@ -75,6 +77,8 @@ namespace MaelKiller
         private Random random = new Random();
         private int bonusArmes, bonusAug, typeBonus, bonus;
         private int niveauArme1 = 0, niveauArme2 = 0, niveauSupport1 = 0, niveauSupport2 = 0;
+        private int cdInvincibilite;
+        private bool joueurTouche = false;
 
         //-----------------------------------//
         //ARMES//
@@ -133,9 +137,7 @@ namespace MaelKiller
         private Secrets goldenGun;
         private Secrets mechaHuman;
         private Secrets[] listeSecrets = new Secrets[3];
-
-        private Monstres robot = new Monstres("robot", 5, 20, 6, "bleu", 20);
-
+       
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
 
@@ -351,6 +353,11 @@ namespace MaelKiller
         {
             skinFrameCompte++;
             SkinPersonnage();
+            SkinMonstre();
+            
+            VerificationCollisionMonstreJoueur();
+            CollisionAvecJoueur();
+            
             MiseAJourBarXp();
             vitesseCam = (int)Math.Round(joueur.Vitesse / 2);
             VerifPosition();
@@ -414,7 +421,7 @@ namespace MaelKiller
                 frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/" + arme1.Nom + "/" + arme1.Nom + "_" + directionAtk[0] + directionAtk[1] + checkFrame + ".png"));
                 
             }
-            if (cdArme1 == -9) 
+            if (cdArme1 == -9)
             {
                 foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
                 {
@@ -761,14 +768,16 @@ namespace MaelKiller
             {
                 int Xmonstre = (int)Canvas.GetLeft(monstrerectangle);
                 int Ymonstre = (int)Canvas.GetTop(monstrerectangle);
-                int Xjoueur = (int)Canvas.GetTop(rect_Joueur);
+                int Xjoueur = (int)Canvas.GetLeft(rect_Joueur);
                 int Yjoueur = (int)Canvas.GetTop(rect_Joueur);
                 Rect monstrerect = new Rect(Xmonstre,Ymonstre,monstrerectangle.Width, monstrerectangle.Height);
                 Rect joueurrect = new Rect(Xjoueur, Yjoueur, rect_Joueur.Width, rect_Joueur.Height);
-                bool collision = monstrerect.IntersectsWith(joueurrect);
-                if (collision)
+                if (monstrerect.IntersectsWith(joueurrect) && joueurTouche == false)
                 {
-                    CollisionAvecJoueur();
+                    joueurTouche = true;
+                } else
+                {
+                    joueurTouche = false;
                 }
             }
         }
@@ -1024,22 +1033,22 @@ namespace MaelKiller
         private void GenerationMonstreHasard()
         {
             Random random = new Random();
-            double nbHasard = random.Next(1, 3);
+            double nbHasard = random.Next(1, 4);
             switch (nbHasard) {
                 case 1:
-                    Monstres robot = new Monstres("robot", 5, 20, 2, "bleu", 20);
-                    robot.Couleur = couleurGlobal;
-                    ApparitionMonstre(robot);
+                    Monstres robotDrone1 = new Monstres("drone1", 5, 20, 1, "bleu", 20);
+                    robotDrone1.Couleur = couleurGlobal;
+                    ApparitionMonstre(robotDrone1);
                     break;
                 case 2:
-                    Monstres nouveauMonstre2 = new Monstres("robot", 5, 20, 2, "bleu", 20);
-                    nouveauMonstre2.Couleur = couleurGlobal;
-                    ApparitionMonstre(nouveauMonstre2);
+                    Monstres robotDrone2 = new Monstres("drone2", 5, 20, 1, "bleu", 20);
+                    robotDrone2.Couleur = couleurGlobal;
+                    ApparitionMonstre(robotDrone2);
                     break;
                 case 3:
-                    Monstres nouveauMonstre3 = new Monstres("robot", 5, 20, 2, "bleu", 20);
-                    nouveauMonstre3.Couleur = couleurGlobal;
-                    ApparitionMonstre(nouveauMonstre3);
+                    Monstres robotDrone3 = new Monstres("drone3", 5, 20, 1, "bleu", 20);
+                    robotDrone3.Couleur = couleurGlobal;
+                    ApparitionMonstre(robotDrone3);
                     break;
             }
             
@@ -1054,13 +1063,19 @@ namespace MaelKiller
                 Width = 60,
             };
 
-            if (monstre.Nom == "robot") 
+            if (monstre.Nom == "drone1") 
             {
                 nouveauMonstreRect.Height = 96;
                 nouveauMonstreRect.Width = 96;
-                drone.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Monstre/Drone/Idle/1.png"));
-                nouveauMonstreRect.Fill = drone;
-            };
+            } else if (monstre.Nom == "drone2")
+            {
+                nouveauMonstreRect.Height = 96;
+                nouveauMonstreRect.Width = 96;
+            } else if (monstre.Nom == "drone3")
+            {
+                nouveauMonstreRect.Height = 72;
+                nouveauMonstreRect.Width = 72;
+            }
 
             if (monstre.Couleur == "rouge")
             {
@@ -1086,7 +1101,7 @@ namespace MaelKiller
             int coorX = 0;
             int coorY = 0;
 
-            rdm = random.Next(1,4);
+            rdm = random.Next(1,3);
 
             switch (rdm)
             {
@@ -1119,11 +1134,51 @@ namespace MaelKiller
         {
             if (!gauche && !droite && !haut && !bas)
             {
-                skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoIdle_" + directionSkin[1] + "_" + (skinFrameCompte / INTERVALLETICK % PERSOIDLE) + ".png")); 
+                if (joueurTouche == false)
+                {
+                    skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoIdle_" + directionSkin[1] + "_" + (skinFrameCompte / INTERVALLETICK % PERSOIDLE) + ".png"));
+                } else
+                {
+                    skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoHurt_" + directionSkin[1] + "_" + (skinFrameCompte / INTERVALLETICK % PERSOHURT) + ".png"));
+                }
             }
             else
             {
-                skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoRun_" + directionSkin[1] + "_" + (skinFrameCompte / 10 % PERSORUN) + ".png"));
+                if (joueurTouche == false)
+                {
+                    skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoRun_" + directionSkin[1] + "_" + (skinFrameCompte / 10 % PERSORUN) + ".png"));
+                } else
+                {
+                    skinPerso.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Personnage/Perso/PersoHurt_" + directionSkin[1] + "_" + (skinFrameCompte / INTERVALLETICK % PERSOHURT) + ".png"));
+                }
+            }
+        }
+
+        private void SkinMonstre()
+        {
+            foreach(Monstres monstre in listMonstre)
+            {
+                ImageBrush skinrobot = new ImageBrush();
+                int index = monstre.Index - 1;
+                int nombreSkin = 0;
+                if (monstre.Nom == "drone1")
+                {
+                    nombreSkin = 1;
+                } else if (monstre.Nom == "drone2")
+                {
+                    nombreSkin = 2;
+                } else if (monstre.Nom == "drone3")
+                {
+                    nombreSkin = 3;
+                }
+                if (Canvas.GetLeft(listeMonstreRect[index]) >= Canvas.GetLeft(rect_Joueur))
+                {
+                    skinrobot.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/monstre/drone" + nombreSkin +"/walk/walk_g_" + ((skinFrameCompte / INTERVALLETICK % MONSTRERUN) + 1) + ".png"));
+                } else
+                {
+                    skinrobot.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/monstre/drone" + nombreSkin +"/walk/walk_d_" + ((skinFrameCompte / INTERVALLETICK % MONSTRERUN) + 1) + ".png"));
+                }
+                listeMonstreRect[index].Fill = skinrobot;
             }
         }
         private void MiseEnPause()
