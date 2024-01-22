@@ -17,6 +17,7 @@ namespace MaelKiller
         private int niveau;
         private bool estMort;
         private const double CONSTANTE_MULTIPLIEUR_NIVEAU = 1.5;
+        private bool peutPrendreDegats;
 
         public Joueur(double pvMax, double vitesse, double porteeRuee, int niveau)
         {
@@ -28,6 +29,7 @@ namespace MaelKiller
             Xp = xp;
             XpPourNiveauSuivant = 200;
             estMort = false;
+            peutPrendreDegats = true;
         }
         public double Pv
         {
@@ -38,6 +40,18 @@ namespace MaelKiller
             set
             {
                 pv = value;
+            }
+        }
+
+        public bool PeutPrendreDegats
+        {
+            get
+            {
+                return peutPrendreDegats;
+            }
+            set
+            {
+                peutPrendreDegats = value;
             }
         }
         public double PvMax

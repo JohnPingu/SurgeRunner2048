@@ -1287,6 +1287,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ressources\img\Game\Armes\Projectile\" />
     <Folder Include="ressources\img\Game\monstre\drone1\walk\" />
     <Folder Include="ressources\img\Menu\" />
   </ItemGroup>
