@@ -55,8 +55,9 @@ namespace MaelKiller
         private double directionProjectile = 0;
         private List<Rectangle> objetsSuppr = new List<Rectangle>();
         private DispatcherTimer intervalle = new DispatcherTimer();
-        private int cdrRuee = 250, cdRuee;
+        private int cdrRuee = 250, cdRuee, compteRuee = 0;
         private Joueur joueur = new Joueur(25, 4, 30, 1);
+        private Joueur baseJoueur = new Joueur(25, 4, 30, 1);
         private Armes arme1, arme2;
         private Supports support1, support2;
         private Amélioration amélioration1, amélioration2;
@@ -111,7 +112,7 @@ namespace MaelKiller
         private Supports[] tabExosquelette = new Supports[10];
         private Supports nanoMachine = new Supports("Nano-Machine", 1, "regen", "De nanoscopiques automates remplacent vos globules rouges pour une capacité de guérison maximale");
         private Supports[] tabNanoMachine = new Supports[10];
-        private Supports coeurOr = new Supports("Coeur en or", 1, "attraction", "Votre coeur métallique crée un champmagnétique permettant d'attirer l'expérience de plus loin");
+        private Supports coeurOr = new Supports("Coeur en or", 1, "attraction", "Votre coeur métallique augmente l'efficacité avec laquelle vous gagnez de l'expérience");
         private Supports[] tabCoeurOr = new Supports[10];
         private Supports forgeage = new Supports("Forgeage adamantin", 1, "degats", "Votre maîtrise de la forge adamantine vous offre des armes de qualité supérieure aux dégats soutenus");
         private Supports[] tabForgeage = new Supports[10];
@@ -390,6 +391,19 @@ namespace MaelKiller
                     cdRuee = cdrRuee;
                 }
             }
+            else
+            {
+                if (ruee == true)
+                {
+                    joueur.Vitesse = joueur.PorteeRuee;
+                    compteRuee++;
+                    if (compteRuee == 3)
+                    {
+                        ruee == false;
+                        joueur.Vitesse = baseJoueur.Vitesse;
+                    }
+                }
+            }
 
             //------------------------------------------------//
             //DEPLACEMENT//
@@ -435,9 +449,74 @@ namespace MaelKiller
                 }
                 cdArme1 = cdrArme1;
             }
+            if (!Armes.IsNullOrEmpty(arme2))
+            {
+                cdArme2 -= 1;
+                if (cdArme2 == 0)
+                {
+                    estAttaquant = true;
+                }
+                if (cdArme2 <= 0)
+                {
+                    checkFrame = cdArme2;
+                    Attaque(arme2, Canvas.GetLeft(rect_Joueur), Canvas.GetTop(rect_Joueur));
+                    frameAtk.ImageSource = new BitmapImage(new Uri(AppDomain.CurrentDomain.BaseDirectory + "ressources/img/Game/Armes/" + arme2.Nom + "/" + arme2.Nom + "_" + directionAtk[0] + directionAtk[1] + checkFrame + ".png"));
+
+                }
+                if (cdArme2 == -9)
+                {
+                    foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
+                    {
+                        if (x is Rectangle && (string)x.Tag == "attaque")
+                        {
+                            objetsSuppr.Add(x);
+                        }
+                    }
+                    foreach (Rectangle y in objetsSuppr)
+                    {
+                        monCanvas.Children.Remove(y);
+                    }
+                    cdArme2 = cdrArme2;
+                }
+            }
+            //------------------------------------------------//
+            //EFFETS SUPPORTS//
+            //------------------------------------------------//
+            if (support1 == jambes)
+            {
+                joueur.Vitesse = baseJoueur.Vitesse + support1.Niveau;
+            }
+            else if (support2 == jambes)
+            {
+                joueur.Vitesse = baseJoueur.Vitesse + support2.Niveau;
+            }
+            if (support1 = exosquelette)
+            {
+                joueur.PvMax = baseJoueur.PvMax + 5 * support1.Niveau;
+            }
+            else if (support2 = exosquelette)
+            {
+                joueur.PvMax = baseJoueur.PvMax + 5 * support2.Niveau;
+            }
+            if (support1 == nanoMachine)
+            {
+                if (joueur.Pv + support1.Niveau < joueur.PvMax)
+                {
+                    joueur.Pv += support1.Niveau;
+                }
+                else joueur.Pv = joueur.PvMax;
+            }
+            else if (support2 == nanoMachine)
+            {
+                if (joueur.Pv + support2.Niveau < joueur.PvMax)
+                {
+                    joueur.Pv += support2.Niveau;
+                }
+                else joueur.Pv = joueur.PvMax;
+            }
         }
 
-        private void VerifCollisionAtk()
+        private void VerifCollisionAtk(Armes arme)
         {
             foreach (Rectangle x in monCanvas.Children.OfType<Rectangle>())
             {
